@@ -1,0 +1,57 @@
+/* styles/globals.css */
+
+/* Reset margins and paddings to ensure consistency across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Global styles for html and body */
+  html, body {
+    font-family: 'Arial', sans-serif; /* Set a default font */
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrollbars */
+  }
+  
+  /* Ensure the entire page occupies full height of the viewport */
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Style for sections or containers across all pages */
+  .BodySection {
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* General link styling */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Global button styling */
+  button {
+    font-size: 16px;
+    padding: 10px 15px;
+    background-color: #1e293b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3b82f6;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .BodySection {
+      padding: 10px;
+    }
+  }
+  

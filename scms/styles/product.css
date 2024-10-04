@@ -1,0 +1,39 @@
+/* styles/product.css */
+
+/* Body Section styling */
+.BodySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh; /* Ensures full height for better visibility */
+}
+
+/* Greeting Section */
+.GreetingSection h1 {
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Product Section grid */
+.ProductSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .GreetingSection h1 {
+    font-size: 2rem; /* Responsive font size */
+  }
+
+  .ProductSection {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust for smaller screens */
+  }
+}

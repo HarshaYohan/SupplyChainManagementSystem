@@ -1,0 +1,66 @@
+/* General styling for navbar */
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #1e293b; /* Dark color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  position: fixed; /* Keep navbar fixed on top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Logo section */
+.logoSection img {
+  max-height: 50px;
+}
+
+.ProfileSection {
+  justify-content: space-between;
+}
+
+/* Common button styles */
+.button {
+  background-color: #3b82f6; /* Light blue */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+}
+
+.button:focus {
+  outline: 2px solid #2563eb; /* Outline on focus */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .Header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logoSection img {
+    max-height: 40px;
+  }
+
+  .ProfileSection .profileButton,
+  .ProfileSection .cartButton {
+    margin-top: 10px;
+  }
+}
+
+/* Body padding to avoid content hiding under navbar */
+body {
+  padding-top: 80px; /* Adjust to match the navbar height */
+}
