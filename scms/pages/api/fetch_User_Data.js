@@ -13,13 +13,12 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const { email, password } = req.body;
 
-    const query =
-      "SELECT Name,Email,PhoneNumber,Address,Hash_Password FROM employee WHERE Email = ?";
+    const query = "SELECT * FROM customer WHERE Email = ?";
     db.query(query, email, async (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Database error" });
       }
-console.log("results",results.length)
+      console.log(results);
       if (results.length === 0) {
         return res.status(401).json({ error: "User not found." });
       }
@@ -31,8 +30,7 @@ console.log("results",results.length)
           return res.status(401).json({ error: "User no exist." });
         }
 
-        const { Hash_Password, ...userDetails } = user;
-        return res.status(200).json(userDetails); // Send user details back to the frontend
+        return res.status(200).json(user); // Send user details back to the frontend
       } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
       }
@@ -41,5 +39,3 @@ console.log("results",results.length)
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 }
-
-

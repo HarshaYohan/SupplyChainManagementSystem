@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const { email, password } = req.body;
-    const query = "SELECT * FROM employee WHERE Email = ?";
+    const query = "SELECT * FROM customer WHERE Email = ?";
     db.query(query, [email], async (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Database error" });

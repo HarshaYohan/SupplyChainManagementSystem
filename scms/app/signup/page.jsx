@@ -2,49 +2,69 @@
 import "../../styles/signup_login.css";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 function Signup() {
   const router = useRouter();
   const [fullname, setFullname] = useState("");
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isPasswordStrong, setIsPasswordStrong] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password.length < 8) {
-      alert("Password is not strong enough");
+      setErrorMessage("Password is not strong enough");
       return;
     } else if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setErrorMessage("Passwords do not match!");
       return;
     }
 
     try {
       const response = await axios.post("/api/signup", {
         fullname,
-        email,
+        address,
         phonenumber,
+        email,
         password,
       });
-
 
       const userData = {
         email: email,
         password: password,
-      }
+      };
       localStorage.setItem("userData", JSON.stringify(userData));
-      console.log(userData)
+      console.log(userData);
 
       if (response.status === 200) {
         console.log("Signup successful", response.data);
-        router.push("/product");
+        router.push("/");
+      } else if (response.status === 400) {
+        setErrorMessage("Email Already Exist");
       }
     } catch (err) {
-      console.error("Signup failed", err);
+      setErrorMessage("An error occurred during signup.");
+    }
+  };
+
+  const handleInputChange = (setter) => (e) => {
+    const value = e.target.value;
+    setter(value);
+    setErrorMessage("");
+    if (setter === setPassword) {
+      if (value.length < 8) {
+        setIsPasswordStrong(false);
+        setErrorMessage("Password is not strong enough");
+      } else {
+        setIsPasswordStrong(true);
+        setErrorMessage("Strong Password");
+      }
     }
   };
 
@@ -65,37 +85,53 @@ function Signup() {
             type="text"
             placeholder="Full Name"
             value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
+            onChange={handleInputChange(setFullname)}
             required
           />
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Address"
+            value={address}
+            onChange={handleInputChange(setAddress)}
             required
           />
           <input
             type="tel"
             placeholder="Phone Number"
             value={phonenumber}
-            onChange={(e) => setPhonenumber(e.target.value)}
+            onChange={handleInputChange(setPhonenumber)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleInputChange(setEmail)}
             required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleInputChange(setPassword)}
             required
           />
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={handleInputChange(setConfirmPassword)}
             required
           />
+          {/* Display the error message */}
+          {errorMessage && (
+            <div
+              className="error-message"
+              style={{ color: isPasswordStrong ? "green" : "red" }}
+            >
+              {errorMessage}
+            </div>
+          )}
           <button type="submit">Sign up</button>
         </form>
       </div>

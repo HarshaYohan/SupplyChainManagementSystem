@@ -8,6 +8,7 @@ function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,20 +18,22 @@ function Login() {
         password,
       });
 
-
       const userData = {
         email: email,
         password: password,
-      }
+      };
       localStorage.setItem("userData", JSON.stringify(userData));
 
-
-      
       console.log("Login successful", response.data);
-      router.push("/product");
+      router.push("/");
     } catch (err) {
       console.error("Login failed", err);
+      setErrorMessage("Login failed. Please check your email and password."); // Step 2: Set error message
     }
+  };
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setErrorMessage("");
   };
 
   return (
@@ -50,16 +53,18 @@ function Login() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleInputChange(setEmail)}
             required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleInputChange(setPassword)}
             required
           />
+          {errorMessage && <p className="error-message">{errorMessage}</p>}{" "}
+          {/* Display error message */}
           <button type="submit">Login</button>
         </form>
       </div>

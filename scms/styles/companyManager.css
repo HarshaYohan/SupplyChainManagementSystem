@@ -1,0 +1,88 @@
+/* General styles for the Company Manager page */
+.dashboard-container {
+  display: flex; /* Flexbox layout for sidebar and content */
+  flex-direction: column; /* Stack items vertically */
+  margin-top: 130px; /* Space to avoid overlap with the fixed navbar */
+  padding: 1rem; /* Padding around the container */
+}
+
+.content {
+  display: flex; /* Flexbox layout for sidebar and body */
+  gap: 2rem; /* Space between sidebar and body */
+  margin-left: 2rem;
+  margin-right: 2rem;
+  min-height: 500px;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 200px; /* Fixed width for the sidebar */
+  /*background-color: #f8f9fa;  Light background color for sidebar */
+  background-color: #001f3f;
+  padding: 1rem; /* Padding inside sidebar */
+  border: 1px solid #ced4da; /* Border for the sidebar */
+  border-radius: 4px; /* Slightly rounded corners */
+}
+
+/* Button styles for sidebar */
+.sidebar button {
+  display: block; /* Block display for buttons */
+  width: 100%; /* Full width buttons */
+  background-color: #007bff; /* Primary button color */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 0.5rem; /* Padding for buttons */
+  margin-bottom: 1rem; /* Space between buttons */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+}
+
+/* Button hover effect for sidebar */
+.sidebar button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Body styles */
+.body {
+  flex-grow: 1; /* Take remaining space */
+  background-color: #ffffff; /* White background for body */
+  padding: 1rem; /* Padding inside the body */
+  border: 1px solid #ced4da; /* Border for the body */
+  border-radius: 4px; /* Slightly rounded corners */
+}
+
+/* Form container styles */
+.form-container {
+  display: flex; /* Flexbox layout for form */
+  flex-direction: column; /* Stack form elements vertically */
+  gap: 1rem; /* Space between form elements */
+}
+
+/* Input and textarea styles */
+input,
+textarea {
+  padding: 0.5rem; /* Padding inside inputs */
+  border: 1px solid #ced4da; /* Border for inputs */
+  border-radius: 4px; /* Rounded corners */
+  width: 100%; /* Full width inputs */
+}
+
+/* Placeholder text styling */
+.placeholder-text {
+  text-align: center; /* Center align placeholder text */
+  font-style: italic; /* Italicize placeholder text */
+  color: #6c757d; /* Grey color for placeholder text */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column; /* Stack sidebar and body vertically */
+    gap: 1rem; /* Space between stacked elements */
+  }
+
+  .sidebar {
+    width: 100%; /* Full width sidebar on small screens */
+  }
+}

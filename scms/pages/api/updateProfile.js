@@ -10,26 +10,19 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { name, email, phone, address } = req.body;
-    console.log(name);
-    console.log(email);
-    console.log(phone);
-    console.log(address);
+    const { customerID, name, address, phone, email } = req.body;
 
     const query = `
-    UPDATE employee
-    SET Name = ?, PhoneNumber = ?, Address = ?,Email = ?
-    WHERE Employee_ID = 4;
+    UPDATE customer
+    SET CustomerName = ?, Address = ?, PhoneNumber = ?,Email = ?
+    WHERE CustomerID = 2;
     `;
 
     // Pass the employeeId as the last parameter
-    db.query(query, [name, phone, address, email], (err, results) => {
+    db.query(query, [name, address, phone, email], (err, results) => {
       if (err) {
-        console.error("Database error:", err); // Log the error for debugging
         return res.status(500).json({ error: "Database error" });
       }
-
-      // Check if any rows were affected
       if (results.affectedRows === 0) {
         return res
           .status(404)

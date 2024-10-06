@@ -1,3 +1,4 @@
+// // export default Profile;
 // "use client";
 // import "../../styles/profile.css";
 // import Navbar from "../components/navbar.jsx";
@@ -10,6 +11,14 @@
 //   const [error, setError] = useState(null);
 //   const [userData, setUserData] = useState(null);
 //   const [userDetails, setUserDetails] = useState(null); // To store fetched user details
+
+//   // Local state for editable fields
+//   const [customerID, setCustomerID] = useState("");
+//   const [name, setName] = useState("");
+//   const [address, setAddress] = useState("");
+//   const [phone, setPhone] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
 
 //   useEffect(() => {
 //     // Get user data from localStorage
@@ -27,15 +36,20 @@
 //       if (!userData) return; // Ensure userData is available before fetching
 
 //       try {
-//         const response = await axios.post("/api/profile", {
+//         const response = await axios.post("/api/fetch_User_Data", {
 //           email: userData.email,
 //           password: userData.password,
 //         });
+//         console.log(response.data);
 //         setUserDetails(response.data);
-//         console.log("Fetched user details:", response.data); // Debugging log
+//         setCustomerID(response.data.customerID);
+//         setName(response.data.CustomerName || "");
+//         setAddress(response.data.Address || "");
+//         setPhone(response.data.PhoneNumber || "");
+//         setEmail(response.data.Email || "");
+//         setPassword(response.data.Password || "");
 //       } catch (error) {
 //         setError("Failed to fetch user details");
-//         console.error("API request error:", error); // Debugging log
 //       } finally {
 //         setLoading(false); // Stop loading when request is complete
 //       }
@@ -48,6 +62,23 @@
 //   if (!userDetails) {
 //     return <p>No user details available.</p>;
 //   }
+
+//   const handleSave = async () => {
+//     try {
+//       const res = await axios.post("/api/updateProfile", {
+//         customerID: customerID,
+//         name: name,
+//         address: address,
+//         phone: phone,
+//         email: email,
+//       });
+//     } catch (err) {
+//       if (err) {
+//         console.log(error);
+//       }
+//     }
+//   };
+
 //   return (
 //     <div className="Container">
 //       <Navbar />
@@ -57,32 +88,60 @@
 //             <img src="../../OIP.jpeg" alt="Profile" />
 //           </div>
 //           <div className="contentSection">
-//             <h1>{userDetails.Name || "Name not available"}</h1>
+//             <h1>{name || "Name not available"}</h1>
 
 //             <div className="field">
 //               <label>Name:</label>
-//               <div className="detail-box">{userDetails.Name || "N/A"}</div>
+//               <input
+//                 type="text"
+//                 value={name}
+//                 onChange={(e) => setName(e.target.value)}
+//                 className="input-box"
+//               />
 //             </div>
-
 //             <div className="field">
-//               <label>Email:</label>
-//               <div className="detail-box">{userDetails.Email || "N/A"}</div>
+//               <label>Address:</label>
+//               <input
+//                 type="text"
+//                 value={address}
+//                 onChange={(e) => setAddress(e.target.value)}
+//                 className="input-box"
+//               />
 //             </div>
 
 //             <div className="field">
 //               <label>Phone Number:</label>
-//               <div className="detail-box">{userDetails.PhoneNumber || "N/A"}</div>
+//               <input
+//                 type="text"
+//                 value={phone}
+//                 onChange={(e) => setPhone(e.target.value)}
+//                 className="input-box"
+//               />
 //             </div>
 
 //             <div className="field">
-//               <label>Address:</label>
-//               <div className="detail-box">{userDetails.Address || "N/A"}</div>
+//               <label>Email:</label>
+//               <input
+//                 type="email"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 className="input-box"
+//               />
 //             </div>
 
 //             <div className="field">
 //               <label>Password:</label>
-//               <div className="detail-box">{"*********"}</div>
+//               <input
+//                 type="password"
+//                 value={"*********"} // Show masked password or leave it empty
+//                 readOnly // Making it read-only since you usually don't edit passwords like this
+//                 className="input-box"
+//               />
 //             </div>
+
+//             <button onClick={handleSave} className="save-button">
+//               Save Changes
+//             </button>
 //           </div>
 //         </div>
 //       </div>
@@ -91,6 +150,8 @@
 // }
 
 // export default Profile;
+
+
 "use client";
 import "../../styles/profile.css";
 import Navbar from "../components/navbar.jsx";
@@ -105,10 +166,12 @@ function Profile() {
   const [userDetails, setUserDetails] = useState(null); // To store fetched user details
 
   // Local state for editable fields
+  const [customerID, setCustomerID] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     // Get user data from localStorage
@@ -126,15 +189,18 @@ function Profile() {
       if (!userData) return; // Ensure userData is available before fetching
 
       try {
-        const response = await axios.post("/api/profile", {
+        const response = await axios.post("/api/fetch_User_Data", {
           email: userData.email,
           password: userData.password,
         });
+        console.log(response.data);
         setUserDetails(response.data);
-        setName(response.data.Name || "");
-        setEmail(response.data.Email || "");
-        setPhone(response.data.PhoneNumber || "");
+        setCustomerID(response.data.customerID);
+        setName(response.data.CustomerName || "");
         setAddress(response.data.Address || "");
+        setPhone(response.data.PhoneNumber || "");
+        setEmail(response.data.Email || "");
+        setPassword(response.data.Password || "");
       } catch (error) {
         setError("Failed to fetch user details");
       } finally {
@@ -145,19 +211,29 @@ function Profile() {
     fetchUserData();
   }, [userData]);
 
-  if (error) return <p>{error}</p>;
-  if (!userDetails) {
-    return <p>No user details available.</p>;
+  if (error) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-message">{error}</div>
+      </div>
+    );// Show loading overlay while fetching user data
+  }else if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-message">Loading...</div>
+      </div>
+    );
   }
 
   const handleSave = async () => {
     try {
-      const res = await axios.post('/api/updateProfile',{
+      const res = await axios.post("/api/updateProfile", {
+        customerID: customerID,
         name: name,
-        email: email,
+        address: address,
         phone: phone,
-        address: address
-      })
+        email: email,
+      });
     } catch (err) {
       if (err) {
         console.log(error);
@@ -185,13 +261,12 @@ function Profile() {
                 className="input-box"
               />
             </div>
-
             <div className="field">
-              <label>Email:</label>
+              <label>Address:</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 className="input-box"
               />
             </div>
@@ -207,11 +282,11 @@ function Profile() {
             </div>
 
             <div className="field">
-              <label>Address:</label>
+              <label>Email:</label>
               <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="input-box"
               />
             </div>
@@ -237,5 +312,3 @@ function Profile() {
 }
 
 export default Profile;
-
-

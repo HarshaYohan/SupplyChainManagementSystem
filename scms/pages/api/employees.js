@@ -12,22 +12,15 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { fullname, address, phonenumber, email, password } = req.body;
+    const { name, contact, address, role, email, password } = req.body;
     const saltRounds = 10;
 
     try {
       const hashPassword = await bcrypt.hash(password, saltRounds);
       const query =
-        "INSERT INTO customer (CustomerName,Address, CityID,PhoneNumber, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
+        "INSERT INTO employee (Name, PhoneNumber, Address, Role, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
 
-      db.query(query, [
-        fullname,
-        address,
-        "1",
-        phonenumber,
-        email,
-        hashPassword,
-      ]);
+      db.query(query, [name, contact, address, role, email, hashPassword]);
 
       res.status(200).json({ message: "Values inserted successfully" });
     } catch (error) {

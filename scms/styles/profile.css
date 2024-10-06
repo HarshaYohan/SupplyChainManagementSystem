@@ -1,67 +1,140 @@
-/* Container setup */
-.Container {
+/* Profile container */
+.profileContainer {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 50px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f9fafb; /* Light background */
+  gap: 20px;
+  border: 1px solid #e5e7eb; /* Border around profile details */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  background-color: #fff; /* Background color for contrast */
 }
 
-/* Body Section */
-.BodySection {
-  width: 100%;
-  max-width: 800px;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+/* Profile picture section */
+.profilepicturesection {
+  text-align: center;
 }
 
-/* Profile picture */
 .profilepicturesection img {
+  border-radius: 50%;
   width: 150px;
   height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 20px;
+  object-fit: cover; /* Ensure the image covers the area without distortion */
 }
 
-/* Content Section */
+/* Content section */
 .contentSection {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
-/* Field section */
+/* Field styling */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .field label {
+  font-size: 1rem;
   font-weight: bold;
-  margin-bottom: 5px;
+  color: #1f2937;
 }
 
-.field .detail-box {
+/* Input styling */
+.input-box {
   padding: 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e7eb;
   border-radius: 5px;
+  font-size: 1rem;
   width: 100%;
-  max-width: 400px;
+  transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+/* Input focus effect */
+.input-box:focus {
+  border-color: #3b82f6; /* Highlight border on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Save button styling */
+.save-button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px; /* Increased horizontal padding for better aesthetics */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transform transition */
+  align-self: center; /* Center the button */
+}
+
+.save-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* Container for general layout */
+.Container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.BodySection {
+  margin-top: 20px;
 }
 
 h1 {
-  margin-bottom: 20px;
   font-size: 2rem;
   text-align: center;
-  color: #1e293b;
+  color: #1f2937; /* Darker color for better readability */
 }
 
-/* Mobile responsiveness */
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-message {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-  .profilepicturesection img {
-    width: 120px;
-    height: 120px;
+  .profileContainer {
+    padding: 15px;
   }
 
-  .field .detail-box {
-    width: 100%;
+  .contentSection {
+    gap: 15px; /* Increased gap for better spacing on smaller screens */
+  }
+
+  .input-box {
+    font-size: 0.9rem; /* Smaller font size for better fitting */
+  }
+
+  .save-button {
+    width: 100%; /* Ensure the button is full width on smaller screens */
+    padding: 12px; /* Adjust padding for touch targets */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Smaller header on mobile */
   }
 }

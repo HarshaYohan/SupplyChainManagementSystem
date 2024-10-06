@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import Navbar from "../components/navbar.jsx";
-import "../../styles/cart.css"; 
+import "../../styles/cart.css";
 
 function Cart() {
-  
   const [cartItems, setCartItems] = useState([
     { title: "product", price: 20, quantity: 2 },
+    { title: "product", price: 90, quantity: 5 },
   ]);
 
   const handleRemoveItem = (index) => {
@@ -64,6 +64,13 @@ function Cart() {
         ) : (
           <p className="empty-cart">Your cart is empty</p>
         )}
+      </div>
+      <div className="confirmationSection">
+        <h1 className="cart-title">Order Confirmation</h1>
+        <div className="cart-item">
+          <input type="text" placeholder="Route Description....." />
+          <button className="placeorder-button">Place Order</button>
+        </div>
       </div>
     </div>
   );
