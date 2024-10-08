@@ -1,52 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../../styles/storeDetails.css";
 
 function StoresList() {
-  // Array of stores with names and details
-  const stores = [
-    {
-      id: 1,
-      name: "Store 1",
-      details:
-        "This store is located in the city center and has a wide range of products.",
-    },
-    {
-      id: 2,
-      name: "Store 2",
-      details: "This store specializes in electronics and home appliances.",
-    },
-    {
-      id: 3,
-      name: "Store 3",
-      details: "This store is known for its organic and eco-friendly products.",
-    },
-    // Add more stores as needed
-  ];
+  // State to hold stores data
+  const [stores, setStores] = useState([]);
+  const [selectedStore, setSelectedStore] = useState(null); // State to hold the selected store for displaying details
 
-  // State to track which store details are open
-  const [openStore, setOpenStore] = useState(null);
+  // Fetch stores data from backend
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await axios.get("/api/stores");
+        setStores(response.data); // Assuming the backend returns an array of store objects
+      } catch (error) {
+        console.error("Error fetching stores:", error);
+      }
+    };
+
+    fetchStores();
+  }, []); // Empty dependency array to run only on component mount
 
   // Function to toggle the store details
-  const toggleStoreDetails = (storeId) => {
-    if (openStore === storeId) {
-      // If the store is already open, close it
-      setOpenStore(null);
+  const toggleStoreDetails = (store) => {
+    if (selectedStore === store) {
+      setSelectedStore(null);
     } else {
-      // Open the selected store
-      setOpenStore(storeId);
+      setSelectedStore(store);
     }
   };
 
   return (
-    <form className="form-container">
+    <div className="form-container">
       <h2>Stores</h2>
 
+      {/* Displaying Store Details Form */}
+      {selectedStore && (
+        <form style={{ marginBottom: "20px" }}>
+          <div>
+            <label>
+              Store Manager:
+              <input type="text" value={selectedStore.Name} readOnly />
+            </label>
+          </div>
+          <div>
+            <label>
+              Store Location:
+              <input type="text" value={selectedStore.StoreLocation} readOnly />
+            </label>
+          </div>
+          <div>
+            <label>
+              Contact Number:
+              <input
+                type="text"
+                value={selectedStore.ContractNumber}
+                readOnly
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Railway Station Contact:
+              <input
+                type="text"
+                value={selectedStore.RailwayStationContract}
+                readOnly
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              City Name:
+              <input type="text" value={selectedStore.CityName} readOnly />
+            </label>
+          </div>
+        </form>
+      )}
+
       {stores.map((store) => (
-        <div key={store.id} className="store-item">
-          {/* Store name clickable div */}
+        <div key={store.StoreID} className="store-item">
           <div
             className="store-name"
-            onClick={() => toggleStoreDetails(store.id)}
+            onClick={() => toggleStoreDetails(store)}
             style={{
               cursor: "pointer",
               fontWeight: "bold",
@@ -55,25 +91,11 @@ function StoresList() {
               margin: "5px 0",
             }}
           >
-            {store.name}
+            {store.CityName} {/* Displaying the store location for selection */}
           </div>
-
-          {/* Store details dropdown (visible only when clicked) */}
-          {openStore === store.id && (
-            <div
-              className="store-details"
-              style={{
-                padding: "10px",
-                backgroundColor: "#e0e0e0",
-                marginBottom: "10px",
-              }}
-            >
-              {store.details}
-            </div>
-          )}
         </div>
       ))}
-    </form>
+    </div>
   );
 }
 

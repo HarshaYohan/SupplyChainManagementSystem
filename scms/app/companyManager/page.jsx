@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import "../../styles/companyManager.css";
 import Navbar from "../components/navbar.jsx";
-import StoreCard from '../components/storeDetails.jsx'
+import StoreCard from "../components/storeDetails.jsx";
 
 const CompanyManager = () => {
   const [activeTab, setActiveTab] = useState(null);
@@ -48,9 +48,7 @@ const CompanyManager = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "viewStores":
-        return (
-          <StoreCard/>
-        );
+        return <StoreCard />;
       case "addEmployee":
         return (
           <form onSubmit={handleAddEmployee} className="form-container">
@@ -143,7 +141,7 @@ const CompanyManager = () => {
         );
       default:
         return (
-          <p className="placeholder-text">Select a functionality to begin.</p>
+          <p className="placeholder-text"></p>
         );
     }
   };

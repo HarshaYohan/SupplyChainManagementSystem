@@ -39,6 +39,7 @@ const productData = [
 ];
 
 function Product() {
+  
   return (
     <div>
       <Navbar />

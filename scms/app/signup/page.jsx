@@ -45,11 +45,12 @@ function Signup() {
       if (response.status === 200) {
         console.log("Signup successful", response.data);
         router.push("/");
-      } else if (response.status === 400) {
-        setErrorMessage("Email Already Exist");
       }
     } catch (err) {
-      setErrorMessage("An error occurred during signup.");
+      if (err.response.status === 400) {
+        setIsPasswordStrong(false);
+        setErrorMessage("Email Already Exist");
+      } else setErrorMessage("An error occurred during signup.");
     }
   };
 

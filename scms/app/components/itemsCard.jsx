@@ -12,7 +12,7 @@ function Card({ title, description, image, addToCart }) {
         description,
       });
     } catch (err) {
-      console.error("Error adding product to cart:", err); 
+      console.error("Error adding product to cart:", err);
     }
   };
 
@@ -23,7 +23,7 @@ function Card({ title, description, image, addToCart }) {
         <h1 className="card-title">{title}</h1>
         <p className="card-description">{description}</p>
         <button className="card-button" onClick={handleClick}>
-          Add To Cart
+          Show More
         </button>
       </div>
     </div>
