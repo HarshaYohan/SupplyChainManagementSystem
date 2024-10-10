@@ -140,9 +140,7 @@ const CompanyManager = () => {
           </form>
         );
       default:
-        return (
-          <p className="placeholder-text"></p>
-        );
+        return <p className="placeholder-text"></p>;
     }
   };
 

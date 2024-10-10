@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { email} = req.body;
 
     const query = "SELECT * FROM customer WHERE Email = ?";
     db.query(query, email, async (err, results) => {
@@ -24,16 +24,16 @@ export default async function handler(req, res) {
       }
 
       const user = results[0];
-      try {
-        const isMatch = await bcrypt.compare(password, user.Hash_Password);
-        if (!isMatch) {
-          return res.status(401).json({ error: "User no exist." });
-        }
+      // try {
+      //   const isMatch = await bcrypt.compare(password, user.Hash_Password);
+      //   if (!isMatch) {
+      //     return res.status(401).json({ error: "User no exist." });
+      //   }
 
-        return res.status(200).json(user); // Send user details back to the frontend
-      } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
-      }
+      return res.status(200).json(user); // Send user details back to the frontend
+      // } catch (error) {
+      //   return res.status(500).json({ error: "Internal server error" });
+      // }
     });
   } else {
     return res.status(405).json({ message: "Method Not Allowed" });

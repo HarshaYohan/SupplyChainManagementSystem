@@ -4,42 +4,25 @@ import Navbar from "./components/navbar.jsx";
 import Card from "./components/itemsCard.jsx";
 import "../styles/product.css";
 import "./global.css";
-
-const productData = [
-  {
-    title: "Product 1",
-    description: "Description of Product 1.",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Product 2",
-    description: "Description of Product 2.",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Product 3",
-    description: "Description of Product 3.",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Product 4",
-    description: "Description of Product 4.",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Product 5",
-    description: "Description of Product 5.",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    title: "Product 6",
-    description: "Description of Product 6.",
-    image: "https://via.placeholder.com/150",
-  },
-];
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Product() {
-  
+  const [productData, setProductData] = useState([]);
+
+  useEffect(() => {
+    const handleProducts = async () => {
+      try {
+        const response = await axios.get("/api/product");
+        setProductData(response.data);
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    handleProducts();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -51,14 +34,19 @@ function Product() {
           </div>
         </div>
         <div className="ProductSection">
-          {productData.map((product, index) => (
-            <Card
-              key={index}
-              title={product.title}
-              description={product.description}
-              image={product.image}
-            />
-          ))}
+          {productData && productData.length > 0 ? (
+            productData.map((product) => (
+              <Card
+                key={product.ProductID}
+                productId={product.ProductID} // Pass the ProductID as a prop
+                title={product.ProductName}
+                price={product.Price}
+                image={product.productURL} // Assuming you have an image URL in your product data
+              />
+            ))
+          ) : (
+            <p>No products available</p> // Fallback if there are no products
+          )}
         </div>
       </div>
     </div>

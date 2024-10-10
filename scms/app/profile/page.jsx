@@ -34,7 +34,7 @@ function Profile() {
       try {
         const response = await axios.post("/api/fetch_User_Data", {
           email: userData.email,
-          password: userData.password,
+          //password: userData.password,
         });
         setCustomerID(response.data.CustomerID || "");
         setName(response.data.CustomerName || "");

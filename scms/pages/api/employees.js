@@ -12,11 +12,12 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { name, contact, address, role, email, password } = req.body;
+    const { name, contact, address, role, email, password, store } = req.body;
     const saltRounds = 10;
 
     try {
       const hashPassword = await bcrypt.hash(password, saltRounds);
+
       const query =
         "INSERT INTO employee (Name, PhoneNumber, Address, Role, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
 

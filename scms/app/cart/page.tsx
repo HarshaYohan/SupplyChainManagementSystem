@@ -1,32 +1,71 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar.jsx";
 import "../../styles/cart.css";
+import axios from "axios";
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([
-    { title: "product", price: 20, quantity: 2 },
-    { title: "product", price: 90, quantity: 5 },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [userData, setUserData] = useState(null);
 
-  const handleRemoveItem = (index) => {
+  // Fetch user data from localStorage when the component mounts
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      const parsedData = JSON.parse(storedUserData);
+      setUserData(parsedData); // Update state with the user data
+    }
+  }, []);
+
+  // Fetch cart items when userData is available
+  useEffect(() => {
+    if (userData) {
+      // Only call the API when userData is not null
+      const handleAddCart = async () => {
+        try {
+          const response = await axios.post("/api/fetchFromCart", {
+            userData,
+          });
+          setCartItems(response.data); // Set the initial cart items from the API
+        } catch (err) {
+          console.log(err);
+          // Optional: Show an error message to the user
+        }
+      };
+
+      handleAddCart();
+    }
+  }, [userData]); // Depend on userData, so this effect runs when userData is updated
+
+  const handleRemoveItem = async (index) => {
+    const productName = cartItems[index].ProductName;
     const updatedItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedItems);
+    if (cartItems) {
+      try {
+        await axios.post("/api/updateCart", {
+          productName,
+        });
+      } catch (err) {
+        console.log("Error updating the cart.");
+        console.log(err);
+      }
+    }
   };
 
   const handleQuantityChange = (index, newQuantity) => {
+    if (newQuantity < 1) return; // Prevent setting quantity to less than 1
     const updatedItems = [...cartItems];
-    updatedItems[index].quantity = newQuantity;
+    updatedItems[index].Quantity = newQuantity; // Update quantity
     setCartItems(updatedItems);
   };
 
   const calculateTotal = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + parseFloat(item.Price) * item.Quantity, // Ensure Price is treated as a number
       0
     );
   };
-
   return (
     <div>
       <Navbar />
@@ -35,17 +74,24 @@ function Cart() {
         {cartItems.length > 0 ? (
           <div className="cart-items">
             {cartItems.map((item, index) => (
-              <div key={index} className="cart-item">
-                <h2>{item.title}</h2>
-                <p>Price: ${item.price}</p>
+              <div key={item.ProductName + index} className="cart-item">
+                {" "}
+                {/* Use a combination of ProductName and index as key */}
+                <h2>{item.ProductName}</h2>
+                <p>Price: ${parseFloat(item.Price).toFixed(2)}</p>{" "}
+                {/* Display price formatted to two decimal places */}
                 <div className="quantity-section">
                   <label>Quantity:</label>
                   <input
                     type="number"
-                    value={item.quantity}
+                    value={item.Quantity}
                     min="1"
-                    onChange={(e) =>
-                      handleQuantityChange(index, parseInt(e.target.value))
+                    onChange={
+                      (e) =>
+                        handleQuantityChange(
+                          index,
+                          parseInt(e.target.value) || 1
+                        ) // Fallback to 1 if NaN
                     }
                   />
                 </div>
@@ -58,7 +104,8 @@ function Cart() {
               </div>
             ))}
             <div className="total-section">
-              <h2>Total: ${calculateTotal()}</h2>
+              <h2>Total: ${calculateTotal().toFixed(2)}</h2>{" "}
+              {/* Display total formatted to two decimal places */}
             </div>
           </div>
         ) : (

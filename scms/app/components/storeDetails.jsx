@@ -32,7 +32,11 @@ function StoresList() {
 
   return (
     <div className="form-container">
-      <h2>Stores</h2>
+      {selectedStore === null ? (
+        <h2>Branches</h2>
+      ) : (
+        <h2>{selectedStore.CityName + " " + "Branch"}</h2>
+      )}
 
       {/* Displaying Store Details Form */}
       {selectedStore && (

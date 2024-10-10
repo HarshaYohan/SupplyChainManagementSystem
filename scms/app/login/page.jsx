@@ -9,9 +9,12 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsClicked(true);
+    setInterval(() => setIsClicked(false), 200);
     try {
       const response = await axios.post("/api/login", {
         email,
@@ -20,7 +23,7 @@ function Login() {
 
       const userData = {
         email: email,
-        password: password,
+        //password: password,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
 
@@ -63,9 +66,21 @@ function Login() {
             onChange={handleInputChange(setPassword)}
             required
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}{" "}
+          {errorMessage && (
+            <p className="error-message" style={{ color: "red" }}>
+              {errorMessage}
+            </p>
+          )}
           {/* Display error message */}
-          <button type="submit">Login</button>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: isClicked ? "#0a74da" : "#110E56",
+              transition: "background-color 1s",
+            }}
+          >
+            Login
+          </button>
         </form>
       </div>
     </div>
