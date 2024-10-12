@@ -3,25 +3,22 @@ import axios from "axios";
 import "../../styles/storeDetails.css";
 
 function StoresList() {
-  // State to hold stores data
   const [stores, setStores] = useState([]);
-  const [selectedStore, setSelectedStore] = useState(null); // State to hold the selected store for displaying details
+  const [selectedStore, setSelectedStore] = useState(null); 
 
-  // Fetch stores data from backend
   useEffect(() => {
     const fetchStores = async () => {
       try {
         const response = await axios.get("/api/stores");
-        setStores(response.data); // Assuming the backend returns an array of store objects
+        setStores(response.data);
       } catch (error) {
         console.error("Error fetching stores:", error);
       }
     };
 
     fetchStores();
-  }, []); // Empty dependency array to run only on component mount
+  }, []);
 
-  // Function to toggle the store details
   const toggleStoreDetails = (store) => {
     if (selectedStore === store) {
       setSelectedStore(null);
@@ -58,7 +55,7 @@ function StoresList() {
               Contact Number:
               <input
                 type="text"
-                value={selectedStore.ContractNumber}
+                value={selectedStore.ContactNumber}
                 readOnly
               />
             </label>
@@ -68,7 +65,7 @@ function StoresList() {
               Railway Station Contact:
               <input
                 type="text"
-                value={selectedStore.RailwayStationContract}
+                value={selectedStore.RailwayStationContact}
                 readOnly
               />
             </label>

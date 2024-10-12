@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     WHERE CustomerID = ?;
     `;
 
-    // Pass the employeeId as the last parameter
+
     db.query(
       query,
       [name, address, phone, email, customerID],
@@ -34,7 +34,6 @@ export default async function handler(req, res) {
             .json({ error: "User not found or no changes made." });
         }
 
-        // Send a success response
         res.status(200).json({ message: "Values updated successfully" });
       }
     );

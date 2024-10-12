@@ -13,16 +13,16 @@ export default async function handler(req, res) {
     const storeDetails = `
     SELECT
     store.StoreLocation,
-    store.ContractNumber,
-    store.RailwayStationContract,
+    store.ContactNumber,
+    store.RailwayStationContact,
     store.CityName,
     employee.Name
     FROM
     store
     LEFT OUTER JOIN
-    storemanager ON store.StoreID = storemanager.Store_ID
+    storemanager ON store.StoreID = storemanager.StoreID
     LEFT OUTER JOIN
-    employee ON storemanager.Employee_ID = employee.Employee_ID;
+    employee ON storemanager.Employee_ID = employee.Employee_ID
     `;
 
     db.query(storeDetails, async (err, results) => {
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       if (results.length === 0) {
         return res.status(401).json({ error: "Stores not found." });
       }
-      return res.status(200).json(results); // Send user details back to the frontend
+      return res.status(200).json(results);
     });
   } else {
     return res.status(405).json({ message: "Method Not Allowed" });

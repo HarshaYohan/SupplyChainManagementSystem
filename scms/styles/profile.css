@@ -1,4 +1,3 @@
-/* Profile container */
 .profileContainer {
   padding: 20px;
   max-width: 800px;
@@ -7,10 +6,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  border: 1px solid #e5e7eb; /* Border around profile details */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  background-color: #fff; /* Background color for contrast */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+  background-color: #fff; 
 }
 
 /* Profile picture section */
@@ -22,7 +21,7 @@
   border-radius: 50%;
   width: 150px;
   height: 150px;
-  object-fit: cover; /* Ensure the image covers the area without distortion */
+  object-fit: cover; 
 }
 
 /* Content section */
@@ -52,30 +51,30 @@
   border-radius: 5px;
   font-size: 1rem;
   width: 100%;
-  transition: border-color 0.3s; /* Smooth transition for focus */
+  transition: border-color 0.3s; 
 }
 
 /* Input focus effect */
 .input-box:focus {
-  border-color: #3b82f6; /* Highlight border on focus */
-  outline: none; /* Remove default outline */
+  border-color: #3b82f6;
+  outline: none; 
 }
 
 /* Save button styling */
 .save-button {
   background-color: #3b82f6;
   color: white;
-  padding: 10px 20px; /* Increased horizontal padding for better aesthetics */
+  padding: 10px 20px; 
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s; /* Add transform transition */
-  align-self: center; /* Center the button */
+  transition: background-color 0.3s, transform 0.3s; 
+  align-self: center; 
 }
 
 .save-button:hover {
   background-color: #2563eb;
-  transform: translateY(-2px); /* Subtle lift on hover */
+  transform: translateY(-2px); 
 }
 
 /* Container for general layout */
@@ -92,7 +91,7 @@
 h1 {
   font-size: 2rem;
   text-align: center;
-  color: #1f2937; /* Darker color for better readability */
+  color: #1f2937; 
 }
 
 /* Loading overlay */
@@ -122,19 +121,19 @@ h1 {
   }
 
   .contentSection {
-    gap: 15px; /* Increased gap for better spacing on smaller screens */
+    gap: 15px; 
   }
 
   .input-box {
-    font-size: 0.9rem; /* Smaller font size for better fitting */
+    font-size: 0.9rem; 
   }
 
   .save-button {
-    width: 100%; /* Ensure the button is full width on smaller screens */
-    padding: 12px; /* Adjust padding for touch targets */
+    width: 100%; 
+    padding: 12px;
   }
 
   h1 {
-    font-size: 1.5rem; /* Smaller header on mobile */
+    font-size: 1.5rem; 
   }
 }

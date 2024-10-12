@@ -1,8 +1,8 @@
 /* Navbar styling */
 .Header {
-  display: flex; /* Flexbox layout */
-  justify-content: space-between; /* Space between left and right sections */
-  align-items: center; /* Vertically align items */
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
   background-color: #001f3f;
   color: #fff;
   padding: 1rem 2rem;
@@ -20,7 +20,7 @@
 .leftSection {
   display: flex;
   align-items: center;
-  gap: 2rem; /* Space between logo and buttons */
+  gap: 2rem;
 }
 
 /* Logo section styling */
@@ -34,21 +34,21 @@
 /* Button group styling */
 .buttonGroup {
   display: flex;
-  gap: 1rem; /* Space between buttons */
+  gap: 1rem; 
 }
 
 /* Right section (profile and login) */
 .rightSection {
   display: flex;
   align-items: center;
-  gap: 1rem; /* Space between profile photo and login button */
+  gap: 1rem;
 }
 
 /* Profile photo styling */
 .profilePhoto {
   height: 40px;
   width: 40px;
-  border-radius: 50%; /* Circular profile photo */
+  border-radius: 50%; 
   overflow: hidden;
   cursor: pointer;
 }
@@ -56,7 +56,7 @@
 .profileImage {
   height: 100%;
   width: 100%;
-  object-fit: cover; /* Ensure the image fits in the circle */
+  object-fit: cover; 
 }
 
 /* Button styling */

@@ -10,7 +10,6 @@ function Profile() {
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  // Local state for editable fields
   const [customerID, setCustomerID] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -18,7 +17,6 @@ function Profile() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // Get user data from localStorage
     const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
       const parsedData = JSON.parse(storedUserData);
@@ -27,14 +25,12 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    // Fetch user data when userData is available
     const fetchUserData = async () => {
-      if (!userData) return; // Ensure userData is available before fetching
+      if (!userData) return;
 
       try {
         const response = await axios.post("/api/fetch_User_Data", {
           email: userData.email,
-          //password: userData.password,
         });
         setCustomerID(response.data.CustomerID || "");
         setName(response.data.CustomerName || "");
@@ -44,7 +40,7 @@ function Profile() {
       } catch (error) {
         setError("Failed to fetch user details");
       } finally {
-        setLoading(false); // Stop loading when request is complete
+        setLoading(false);
       }
     };
 
@@ -56,7 +52,7 @@ function Profile() {
       <div className="loading-overlay">
         <div className="loading-message">{error}</div>
       </div>
-    ); // Show loading overlay while fetching user data
+    );
   } else if (loading) {
     return (
       <div className="loading-overlay">
@@ -128,16 +124,6 @@ function Profile() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input-box"
-              />
-            </div>
-
-            <div className="field">
-              <label>Password:</label>
-              <input
-                type="password"
-                value={"*********"} // Show masked password or leave it empty
-                readOnly // Making it read-only since you usually don't edit passwords like this
                 className="input-box"
               />
             </div>

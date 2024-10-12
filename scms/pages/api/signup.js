@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   try {
-    // Handle CORS
     await runCors(req, res);
   } catch (error) {
     console.error("CORS error:", error);
@@ -19,7 +18,6 @@ export default async function handler(req, res) {
       // Hash the password
       const hashPassword = await bcrypt.hash(password, saltRounds);
 
-      // Check if the email already exists in the database
       const checkQuery = "SELECT * FROM customer WHERE Email = ?";
       const existingCustomer = await new Promise((resolve, reject) => {
         db.query(checkQuery, [email], (err, result) => {
@@ -32,7 +30,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      // Insert new customer into the database
       const insertQuery =
         "INSERT INTO customer (CustomerName, Address, CityID, PhoneNumber, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
       await new Promise((resolve, reject) => {

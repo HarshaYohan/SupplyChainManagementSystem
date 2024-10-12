@@ -37,7 +37,6 @@ function Signup() {
 
       const userData = {
         email: email,
-        //password: password,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
       console.log(userData);

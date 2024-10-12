@@ -23,7 +23,6 @@ function Login() {
 
       const userData = {
         email: email,
-        //password: password,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
 

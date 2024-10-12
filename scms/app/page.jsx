@@ -15,7 +15,6 @@ function Product() {
       try {
         const response = await axios.get("/api/product");
         setProductData(response.data);
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -38,14 +37,14 @@ function Product() {
             productData.map((product) => (
               <Card
                 key={product.ProductID}
-                productId={product.ProductID} // Pass the ProductID as a prop
+                productId={product.ProductID}
                 title={product.ProductName}
                 price={product.Price}
-                image={product.productURL} // Assuming you have an image URL in your product data
+                image={product.productURL}
               />
             ))
           ) : (
-            <p>No products available</p> // Fallback if there are no products
+            <p>No products available</p> 
           )}
         </div>
       </div>

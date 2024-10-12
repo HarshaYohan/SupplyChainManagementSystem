@@ -48,7 +48,7 @@
     margin: 10px;
     font-size: 16px;
     color: white;
-    background-color: #3b82f6; /* Primary blue */
+    background-color: #3b82f6; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -56,25 +56,24 @@
   }
   
   .card-button:hover {
-    background-color: #2563eb; /* Darker blue on hover */
+    background-color: #2563eb;
   }
   
   .card-button:active {
-    background-color: #1d4ed8; /* Even darker on click */
+    background-color: #1d4ed8; 
   }
   
   .card-button:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Light blue focus ring */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); 
   }
   
   .card-button:disabled {
-    background-color: #94a3b8; /* Disabled grey */
+    background-color: #94a3b8; 
     cursor: not-allowed;
   }
   
 }
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .card {
     margin-bottom: 20px;

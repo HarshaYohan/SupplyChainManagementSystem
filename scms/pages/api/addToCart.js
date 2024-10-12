@@ -21,16 +21,8 @@ export default async function handler(req, res) {
     }
 
     const { userData, productId } = req.body;
-    console.log(req.body);
-
-    // Check if email exists in userData
-    if (!userData || !userData.email) {
-      return res.status(400).json({ error: "Email is required" });
-    }
-
     const email = userData.email;
 
-    // Queries
     const getCustomerIDQuery = "SELECT CustomerID FROM customer WHERE Email = ?";
     const getCartQuery = "SELECT CartID FROM cart WHERE CustomerID = ?";
     const createCartQuery = "INSERT INTO cart (CustomerID) VALUES (?)";
@@ -62,11 +54,9 @@ export default async function handler(req, res) {
       // Check for cart item
       const cartItemResults = await queryDatabase(checkCartItemQuery, [cartId, productId]);
       if (cartItemResults.length > 0) {
-        // Update quantity if item already exists in the cart
         await queryDatabase(updateCartItemQuery, [cartId, productId]);
         return res.status(200).json({ message: "Cart item updated" });
       } else {
-        // Insert new item if it doesn't exist
         await queryDatabase(insertCartItemQuery, [cartId, productId, 1]); // Assuming quantity starts at 1
         return res.status(201).json({ message: "Item added to cart" });
       }

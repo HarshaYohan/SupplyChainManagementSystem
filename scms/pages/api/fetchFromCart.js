@@ -3,7 +3,7 @@ import runCors from "../../utils/cors.js";
 
 export default async function handler(req, res) {
   try {
-    await runCors(req, res); // Ensure CORS headers are correctly applied
+    await runCors(req, res);
   } catch (error) {
     console.error("CORS error:", error);
     return res.status(500).json({ error: "CORS failed" });
@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     console.log(req.body);
 
     try {
-      // Fetch CustomerID using async/await
       const customerResults = await new Promise((resolve, reject) => {
         db.query(
           "SELECT CustomerID FROM customer WHERE Email = ?",
@@ -32,7 +31,6 @@ export default async function handler(req, res) {
 
       const customerId = customerResults[0].CustomerID;
 
-      // Fetch cart items for the customer
       const cartItems = await new Promise((resolve, reject) => {
         db.query(
           `SELECT Product.ProductName, Product.Price, Cart_Items.Quantity

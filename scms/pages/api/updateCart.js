@@ -3,7 +3,7 @@ import runCors from "../../utils/cors.js";
 
 export default async function handler(req, res) {
   try {
-    await runCors(req, res); // Ensure CORS headers are correctly applied
+    await runCors(req, res); 
   } catch (error) {
     console.error("CORS error:", error);
     return res.status(500).json({ error: "CORS failed" });
@@ -16,13 +16,11 @@ export default async function handler(req, res) {
     db.query(getProductID, [productName], (err, result) => {
       if (err) {
         console.log(err);
-        return; // Handle the error appropriately
+        return; 
       }
 
-      // Assuming result is an array and you're expecting one row
       if (result.length > 0) {
         const productID = result[0].ProductID;
-        console.log(productID); // Log the product ID
         const updateCartItems = "DELETE FROM cart_items WHERE ProductID = ?";
         db.query(updateCartItems, productID, (err) => {
           if (err) console.log(err);
