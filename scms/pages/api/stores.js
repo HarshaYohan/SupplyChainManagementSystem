@@ -10,11 +10,28 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const fetchProductDetails =
-      "Select ProductID, ProductName, Price, productURL from product";
-    db.query(fetchProductDetails, (err, results) => {
+    const storeDetails = `
+    SELECT
+    store.StoreLocation,
+    store.ContactNumber,
+    store.RailwayStationContact,
+    store.CityName,
+    employee.Name
+    FROM
+    store
+    LEFT OUTER JOIN
+    storemanager ON store.StoreID = storemanager.StoreID
+    LEFT OUTER JOIN
+    employee ON storemanager.Employee_ID = employee.Employee_ID
+    `;
+
+    db.query(storeDetails, async (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Database error" });
+      }
+      console.log(results);
+      if (results.length === 0) {
+        return res.status(401).json({ error: "Stores not found." });
       }
       return res.status(200).json(results);
     });

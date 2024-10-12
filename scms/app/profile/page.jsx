@@ -1,96 +1,3 @@
-// "use client";
-// import "../../styles/profile.css";
-// import Navbar from "../components/navbar.jsx";
-// import "../global.css";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-
-// function Profile() {
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [userData, setUserData] = useState(null);
-//   const [userDetails, setUserDetails] = useState(null); // To store fetched user details
-
-//   useEffect(() => {
-//     // Get user data from localStorage
-//     const storedUserData = localStorage.getItem("userData");
-//     if (storedUserData) {
-//       const parsedData = JSON.parse(storedUserData);
-//       setUserData(parsedData);
-//       console.log("User data from localStorage:", parsedData); // Debugging log
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     // Fetch user data when userData is available
-//     const fetchUserData = async () => {
-//       if (!userData) return; // Ensure userData is available before fetching
-
-//       try {
-//         const response = await axios.post("/api/profile", {
-//           email: userData.email,
-//           password: userData.password,
-//         });
-//         setUserDetails(response.data);
-//         console.log("Fetched user details:", response.data); // Debugging log
-//       } catch (error) {
-//         setError("Failed to fetch user details");
-//         console.error("API request error:", error); // Debugging log
-//       } finally {
-//         setLoading(false); // Stop loading when request is complete
-//       }
-//     };
-
-//     fetchUserData();
-//   }, [userData]);
-
-//   if (error) return <p>{error}</p>;
-//   if (!userDetails) {
-//     return <p>No user details available.</p>;
-//   }
-//   return (
-//     <div className="Container">
-//       <Navbar />
-//       <div className="BodySection">
-//         <div className="profileContainer">
-//           <div className="profilepicturesection">
-//             <img src="../../OIP.jpeg" alt="Profile" />
-//           </div>
-//           <div className="contentSection">
-//             <h1>{userDetails.Name || "Name not available"}</h1>
-
-//             <div className="field">
-//               <label>Name:</label>
-//               <div className="detail-box">{userDetails.Name || "N/A"}</div>
-//             </div>
-
-//             <div className="field">
-//               <label>Email:</label>
-//               <div className="detail-box">{userDetails.Email || "N/A"}</div>
-//             </div>
-
-//             <div className="field">
-//               <label>Phone Number:</label>
-//               <div className="detail-box">{userDetails.PhoneNumber || "N/A"}</div>
-//             </div>
-
-//             <div className="field">
-//               <label>Address:</label>
-//               <div className="detail-box">{userDetails.Address || "N/A"}</div>
-//             </div>
-
-//             <div className="field">
-//               <label>Password:</label>
-//               <div className="detail-box">{"*********"}</div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Profile;
 "use client";
 import "../../styles/profile.css";
 import Navbar from "../components/navbar.jsx";
@@ -102,62 +9,68 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [userDetails, setUserDetails] = useState(null); // To store fetched user details
 
-  // Local state for editable fields
+  const [customerID, setCustomerID] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    // Get user data from localStorage
     const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
       const parsedData = JSON.parse(storedUserData);
       setUserData(parsedData);
-      console.log("User data from localStorage:", parsedData); // Debugging log
     }
   }, []);
 
   useEffect(() => {
-    // Fetch user data when userData is available
     const fetchUserData = async () => {
-      if (!userData) return; // Ensure userData is available before fetching
+      if (!userData) return;
 
       try {
-        const response = await axios.post("/api/profile", {
+        const response = await axios.post("/api/fetch_User_Data", {
           email: userData.email,
-          password: userData.password,
         });
-        setUserDetails(response.data);
-        setName(response.data.Name || "");
-        setEmail(response.data.Email || "");
-        setPhone(response.data.PhoneNumber || "");
+        setCustomerID(response.data.CustomerID || "");
+        setName(response.data.CustomerName || "");
         setAddress(response.data.Address || "");
+        setPhone(response.data.PhoneNumber || "");
+        setEmail(response.data.Email || "");
       } catch (error) {
         setError("Failed to fetch user details");
       } finally {
-        setLoading(false); // Stop loading when request is complete
+        setLoading(false);
       }
     };
 
     fetchUserData();
   }, [userData]);
 
-  if (error) return <p>{error}</p>;
-  if (!userDetails) {
-    return <p>No user details available.</p>;
+  if (error) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-message">{error}</div>
+      </div>
+    );
+  } else if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-message">Loading your profile...</div>
+      </div>
+    );
   }
 
   const handleSave = async () => {
     try {
-      const res = await axios.post('/api/updateProfile',{
+      const res = await axios.post("/api/updateProfile", {
+        customerID: customerID,
         name: name,
-        email: email,
+        address: address,
         phone: phone,
-        address: address
-      })
+        email: email,
+      });
+      console.log(res);
     } catch (err) {
       if (err) {
         console.log(error);
@@ -185,13 +98,12 @@ function Profile() {
                 className="input-box"
               />
             </div>
-
             <div className="field">
-              <label>Email:</label>
+              <label>Address:</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 className="input-box"
               />
             </div>
@@ -207,21 +119,11 @@ function Profile() {
             </div>
 
             <div className="field">
-              <label>Address:</label>
+              <label>Email:</label>
               <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="input-box"
-              />
-            </div>
-
-            <div className="field">
-              <label>Password:</label>
-              <input
-                type="password"
-                value={"*********"} // Show masked password or leave it empty
-                readOnly // Making it read-only since you usually don't edit passwords like this
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="input-box"
               />
             </div>
@@ -237,5 +139,3 @@ function Profile() {
 }
 
 export default Profile;
-
-

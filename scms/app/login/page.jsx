@@ -8,29 +8,34 @@ function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsClicked(true);
+    setInterval(() => setIsClicked(false), 200);
     try {
       const response = await axios.post("/api/login", {
         email,
         password,
       });
 
-
       const userData = {
         email: email,
-        password: password,
-      }
+      };
       localStorage.setItem("userData", JSON.stringify(userData));
 
-
-      
       console.log("Login successful", response.data);
-      router.push("/product");
+      router.push("/");
     } catch (err) {
       console.error("Login failed", err);
+      setErrorMessage("Login failed. Please check your email and password."); // Step 2: Set error message
     }
+  };
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setErrorMessage("");
   };
 
   return (
@@ -50,17 +55,31 @@ function Login() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleInputChange(setEmail)}
             required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleInputChange(setPassword)}
             required
           />
-          <button type="submit">Login</button>
+          {errorMessage && (
+            <p className="error-message" style={{ color: "red" }}>
+              {errorMessage}
+            </p>
+          )}
+          {/* Display error message */}
+          <button
+            type="submit"
+            style={{
+              backgroundColor: isClicked ? "#0a74da" : "#110E56",
+              transition: "background-color 1s",
+            }}
+          >
+            Login
+          </button>
         </form>
       </div>
     </div>

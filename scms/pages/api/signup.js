@@ -7,33 +7,48 @@ export default async function handler(req, res) {
     await runCors(req, res);
   } catch (error) {
     console.error("CORS error:", error);
-    res.status(500).json({ error: "CORS failed" });
-    return;
+    return res.status(500).json({ error: "CORS failed" });
   }
 
   if (req.method === "POST") {
-    const { fullname, email, phonenumber, password } = req.body;
+    const { fullname, address, phonenumber, email, password } = req.body;
     const saltRounds = 10;
-    const hashPassword = await bcrypt.hash(password, saltRounds);
 
     try {
-      const query =
-        "INSERT INTO employee (Name, PhoneNumber, Address, Role, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
+      // Hash the password
+      const hashPassword = await bcrypt.hash(password, saltRounds);
 
-      db.query(query, [
-        fullname,
-        phonenumber,
-        "67/kandy",
-        "Manager",
-        email,
-        hashPassword,
-      ]);
+      const checkQuery = "SELECT * FROM customer WHERE Email = ?";
+      const existingCustomer = await new Promise((resolve, reject) => {
+        db.query(checkQuery, [email], (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        });
+      });
 
-      res.status(200).json({ message: "Values inserted successfully" });
+      if (existingCustomer.length > 0) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      const insertQuery =
+        "INSERT INTO customer (CustomerName, Address, CityID, PhoneNumber, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
+      await new Promise((resolve, reject) => {
+        db.query(
+          insertQuery,
+          [fullname, address, "1", phonenumber, email, hashPassword],
+          (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+          }
+        );
+      });
+
+      return res.status(200).json({ message: "Customer added successfully" });
     } catch (error) {
-      res.status(500).json({ error: "Failed to insert values" });
+      console.error("Database error:", error);
+      return res.status(500).json({ error: "Failed to insert values" });
     }
   } else {
-    res.status(405).json({ message: "Method Not Allowed" });
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 }

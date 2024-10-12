@@ -15,18 +15,14 @@ function Navbar() {
     router.push("/");
   };
   const handleClickLogin = () => {
-    router.push("/login");
+    router.push("/signup");
   };
 
   return (
     <div className="Header">
       <div className="leftSection">
         <div className="logoSection">
-          <img
-            src="../../logo.png"
-            alt="RailTrux Logo"
-            onClick={handleClickHome}
-          />
+          <img src="../../logo.png" alt="RailTrux Logo" onClick={handleClickHome}/>
         </div>
         <div className="buttonGroup">
           <button onClick={handleClickHome} className="Button">

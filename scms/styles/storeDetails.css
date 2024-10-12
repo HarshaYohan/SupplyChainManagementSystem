@@ -1,0 +1,81 @@
+/* Container for the form */
+.form-container {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for each store item */
+.store-item {
+  margin-bottom: 15px;
+}
+
+/* Clickable store name */
+.store-name {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Store name hover effect */
+.store-name:hover {
+  background-color: #0056b3;
+}
+
+/* Store details section */
+.store-details {
+  background-color: #e9ecef;
+  padding: 10px 15px;
+  margin-top: 5px;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Add a smooth transition for the dropdown effect */
+.store-details {
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Slide down animation for store details */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+/* Responsive design: Adjusts for smaller screens */
+@media (max-width: 768px) {
+  .form-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .store-name {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  .store-details {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
