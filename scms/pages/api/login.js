@@ -1,6 +1,7 @@
+import { resolve } from "path";
 import db from "../../backend/db.js";
 import runCors from "../../utils/cors.js";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   try {
@@ -12,31 +13,38 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     const { email, password } = req.body;
-    const query = "SELECT * FROM customer WHERE Email = ?";
-    db.query(query, [email], async (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: "Database error" });
-      }
+    const getUserQuery = "Select check_email(?) as email_checker";
 
-      if (results.length === 0) {
-        return res.status(401).json({ error: "Incorrect email or password. Try again." });
-      }
+    const getUser = (email) => {
+      return new Promise((resolve, reject) => {
+        db.query(getUserQuery, [email], (err, results) => {
+          if (err) reject(err);
+          else
+            results.length === 0 ? resolve("User not found") : resolve(results);
+        });
+      });
+    };
 
-      const user = results[0];
+    const checkPassword = (password, hash_password) => {
+      return new Promise((resolve, reject) => {
+        bcrypt.compare(password, hash_password, (err, isMatch) => {
+          if (err) reject(err);
+          if (!isMatch) reject("Incorrect Password");
+          else resolve(true);
+        });
+      });
+    };
 
-      try {
-        const isMatch = await bcrypt.compare(password, user.Hash_Password);
-
-        if (isMatch) {
-          return res.status(200).json({ message: "Login successful" });
-        } else {
-          return res.status(401).json({ error: "Incorrect email or password. Try again." });
-        }
-      } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
-      }
-    });
+    try {
+      const user = await getUser(email);
+      await checkPassword(password, user[0].email_checker);
+      res
+        .status(200)
+        .json({ message: "Login successful"});
+    } catch (error) {
+      res.status(400).json({ error });
+    }
   } else {
-    return res.status(405).json({ message: "Method Not Allowed" });
+    res.status(405).json({ message: "Method not allowed" });
   }
 }

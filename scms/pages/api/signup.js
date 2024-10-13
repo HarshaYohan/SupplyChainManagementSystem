@@ -15,37 +15,35 @@ export default async function handler(req, res) {
     const saltRounds = 10;
 
     try {
-      // Hash the password
       const hashPassword = await bcrypt.hash(password, saltRounds);
 
-      const checkQuery = "SELECT * FROM customer WHERE Email = ?";
-      const existingCustomer = await new Promise((resolve, reject) => {
-        db.query(checkQuery, [email], (err, result) => {
+      const isUnique = "select check_unique_email(?) as  is_unique";
+      const isUniqueResult = await new Promise((resolve, reject) => {
+        db.query(isUnique, [email], (err, result) => {
           if (err) return reject(err);
           resolve(result);
-        });
-      });
+        })
+      })
 
-      if (existingCustomer.length > 0) {
+      if(!isUniqueResult[0].is_unique) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      const insertQuery =
-        "INSERT INTO customer (CustomerName, Address, CityID, PhoneNumber, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
+
+      const insertQuery = "call add_customer (?, ?, ?, ?, ?)";
       await new Promise((resolve, reject) => {
         db.query(
           insertQuery,
-          [fullname, address, "1", phonenumber, email, hashPassword],
-          (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
+          [fullname, address, phonenumber, email, hashPassword],
+          (err) => {
+            if (err) reject(err);
+            resolve("Signup Successfully");
           }
         );
       });
 
       return res.status(200).json({ message: "Customer added successfully" });
     } catch (error) {
-      console.error("Database error:", error);
       return res.status(500).json({ error: "Failed to insert values" });
     }
   } else {

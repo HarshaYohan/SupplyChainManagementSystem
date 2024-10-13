@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const cityname = req.body['store'];
 
     const getStoreID = "SELECT StoreID FROM store WHERE CityName = ?";
-    db.query(getStoreID, cityname, async (err, results) => {
+    db.query(getStoreID, [cityname], async (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Database error" });
       }
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "No Store Available" });
       } else {
         const getRoots = "select RouteDescription from route where StoreID = ?";
-        db.query(getRoots, results[0].StoreID, (err, resultRoutes) => {
+        db.query(getRoots, [results[0].StoreID], (err, resultRoutes) => {
           if (err) {
             return res.status(500).json({ error: "Database error" });
           }

@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
       const cartItems = await new Promise((resolve, reject) => {
         db.query(
-          `SELECT Product.ProductName, Product.Price, Cart_Items.Quantity
+          `SELECT Product.ProductID,Product.ProductName, Product.Price, Cart_Items.Quantity
            FROM cart_items
            INNER JOIN Product ON cart_items.ProductID = Product.ProductID
            INNER JOIN cart ON cart_items.CartID = cart.CartID
