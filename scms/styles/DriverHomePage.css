@@ -1,0 +1,25 @@
+.greeting-box {
+  background-color: #f9f9f9; /* Light background color */
+  padding: 40px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  text-align: center; /* Center align the text */
+  margin: 20px auto;
+  max-width: 600px;
+  padding-top: 60px; 
+   /* Optional: Limit the width */
+}
+
+/* Styling for the heading */
+.greeting-box h1 {
+  font-size: 28px;
+  color: #0a2a5e; /* Dark blue text color */
+  margin-bottom: 15px;
+
+}
+
+/* Styling for the paragraph */
+.greeting-box p {
+  font-size: 18px;
+  color: #555; /* Grey color for the paragraph */
+}
