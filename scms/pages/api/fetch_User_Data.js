@@ -12,20 +12,15 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const { email } = req.body;
 
-    const query = "SELECT * FROM customer WHERE Email = ?";
-    db.query(query, email, async (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: "Database error" });
-      }
-      console.log(results);
-      if (results.length === 0) {
-        return res.status(401).json({ error: "User not found." });
-      }
-
-      const user = results[0];
-
-      return res.status(200).json(user);
+    const userData = "call getUserData(?)";
+    const result = await new Promise((resolve, reject) => {
+      db.query(userData, email, (err, results) => {
+        if (err) reject(err);
+        resolve(results);
+      });
     });
+    const data = result[0][0];
+    return res.status(200).json(data);
   } else {
     return res.status(405).json({ message: "Method Not Allowed" });
   }

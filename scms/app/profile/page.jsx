@@ -63,14 +63,13 @@ function Profile() {
 
   const handleSave = async () => {
     try {
-      const res = await axios.post("/api/updateProfile", {
+      await axios.post("/api/updateProfile", {
         customerID: customerID,
         name: name,
         address: address,
         phone: phone,
         email: email,
       });
-      console.log(res);
     } catch (err) {
       if (err) {
         console.log(error);

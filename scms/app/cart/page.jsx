@@ -61,16 +61,31 @@ function Cart() {
     );
   };
 
-  const handleStoreChange = async (e) => {
-    const store = e.target.value;
-    setSelectedStore(store);
+  useEffect(() => {
+    const fetchRoots = async () => {
+      const store = selectedStore;
+      try {
+        const response = await axios.post("/api/fetchRoots", { store });
+        setRoots(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRoots();
+  }, [selectedStore]);
+  // const handleStoreChange = async (e) => {
+  //   const store = e.target.value;
+  //   setSelectedStore(store);
+  //   try {
+  //     const response = await axios.post("/api/fetchRoots", { store });
+  //     setRoots(response.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-    try {
-      const response = await axios.post("/api/fetchRoots", { store });
-      setRoots(response.data); // Set the roots based on the selected store
-    } catch (err) {
-      console.log(err);
-    }
+  const handleStoreChange = (e) => {
+    setSelectedStore(e.target.value);
   };
 
   const handleRootChange = (e) => {
@@ -79,7 +94,7 @@ function Cart() {
 
   const handlePlaceOrderClick = async () => {
     try {
-      await axios.post("/api/placeOrder", {userData, selectedRoot });
+      await axios.post("/api/placeOrder", { userData, selectedRoot, cartItems });
       console.log("Succesfull!");
     } catch (err) {
       console.log(err);
@@ -152,11 +167,20 @@ function Cart() {
             disabled={!roots.length}
           >
             <option value="">Select the Route</option>
-            {roots.map((root) => (
-              <option key={root.RouteDescription} value={root.RouteDescription}>
-                {root.RouteDescription}
+            {roots && roots.length > 0 ? (
+              roots.map((root) => (
+                <option
+                  key={root.RouteDescription}
+                  value={root.RouteDescription}
+                >
+                  {root.RouteDescription}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>
+                No routes available
               </option>
-            ))}
+            )}
           </select>
 
           <button

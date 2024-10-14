@@ -40,7 +40,7 @@ function Product() {
                 productId={product.ProductID}
                 title={product.ProductName}
                 price={product.Price}
-                image={product.productURL}
+                image={product.ProductURL}
               />
             ))
           ) : (
