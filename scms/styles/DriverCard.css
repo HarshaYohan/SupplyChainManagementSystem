@@ -1,0 +1,49 @@
+/* Card Container */
+.container1 {
+    display: flex;                   /* Use flexbox to align cards */
+    justify-content: center;         /* Center horizontally */
+    align-items: center;             /* Center vertically */
+    flex-wrap: wrap;                 /* Allow wrapping if the screen is too small */
+    height: 50vh;                   /* Use full viewport height */
+    padding: 20px;                   /* Add some padding around the container */
+  }
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+    text-align: center;
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 250px;             /* Increased width for each card */
+    height: 300px;
+    margin: 10px;
+    display: flex;             /* Use flexbox to align cards in a row */
+  justify-content: space-around; /* Space between cards */
+  padding: 20px;           /* Add some padding around the container */
+  flex-wrap: wrap;         /* Allow wrapping if the screen is too small */
+  }
+  
+  /* Hover Effects for the Card */
+  .card:hover {
+    transform: translateY(-10px); /* Lift up effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  }
+  
+  /* Icon Styling */
+  .cardIcon {
+    font-size: 40px; /* Large icon size */
+    margin-bottom: 10px;
+  }
+  
+  /* Title Styling */
+  .title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
