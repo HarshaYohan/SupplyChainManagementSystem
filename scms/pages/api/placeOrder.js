@@ -15,10 +15,10 @@ export default async function handler(req, res) {
     const orderDate = new Date().toISOString().split("T")[0];
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + 7);
-    const orderDetails = cartItems.map((item) => [
-      item.ProductID,
-      item.Quantity,
-    ]);
+    // const orderDetails = cartItems.map((item) => [
+    //   item.ProductID,
+    //   item.Quantity,
+    // ]);
 
     const getCustomerIDQuery =
       "select CustomerID from customer where Email = ?";
@@ -52,9 +52,9 @@ export default async function handler(req, res) {
             if (err) {
               console.log(err);
             }
-            const lastInsertID = result.insertId;
+            // const lastInsertID = result.insertId;
 
-            db.query(orderDetailsQuery, [lastInsertID, orderDetails]);
+            // db.query(orderDetailsQuery, [lastInsertID, orderDetails]);
           }
         );
       });
