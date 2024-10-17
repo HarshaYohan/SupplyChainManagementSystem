@@ -4,62 +4,61 @@
   max-width: 1050px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Style for each store item */
 .store-item {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
 /* Clickable store name */
 .store-name {
   background-color: #007bff;
   color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 12px 18px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Store name hover effect */
 .store-name:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 /* Store details section */
 .store-details {
-  background-color: #e9ecef;
-  padding: 10px 15px;
-  margin-top: 5px;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
+  background-color: #f0f4f8;
+  padding: 12px 18px;
+  margin-top: 10px;
+  border-left: 5px solid #007bff;
+  border-radius: 5px;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
 }
 
-/* Add a smooth transition for the dropdown effect */
-.store-details {
-  animation: slideDown 0.3s ease forwards;
-}
-
-/* Slide down animation for store details */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-  }
-  to {
-    opacity: 1;
-    max-height: 1000px;
-  }
+/* Active store details section */
+.store-item.active .store-details {
+  max-height: 1000px;
+  opacity: 1;
 }
 
 /* Responsive design: Adjusts for smaller screens */
@@ -71,11 +70,23 @@
 
   .store-name {
     font-size: 16px;
-    padding: 8px 12px;
+    padding: 10px 15px;
   }
 
   .store-details {
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .store-name {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .store-details {
+    font-size: 13px;
+    padding: 8px 10px;
   }
 }

@@ -13,6 +13,7 @@ const CompanyManager = () => {
     contact: "",
     address: "",
     role: "",
+    store: "",
     email: "",
     password: "",
   });
@@ -32,6 +33,7 @@ const CompanyManager = () => {
       contact: "",
       address: "",
       role: "",
+      store: "",
       email: "",
       password: "",
     });
@@ -80,15 +82,38 @@ const CompanyManager = () => {
                 setEmployee({ ...employee, address: e.target.value })
               }
             />
-            <input
-              type="text"
-              placeholder="Role"
+            <select
+              id="role"
+              name="role"
               required
               value={employee.role}
               onChange={(e) =>
                 setEmployee({ ...employee, role: e.target.value })
               }
-            />
+            >
+              <option value="Select Role">Select Role</option>
+              <option value="Store Manager">Store Manager</option>
+              <option value="Driver">Driver</option>
+              <option value="Driver Assistant">Driver Assistant</option>
+            </select>
+            <select
+              id="store"
+              name="store"
+              value={employee.store}
+              onChange={(e) =>
+                setEmployee({ ...employee, store: e.target.value })
+              }
+            >
+              <option value="Select Store">Select Store</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Negombo">Negombo</option>
+              <option value="Galle">Galle</option>
+              <option value="Matara">Matara</option>
+              <option value="Badulla">Badulla</option>
+              <option value="Anuradhapura">Anuradhapura</option>
+              <option value="Jaffna">Jaffna</option>
+              <option value="Trincomalee">Trincomalee</option>
+            </select>
             <input
               type="text"
               placeholder="Email"

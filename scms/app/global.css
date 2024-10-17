@@ -83,6 +83,9 @@ button {
 button:hover {
   background-color: #085bb5;
 }
+button:active {
+  background-color: #0a74da;
+}
 
 button:disabled {
   background-color: #ccc;

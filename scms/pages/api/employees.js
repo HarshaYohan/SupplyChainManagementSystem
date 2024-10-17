@@ -17,12 +17,19 @@ export default async function handler(req, res) {
 
     try {
       const hashPassword = await bcrypt.hash(password, saltRounds);
+      const addEmployeeQuery = "call InsertEmployee(?,?,?,?,?,?,?)";
 
-      const query =
-        "INSERT INTO employee (Name, PhoneNumber, Address, Role, Email, Hash_Password) VALUES (?, ?, ?, ?, ?, ?)";
-
-      db.query(query, [name, contact, address, role, email, hashPassword]);
-
+      await new Promise((resolve, reject) => {
+        db.query(
+          addEmployeeQuery,
+          [name, contact, address, role, email, hashPassword, store],
+          (err, result) => {
+            console.log(result);
+            if (err) reject(err);
+            resolve(result);
+          }
+        );
+      });
       res.status(200).json({ message: "Values inserted successfully" });
     } catch (error) {
       res.status(500).json({ error: "Failed to insert values" });

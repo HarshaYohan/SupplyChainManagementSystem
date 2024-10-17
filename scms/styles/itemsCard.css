@@ -59,6 +59,10 @@
     background-color: #2563eb;
   }
   
+.card-price {
+  font-size: 1.3rem;
+}
+
   .card-button:active {
     background-color: #1d4ed8; 
   }
