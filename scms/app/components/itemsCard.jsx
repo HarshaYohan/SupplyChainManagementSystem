@@ -31,7 +31,7 @@ function Card({ productId, title, price, image }) {
       {image && <img src={image} alt={title} className="card-image" />}{" "}
       <div className="card-content">
         <h1 className="card-title">{title}</h1>
-        <h2 className="card-price">${price}</h2>
+        <h2 className="card-price">Rs {price}</h2>
         <button className="card-button" onClick={handleClick}>
           Add To Cart
         </button>

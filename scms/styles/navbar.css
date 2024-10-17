@@ -1,8 +1,8 @@
 /* Navbar styling */
 .Header {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
   background-color: #001f3f;
   color: #fff;
   padding: 1rem 2rem;
@@ -34,7 +34,7 @@
 /* Button group styling */
 .buttonGroup {
   display: flex;
-  gap: 1rem; 
+  gap: 1rem;
 }
 
 /* Right section (profile and login) */
@@ -48,7 +48,7 @@
 .profilePhoto {
   height: 40px;
   width: 40px;
-  border-radius: 50%; 
+  border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
 }
@@ -56,7 +56,7 @@
 .profileImage {
   height: 100%;
   width: 100%;
-  object-fit: cover; 
+  object-fit: cover;
 }
 
 /* Button styling */

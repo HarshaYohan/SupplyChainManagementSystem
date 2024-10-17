@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const getCustomerIDQuery = "SELECT CustomerID FROM customer WHERE Email = ?";
     const getCartQuery = "SELECT CartID FROM cart WHERE CustomerID = ?";
     const createCartQuery = "INSERT INTO cart (CustomerID) VALUES (?)";
-    const checkCartItemQuery = "SELECT CartItemID, Quantity FROM cart_items WHERE CartID = ? AND ProductID = ?";
+    const checkCartItemQuery = "SELECT Cart_ItemsID, Quantity FROM cart_items WHERE CartID = ? AND ProductID = ?";
     const updateCartItemQuery = "UPDATE cart_items SET Quantity = Quantity + 1 WHERE CartID = ? AND ProductID = ?";
     const insertCartItemQuery = "INSERT INTO cart_items (CartID, ProductID, Quantity) VALUES (?, ?, ?)";
 

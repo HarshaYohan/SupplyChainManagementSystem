@@ -59,6 +59,7 @@
 }
 
 /* Input and textarea styles */
+select,
 input,
 textarea {
   padding: 0.5rem;

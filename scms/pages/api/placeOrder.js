@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       "select CustomerID from customer where Email = ?";
     const getRouteID = "Select RouteID from route where RouteDescription = ?";
     const placeOrder =
-      "INSERT INTO order_ (CustomerID, OrderDate, DeliveryDate, RouteID, DeliveryAddress, CurrentStatus) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO orders (CustomerID, OrderDate, DeliveryDate, RouteID, DeliveryAddress, CurrentStatus) VALUES (?,?,?,?,?,?)";
     const orderDetailsQuery =
       "insert into order_product (OrderID,ProductID,Quantity) values (?,?,?)";
 
