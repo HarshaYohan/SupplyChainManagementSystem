@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import "../../../styles/employee/DriverDeliverdOrders.css"; // Import regular CSS
+import "../../../../styles/employee/DriverDeliverdOrders.css"; // Import regular CSS
 
 const DeliveredItems = () => {
     const deliveredItems = [

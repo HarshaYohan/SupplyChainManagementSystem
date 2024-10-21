@@ -25,7 +25,7 @@ const TrainSchedule = () => {
   const handleClick = () => {};
 
   const filteredOrders = orderDetails.filter(order =>
-    order.City.toString().includes(searchQuery)
+    order.OrderID.toString().includes(searchQuery)
   );
 
   const renderContent = () => {

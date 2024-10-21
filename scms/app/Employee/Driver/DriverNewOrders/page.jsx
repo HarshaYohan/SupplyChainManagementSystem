@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import "../../styles/DriverNewOrders.css";
+import "../../../../styles/employee/DriverNewOrders.css";
 
 const NewWork = () => {
   const [orders, setOrders] = useState([

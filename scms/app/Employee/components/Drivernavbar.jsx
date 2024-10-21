@@ -1,4 +1,4 @@
-import "../../styles/Drivernavbar.css";
+import "../../../styles/employee/Drivernavbar.css";
 export default function Drivernavbar() {
     return (
       <nav className="Drivernavbar">
@@ -7,9 +7,9 @@ export default function Drivernavbar() {
         {/* Navigation Links */}
         <div className="nav-links">
             
-          <a href="/DriverProfile">Profile</a>
-          <a href="/DriverHelp">Help</a>
-          <a href="Help">Language</a>
+          <a href="/Employee/Driver/DriverProfile">Profile</a>
+          <a href="/Employee/Driver/DriverHelp">Help</a>
+          <a href="/Employee/Driver/Help">Language</a>
         </div>
 
         <div className="logo">
