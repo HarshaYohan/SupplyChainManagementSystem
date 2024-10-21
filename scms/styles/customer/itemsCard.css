@@ -1,0 +1,152 @@
+/* Card Container */
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+/* Card Image with zoom on hover */
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out; /* Smooth zoom */
+}
+
+.card:hover .card-image {
+  transform: scale(1.1); /* Zoom on hover */
+}
+
+/* Card content */
+.card-content {
+  padding: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Change background color on hover */
+.card:hover .card-content {
+  background-color: #f1f5f9; /* Light background change */
+}
+
+.card-content img {
+  width: 100px;
+  height: 100px;
+
+}
+
+.card-title {
+  font-size: 1.6rem;
+  color: #1e293b;
+  margin-bottom: 10px;
+  transition: color 0.3s ease-in-out;
+}
+
+.card:hover .card-title {
+  color: #2563eb; /* Title color change on hover */
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #6b7280;
+  transition: color 0.3s ease-in-out;
+}
+
+<<<<<<< HEAD:scms/styles/itemsCard.css
+.card:hover .card-description {
+  color: #374151; /* Darker description text on hover */
+}
+
+/* Card Button */
+.card-button {
+  margin-top: 15px;
+}
+
+.card-button .button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: #3b82f6; /* Primary blue */
+  border: none;
+  border-radius: 25px; /* Rounded button */
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-button .button:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); /* Button shadow on hover */
+}
+
+.card-button .button:active {
+  background-color: #1d4ed8; /* Even darker on click */
+}
+
+.card-button .button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Light blue focus ring */
+}
+
+.card-button .button:disabled {
+  background-color: #94a3b8; /* Disabled grey */
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+=======
+.card-button {
+  .button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #3b82f6; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card-button:hover {
+    background-color: #2563eb;
+  }
+  
+.card-price {
+  font-size: 1.3rem;
+}
+
+  .card-button:active {
+    background-color: #1d4ed8; 
+  }
+  
+  .card-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); 
+  }
+  
+  .card-button:disabled {
+    background-color: #94a3b8; 
+    cursor: not-allowed;
+  }
+  
+}
+>>>>>>> 9627820a922038b0a20b3271731dbb46c56ed842:scms/styles/customer/itemsCard.css
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .card-image {
+    height: 150px;
+  }
+}
