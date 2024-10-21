@@ -1,0 +1,44 @@
+/* styles/quarterlySales.css */
+.quarterly-sales-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.quarterly-sales-container h2 {
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.sales-table th,
+.sales-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.sales-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.sales-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  color: #555;
+  font-size: 1.1rem;
+}

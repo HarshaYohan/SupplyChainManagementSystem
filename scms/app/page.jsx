@@ -1,55 +1,36 @@
 "use client";
-import React from "react";
-import Navbar from "./components/navbar.jsx";
-import Card from "./components/itemsCard.jsx";
-import "../styles/product.css";
-import "./global.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+import '../styles/home.css';
 
-function Product() {
-  const [productData, setProductData] = useState([]);
+function Home() {
+  const router = useRouter();
 
-  useEffect(() => {
-    const handleProducts = async () => {
-      try {
-        const response = await axios.get("/api/product");
-        setProductData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    handleProducts();
-  }, []);
+  const handleClickCustomer = () => {
+    router.push("/Customer/product");
+  };
+  const handleClickEmployee = () => {
+    router.push("/Employee/EmployeeLogin");
+  };
 
   return (
-    <div>
-      <Navbar />
-      <div className="BodySection">
-        <div className="GreetingSection">
-          <div className="GreetingBox">
-            <h1>Welcome to RAILTRUX!</h1>
-            <p>Your journey in supply chain management starts here.</p>
-          </div>
-        </div>
-        <div className="ProductSection">
-          {productData && productData.length > 0 ? (
-            productData.map((product) => (
-              <Card
-                key={product.ProductID}
-                productId={product.ProductID}
-                title={product.ProductName}
-                price={product.Price}
-                image={product.ProductURL}
-              />
-            ))
-          ) : (
-            <p>No products available</p> 
-          )}
-        </div>
+    <div className="container">
+      <div className="logoContainer">
+        <img src="./RailTruxLogo.jpeg" alt="logo" className="logo" />
+      </div>
+      <div className="titleContainer">
+        <h1 className="title">RailTrux</h1>
+        <h3 className="subtitle">Your Supply Chain Partner</h3>
+      </div>
+      <div className="buttonContainer">
+        <button onClick={handleClickCustomer} className="button">
+          Login As Customer
+        </button>
+        <button onClick={handleClickEmployee} className="button">
+          Login As Employee
+        </button>
       </div>
     </div>
   );
 }
 
-export default Product;
+export default Home;
