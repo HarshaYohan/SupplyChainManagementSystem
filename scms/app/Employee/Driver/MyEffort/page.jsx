@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import "../../../../styles/employee/MyEffort.css"; // Import CSS for styling
 
-
+// Edited myeffort
 const MyEffort = () => {
     // Hardcoded working hours for now
     const driverWorkingHours = [
