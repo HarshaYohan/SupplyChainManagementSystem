@@ -4,11 +4,12 @@ import axios from "axios";
 import "../../../../styles/employee/trainSchedule.css";
 import Navbar from "../../../Employee/components/navbarEmployee.jsx";
 
-
 const TrainSchedule = () => {
   const [activeTab, setActiveTab] = useState(null);
   const [orderDetails, setOrderDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [trainDetails, setTrainDetails] = useState("");
+  const [cityTrainDetails, setCityTrainDetails] = useState("");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -22,10 +23,32 @@ const TrainSchedule = () => {
     fetchOrders();
   }, []);
 
-  const handleClick = () => {};
+  useEffect(() => {
+    const fetchTrainDetals = async () => {
+      try {
+        const response = await axios.get("/api/Employee/fetchTrainDetails");
+        setTrainDetails(response.data);
+      } catch (error) {
+        console.log("failed to fetch train details", error);
+      }
+    };
+    fetchTrainDetals();
+  }, []);
 
-  const filteredOrders = orderDetails.filter(order =>
-    order.OrderID.toString().includes(searchQuery)
+  useEffect(() => {
+    const fetchCityTrainDetails = async () => {
+      try {
+        const response = await axios.get("/api/Employee/fetchCityTrainDetails");
+        setCityTrainDetails(response.data);
+      } catch (error) {
+        console.log("failed to fetch train details", error);
+      }
+    };
+    fetchCityTrainDetails();
+  }, []);
+
+  const filteredOrders = orderDetails.filter((order) =>
+    order.City.toString().includes(searchQuery)
   );
 
   const renderContent = () => {
@@ -54,7 +77,8 @@ const TrainSchedule = () => {
                     <strong>Customer ID:</strong> {order.CustomerID}
                   </div>
                   <div className="order-item">
-                    <strong>Train Capacity:</strong> {order.TrainCapacityConsumption}
+                    <strong>Train Capacity:</strong>{" "}
+                    {order.TrainCapacityConsumption}
                   </div>
                   <div className="order-item">
                     <strong>Order Date:</strong> {order.oDate}
@@ -62,14 +86,62 @@ const TrainSchedule = () => {
                   <div className="order-item">
                     <strong>City:</strong> {order.City}
                   </div>
-                  <button onClick={handleClick}>Add To Train</button>
+                  <button>View Train Details</button>
                 </div>
               ))}
             </div>
           </div>
         );
       case "TrainSchedule":
-        return <div>Train Schedule content goes here...</div>;
+        return (
+          <div>
+            <h2>Train Schedule</h2>
+            <table className="train-schedule-table">
+              <thead>
+                <tr>
+                  <th>Train ID</th>
+                  <th>Date</th>
+                  <th>Capacity</th>
+                  <th>Train</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trainDetails.map((train, index) => (
+                  <tr key={index}>
+                    <td>{train.TrainScheduleID}</td>
+                    <td>"Everyday"</td>
+                    <td>{train.Capacity}</td>
+                    <td>{train.Description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <h2>City-Train Details</h2>
+            <table className="train-schedule-table">
+              <thead>
+                <tr>
+                  <th>City</th>
+                  <th>Date</th>
+                  <th>Allocated Capacity</th>
+                  <th>Capacity</th>
+                  <th>Train</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cityTrainDetails.map((train, index) => (
+                  <tr key={index}>
+                    <td>{train.CityName}</td>
+                    <td>"Everyday"</td>
+                    <td>{train.AllocatedCapacity}</td>
+                    <td>{train.Capacity}</td>
+                    <td>{train.Train}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
       default:
         return <p className="placeholder-text">Please select a tab</p>;
     }
@@ -81,7 +153,9 @@ const TrainSchedule = () => {
       <div className="content">
         <div className="sidebar">
           <button onClick={() => setActiveTab("Orders")}>Pending Orders</button>
-          <button onClick={() => setActiveTab("TrainSchedule")}>Train Schedule</button>
+          <button onClick={() => setActiveTab("TrainSchedule")}>
+            Train Schedule
+          </button>
         </div>
         <div className="body">{renderContent()}</div>
       </div>
