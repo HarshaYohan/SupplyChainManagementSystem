@@ -16,155 +16,80 @@
   border-radius: 10px;
 }
 
-/* Left section (logo and buttons) */
-.leftSection {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* Logo section styling */
-.logoSection img {
+/* Logo styling */
+.leftSection .logo {
   height: 50px;
-  width: auto;
   cursor: pointer;
   border-radius: 40%;
 }
 
-/* Button group styling */
-.buttonGroup {
+/* Icon group styling */
+.iconGroup {
   display: flex;
   gap: 1rem;
-}
-
-/* Right section (profile and login) */
-.rightSection {
-  display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
-/* Profile photo styling */
-.profilePhoto {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  overflow: hidden;
+/* Icon styles */
+.icon {
+  width: 30px;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* Profile image */
 .profileImage {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-/* Button styling */
-.Button {
-  background-color: #001f3f;
-  color: white;
-  font-size: 20px;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
-.Button:hover {
+/* Login button */
+.loginButton {
   background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* Body section styling to account for fixed navbar */
-.BodySection {
-  padding-top: 80px;
+.loginButton:hover {
+  background-color: #004080;
 }
 
-/* Media Queries for Tablets and Smaller Screens */
+/* Adjustments for smaller screens */
 @media (max-width: 768px) {
   .Header {
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
-    left: 20px;
-    right: 20px;
   }
 
-  .buttonGroup {
-    flex-direction: column;
-  }
-
-  .rightSection {
-    flex-direction: column;
-    align-items: flex-start;
+  .iconGroup {
+    justify-content: flex-end;
+    width: 100%;
   }
 }
 
-/* Additional Media Queries for Mobile Phones */
-@media (max-width: 600px) {
-  .Header {
-    padding: 0.5rem;
-    left: 10px;
-    right: 10px;
-  }
-
-  /* Adjust button font sizes and padding for smaller screens */
-  .Button {
-    font-size: 16px;
-    padding: 0.4rem 0.8rem;
-  }
-
-  /* Make the logo smaller */
-  .logoSection img {
-    height: 40px;
-  }
-
-  /* Profile photo adjustments */
-  .profilePhoto {
-    height: 35px;
-    width: 35px;
-  }
-
-  /* Reduce gaps between elements */
-  .leftSection,
-  .rightSection {
-    gap: 0.5rem;
-  }
-
-  .buttonGroup {
-    gap: 0.5rem;
-  }
-
-  /* Adjust spacing for the body section */
-  .BodySection {
-    padding-top: 70px;
-  }
-}
-
-/* Further adjustments for extra small screens (under 480px) */
 @media (max-width: 480px) {
-  .Header {
-    padding: 0.5rem;
-    top: 5px;
-    left: 5px;
-    right: 5px;
+  .icon {
+    width: 25px;
   }
 
-  /* Further reduce button font sizes and padding */
-  .Button {
-    font-size: 14px;
-    padding: 0.3rem 0.6rem;
-  }
-
-  /* Make the logo even smaller */
-  .logoSection img {
-    height: 35px;
-  }
-
-  /* Profile photo size for very small screens */
-  .profilePhoto {
-    height: 30px;
+  .profileImage {
     width: 30px;
+    height: 30px;
+  }
+
+  .loginButton {
+    padding: 3px 8px;
+    font-size: 14px;
   }
 }

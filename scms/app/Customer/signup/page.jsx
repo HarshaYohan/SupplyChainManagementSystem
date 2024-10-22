@@ -3,6 +3,7 @@ import "../../../styles/customer/signup_login.css";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
+import UserSession from "../../../utils/userSession";
 
 function Signup() {
   const router = useRouter();
@@ -14,7 +15,6 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isPasswordStrong, setIsPasswordStrong] = useState(false);
- // const [userData, setUserData] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,21 +35,20 @@ function Signup() {
         email,
         password,
       });
-      const userData = {
-        email: email
-      }
-     // setUserData(response.data);
-      localStorage.setItem("userData", JSON.stringify(userData));
 
       if (response.status === 200) {
+        // Login user session as "customer"
+        UserSession.login(email, "customer");
+
         console.log("Signup successful", response.data);
         router.push("/Customer/product");
       }
     } catch (err) {
-      if (err.response.status === 400) {
-        setIsPasswordStrong(false);
-        setErrorMessage("Email Already Exist");
-      } else setErrorMessage("An error occurred during signup.");
+      if (err.response?.status === 400) {
+        setErrorMessage("Email Already Exists");
+      } else {
+        setErrorMessage("An error occurred during signup.");
+      }
     }
   };
 
@@ -58,13 +57,8 @@ function Signup() {
     setter(value);
     setErrorMessage("");
     if (setter === setPassword) {
-      if (value.length < 8) {
-        setIsPasswordStrong(false);
-        setErrorMessage("Password is not strong enough");
-      } else {
-        setIsPasswordStrong(true);
-        setErrorMessage("Strong Password");
-      }
+      setIsPasswordStrong(value.length >= 8);
+      setErrorMessage(value.length < 8 ? "Password is not strong enough" : "Strong Password");
     }
   };
 
@@ -125,7 +119,6 @@ function Signup() {
             onChange={handleInputChange(setConfirmPassword)}
             required
           />
-          {/* Display the error message */}
           {errorMessage && (
             <div
               className="error-message"
