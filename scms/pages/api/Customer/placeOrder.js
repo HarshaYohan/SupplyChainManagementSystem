@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         db.query(
           placeOrder,
           [
-            userData.customerID,
+            customerID[0].CustomerID,
             orderDate,
             deliveryDate,
             routeID[0].RouteID,
@@ -64,6 +64,12 @@ export default async function handler(req, res) {
         );
       });
     });
+
+    // const placeOrderQuery = "call  place_order(?,?,?,?,?,?,?,?)";
+
+    // await new Promise((resolve, reject) => {
+    //   db.query(placeOrderQuery,[req.body.selectedStore,orderDate,deliveryDate,deliveryAddress,userData.email,req.body.selectedRoot])
+    // })
   } else {
     return res.status(405).json({ message: "Methos does not allowed" });
   }

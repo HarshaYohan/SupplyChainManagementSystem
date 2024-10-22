@@ -115,6 +115,34 @@ textarea {
   color: #6c757d;
 }
 
+
+/* Styling for the train schedule table */
+.train-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.train-schedule-table th,
+.train-schedule-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.train-schedule-table th {
+  background-color: white;
+  color: black;
+}
+
+.train-schedule-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.train-schedule-table tr:hover {
+  background-color: #ddd;
+}
+
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .content {
