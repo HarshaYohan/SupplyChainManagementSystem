@@ -1,4 +1,3 @@
-import { ClientPageRoot } from "next/dist/client/components/client-page.js";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 import bcrypt from "bcrypt";
@@ -18,37 +17,37 @@ export default async function handler(req, res) {
     try {
       const hashPassword = await bcrypt.hash(password, saltRounds);
 
-      const isUniqueQuery = "SELECT check_unique_email(?) AS is_unique";
+      const isUnique = "select check_unique_email(?) as  is_unique";
       const isUniqueResult = await new Promise((resolve, reject) => {
-        db.query(isUniqueQuery, [email], (err, result) => {
+        db.query(isUnique, [email], (err, result) => {
           if (err) return reject(err);
-          resolve(result[0].is_unique);
+          resolve(result);
         });
       });
 
-      if (!isUniqueResult) {
+      if (!isUniqueResult[0].is_unique) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      const insertQuery = " add_customer (?, ?, ?, ?, ?) AS InsertCustomer";
+      const insertQuery = "select add_customer (?, ?, ?, ?, ?) as InsertCustomer";
       const response = await new Promise((resolve, reject) => {
         db.query(
           insertQuery,
           [fullname, address, phonenumber, email, hashPassword],
           (err, results) => {
-            if (err) return reject(err);
-            resolve(results[0].InsertCustomer);
+            if (err) reject(err);
+            resolve(results);
+            resolve("Signup Successfully");
           }
         );
       });
-
-      console.log(response);
-      res.status(200).json({ message: "Signup successful", role: "customer" });
+      console.log(response[0].InsertCustomer);
+      return res.status(200).json(response[0].InsertCustomer);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Failed to insert values" });
+      
+      return res.status(500).json({ error: "Failed to insert values" });
     }
   } else {
-    res.status(405).json({ message: "Method Not Allowed" });
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 }
