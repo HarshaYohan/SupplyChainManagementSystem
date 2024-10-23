@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar.jsx";
 import "../../../styles/customer/cart.css";
 import axios from "axios";
+import UserSession from "../../../utils/userSession.js"; // Adjust the import path
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -10,16 +11,31 @@ function Cart() {
   const [selectedStore, setSelectedStore] = useState("");
   const [roots, setRoots] = useState([]);
   const [selectedRoot, setSelectedRoot] = useState("");
+  const [cartID, setCartID] = useState(null);
 
-  // Fetch user data from localStorage when the component mounts
+  // Fetch user data from UserSession when the component mounts
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
+    const storedUserData = UserSession.getUser();
     if (storedUserData) {
-      const parsedData = JSON.parse(storedUserData);
-      setUserData(parsedData);
+      setUserData(storedUserData);
+  
+      // Fetch the cart ID
+      const fetchCartID = async () => {
+        try {
+          console.log(storedUserData.userId); // Use userId from UserSession
+          const response = await axios.post("/api/Customer/cartId", {
+            userID: storedUserData.userId,
+          });
+          setCartID(response.data.cartID);
+        } catch (err) {
+          console.error("Error fetching cart ID:", err);
+        }
+      };
+  
+      fetchCartID();
     }
   }, []);
-  console.log(userData);
+
   // Fetch cart items when userData is available
   useEffect(() => {
     if (userData) {
@@ -39,18 +55,20 @@ function Cart() {
   }, [userData]);
 
   const handleRemoveItem = async (index) => {
-    const productName = cartItems[index].ProductName;
+    const productID = cartItems[index].ProductID;
     const updatedItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedItems);
+  
     try {
-      await axios.post("/api/Customer/updateCart", { productName });
+      console.log(cartID);
+      await axios.post("/api/Customer/updateCart", { productID, cartID });
     } catch (err) {
       console.log("Error updating the cart.", err);
     }
   };
-
+  
   const handleQuantityChange = (index, newQuantity) => {
-    if (newQuantity < 1) return; // Prevent setting quantity to less than 1
+    if (newQuantity < 1) return;
     const updatedItems = [...cartItems];
     updatedItems[index].Quantity = newQuantity;
     setCartItems(updatedItems);
@@ -94,9 +112,18 @@ function Cart() {
         selectedStore,
         cartItems,
       });
-      console.log("Succesfull!");
+      console.log("Successful!");
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      await axios.post("/api/Customer/updateCartItems", { cartItems });
+      window.location.reload();
+    } catch (err) {
+      console.log("Error saving cart changes.", err);
     }
   };
 
@@ -133,6 +160,9 @@ function Cart() {
             <div className="total-section">
               <h2>Total: ${calculateTotal().toFixed(2)}</h2>
             </div>
+            <button className="save-changes-button" onClick={handleSaveChanges}>
+              Update Cart
+            </button>
           </div>
         ) : (
           <p className="empty-cart">Your cart is empty</p>
@@ -186,7 +216,7 @@ function Cart() {
           <button
             className="placeorder-button"
             onClick={handlePlaceOrderClick}
-            disabled={!selectedStore && !selectedRoot}
+            disabled={!selectedStore || !selectedRoot}
           >
             Place Order
           </button>

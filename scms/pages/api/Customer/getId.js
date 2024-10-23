@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const customerId = rows[0]?.customerId || null;
     res.status(200).json({ customerId });
   } catch (error) {
+    console.log(error);
     console.error("Database Error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }

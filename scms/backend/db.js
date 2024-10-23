@@ -2,11 +2,7 @@ import mysql from "mysql2";
 
 let db;
 db = mysql.createConnection({
-  // host: "localhost",
-  // user: "root",
-  // password: "#2024mySQLdatabase",
-  // database: "supplychainmanagementsystem",
-  // port: 3307,
+
   host: process.env.DATABASE_HOST,
   user:  process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
