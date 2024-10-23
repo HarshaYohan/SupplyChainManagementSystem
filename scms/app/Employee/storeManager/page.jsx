@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+// get the fontawesome
+// npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/fontawesome-svg-core
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -31,8 +35,6 @@ const StoreManager = () => {
     ]);
   }, []);
 
-
-
   useEffect(() => {
     const fetchUserDetails = async () => {
       const storedUserData = JSON.parse(localStorage.getItem("userData"));
@@ -47,20 +49,14 @@ const StoreManager = () => {
     fetchUserDetails();
   }, [router]);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       if (userDetails && userDetails.email) {
         try {
           // Fetch the manager details, including name, from backend
-          const storeRes = await axios.post("/api/Employee/getStoreManager", {email: userDetails.email}
-            
-          );
-
-          // Set fetched data (including name) to userDetails
+          const storeRes = await axios.post("/api/Employee/getStoreManager", { email: userDetails.email });
+          // Set fetched name to userDetails
           setName(storeRes.data.name);
-          
-          // Optionally: Fetch other store-related data (drivers, assistants, etc.)
         } catch (error) {
           console.error("Failed to fetch store data", error);
         }
@@ -72,12 +68,34 @@ const StoreManager = () => {
     }
   }, [userDetails]);
 
+  // Function to handle toggling of the assigned driver
+  const assignDriver = (orderId, selectedDriverId) => {
+    setProductOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.orderId === orderId
+          ? {
+              ...order,
+              assignedDriver: order.assignedDriver === selectedDriverId ? "" : selectedDriverId, // Toggle logic
+            }
+          : order
+      )
+    );
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    // Remove user data from localStorage
+    localStorage.removeItem("userData");
+    // Redirect to login
+    router.push("/Employee/EmployeeLogin");
+  };
+
   const renderContent = () => {
     switch (activeSection) {
       case "home":
         return (
           <div className="greeting">
-            <h2>Welcome, {name}!</h2> {/* Display the fetched name */}
+            <h2>Welcome, {name}!</h2>
             <p>Select a section from the sidebar to manage your store.</p>
           </div>
         );
@@ -87,10 +105,18 @@ const StoreManager = () => {
           storeDetails && (
             <div className="store-details">
               <h2>My Store</h2>
-              <p><strong>ID:</strong> {storeDetails.id}</p>
-              <p><strong>Address:</strong> {storeDetails.address}</p>
-              <p><strong>City:</strong> {storeDetails.city}</p>
-              <p><strong>Railway Contact:</strong> {storeDetails.railWayContact}</p>
+              <p>
+                <strong>ID:</strong> {storeDetails.id}
+              </p>
+              <p>
+                <strong>Address:</strong> {storeDetails.address}
+              </p>
+              <p>
+                <strong>City:</strong> {storeDetails.city}
+              </p>
+              <p>
+                <strong>Railway Contact:</strong> {storeDetails.railWayContact}
+              </p>
             </div>
           )
         );
@@ -202,15 +228,34 @@ const StoreManager = () => {
       <div className="sidebar">
         <h3 onClick={() => setActiveSection("home")}>Store Manager</h3>
         <ul>
-          <li><button onClick={() => setActiveSection("myStore")}>My Store</button></li>
-          <li><button onClick={() => setActiveSection("drivers")}>Drivers</button></li>
-          <li><button onClick={() => setActiveSection("assistants")}>Assistants</button></li>
-          <li><button onClick={() => setActiveSection("products")}>Products</button></li>
+          <li>
+            <button onClick={() => setActiveSection("myStore")}>
+              <FontAwesomeIcon icon={faStore} /> My Store
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("drivers")}>
+              <FontAwesomeIcon icon={faTruck} /> Drivers
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("assistants")}>
+              <FontAwesomeIcon icon={faUserTie} /> Assistants
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("products")}>
+              <FontAwesomeIcon icon={faBoxOpen} /> Products
+            </button>
+          </li>
         </ul>
+        {/* Add the Logout button at the bottom of the sidebar */}
+        <div className="logout-section">
+          <button onClick={handleLogout}>
+            <FontAwesomeIcon icon={faSignOutAlt} /></button>
+        </div>
       </div>
-      <div className="store-manager-container">
-        {renderContent()}
-      </div>
+      <div className="store-manager-container">{renderContent()}</div>
     </div>
   );
 };
