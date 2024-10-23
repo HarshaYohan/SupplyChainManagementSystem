@@ -1,0 +1,236 @@
+/* Global Style Enhancements */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f7fc;
+  color: #34495e;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.store-manager-wrapper {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  background: linear-gradient(135deg, #1abc9c, #2c3e50);
+  width: 260px;
+  height: 100vh;
+  padding: 20px 0;
+  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.15);
+  transition: width 0.3s ease;
+}
+
+.sidebar:hover {
+  width: 300px;
+}
+
+.sidebar h3 {
+  font-size: 30px;
+  color: #ecf0f1;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.sidebar h3:hover {
+  transform: translateX(10px);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li button {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 18px;
+  color: #ecf0f1;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sidebar ul li button:hover {
+  color: #1abc9c;
+  padding-left: 30px;
+}
+
+.sidebar ul li button:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #1abc9c;
+  opacity: 0;
+  transition: opacity 0.3s ease, left 0.3s ease;
+}
+
+.sidebar ul li button:hover:before {
+  opacity: 1;
+  left: -20px;
+}
+
+/* Main Content */
+.store-manager-container {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+.store-manager-container h2 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Home Greeting Section */
+.greeting {
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 700px;
+  margin: 40px auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.greeting:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.greeting h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.greeting p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* Store Details */
+.store-details {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 40px auto;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.store-details:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.store-details h2 {
+  font-size: 34px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.store-details p {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* Advanced Table Design */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #1abc9c;
+  color: #ffffff;
+}
+
+thead th {
+  padding: 20px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ecf0f1;
+}
+
+tbody tr:hover {
+  background-color: #3498db;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+tbody td {
+  padding: 15px;
+}
+
+/* Responsive Design Enhancements */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .store-details,
+  .greeting {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .store-manager-container {
+    padding: 20px;
+  }
+
+  table th, table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Select Driver Scroll Button */
+select {
+  padding: 8px 15px;
+  font-size: 16px;
+  color: #2c3e50;
+  background-color: #f7f9fb;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+select:focus {
+  border-color: #2980b9;
+  background-color: #e6f7ff;
+}

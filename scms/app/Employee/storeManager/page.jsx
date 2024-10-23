@@ -1,39 +1,100 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
-import "../../../styles/storeManager.css";
+import "../../../styles/employee/storeManager.css";
 
 const StoreManager = () => {
-  const [activeSection, setActiveSection] = useState("myStore"); // State to toggle between sections
+  const router = useRouter();
+  const [userDetails, setUserDetails] = useState(null);
+  const [storeDetails, setStoreDetails] = useState(null);
+  const [drivers, setDrivers] = useState([]);
+  const [assistants, setAssistants] = useState([]);
+  const [productOrders, setProductOrders] = useState([]);
+  const [activeSection, setActiveSection] = useState("home");
+  const [name, setName] = useState("");
 
-  // Hardcoded store details
-  const [storeDetails, setStoreDetails] = useState({
-    id: "#1234",
-    address: "123, Store Street",
-    city: "Store City",
-    railWayContact: "9876543210",
-  });
+  useEffect(() => {
+    setDrivers([
+      { id: 1, name: "John Doe", contact: "123-456-7890", email: "john.doe@example.com", weeklyHours: 40 },
+      { id: 2, name: "Jane Smith", contact: "987-654-3210", email: "jane.smith@example.com", weeklyHours: 35 },
+    ]);
 
-  // Hardcoded drivers details
-  const [drivers, setDrivers] = useState([
-    { id: "D001", name: "John Smith", contact: "555-1234", email: "john@example.com", weeklyHours: 40 },
-    { id: "D002", name: "Jane Doe", contact: "555-5678", email: "jane@example.com", weeklyHours: 35 },
-    { id: "D003", name: "Mark Johnson", contact: "555-8765", email: "mark@example.com", weeklyHours: 45 },
-  ]);
+    setAssistants([
+      { id: 1, name: "Mike Johnson", contact: "555-123-4567", email: "mike.johnson@example.com", weeklyHours: 30 },
+      { id: 2, name: "Emily Davis", contact: "555-987-6543", email: "emily.davis@example.com", weeklyHours: 25 },
+    ]);
 
-  // Switch case for rendering different sections
+    setProductOrders([
+      { orderId: 101, orderDate: "2023-10-01", deliveryDate: "2023-10-05", assignedDriver: "" },
+      { orderId: 102, orderDate: "2023-10-02", deliveryDate: "2023-10-06", assignedDriver: "" },
+    ]);
+  }, []);
+
+
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const storedUserData = JSON.parse(localStorage.getItem("userData"));
+      if (storedUserData && storedUserData.role === "Store Manager") {
+        setUserDetails(storedUserData);
+        console.log("User details: ", storedUserData);
+      } else {
+        router.push("/EmployeeLogin"); // Redirect to login if not logged in or not a store manager
+      }
+    };
+
+    fetchUserDetails();
+  }, [router]);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userDetails && userDetails.email) {
+        try {
+          // Fetch the manager details, including name, from backend
+          const storeRes = await axios.post("/api/Employee/getStoreManager", {email: userDetails.email}
+            
+          );
+
+          // Set fetched data (including name) to userDetails
+          setName(storeRes.data.name);
+          
+          // Optionally: Fetch other store-related data (drivers, assistants, etc.)
+        } catch (error) {
+          console.error("Failed to fetch store data", error);
+        }
+      }
+    };
+
+    if (userDetails) {
+      fetchUserData();
+    }
+  }, [userDetails]);
+
   const renderContent = () => {
     switch (activeSection) {
-      case "myStore":
+      case "home":
         return (
-          <div className="store-details">
-            <h2>My Store</h2>
-            <p><strong>ID:</strong> {storeDetails.id}</p>
-            <p><strong>Address:</strong> {storeDetails.address}</p>
-            <p><strong>City:</strong> {storeDetails.city}</p>
-            <p><strong>RailWayContact:</strong> {storeDetails.railWayContact}</p>
+          <div className="greeting">
+            <h2>Welcome, {name}!</h2> {/* Display the fetched name */}
+            <p>Select a section from the sidebar to manage your store.</p>
           </div>
         );
+
+      case "myStore":
+        return (
+          storeDetails && (
+            <div className="store-details">
+              <h2>My Store</h2>
+              <p><strong>ID:</strong> {storeDetails.id}</p>
+              <p><strong>Address:</strong> {storeDetails.address}</p>
+              <p><strong>City:</strong> {storeDetails.city}</p>
+              <p><strong>Railway Contact:</strong> {storeDetails.railWayContact}</p>
+            </div>
+          )
+        );
+
       case "drivers":
         return (
           <div className="drivers-list">
@@ -62,40 +123,93 @@ const StoreManager = () => {
             </table>
           </div>
         );
-      default:
+
+      case "assistants":
         return (
-          <div>
-            <h2>Section Content</h2>
-            <p>This content will be updated based on the section clicked.</p>
+          <div className="assistants-list">
+            <h2>Assistants</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Weekly Hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assistants.map((assistant) => (
+                  <tr key={assistant.id}>
+                    <td>{assistant.id}</td>
+                    <td>{assistant.name}</td>
+                    <td>{assistant.contact}</td>
+                    <td>{assistant.email}</td>
+                    <td>{assistant.weeklyHours}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         );
+
+      case "products":
+        return (
+          <div className="products-section">
+            <h2>Product Orders</h2>
+            <table className="product-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Order Date</th>
+                  <th>Delivery Date</th>
+                  <th>Assign Driver</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productOrders.map((order) => (
+                  <tr key={order.orderId}>
+                    <td>{order.orderId}</td>
+                    <td>{order.orderDate}</td>
+                    <td>{order.deliveryDate}</td>
+                    <td>
+                      <select
+                        value={order.assignedDriver}
+                        onChange={(e) => assignDriver(order.orderId, e.target.value)}
+                      >
+                        <option value="">Select Driver</option>
+                        {drivers.map((driver) => (
+                          <option key={driver.id} value={driver.id}>
+                            {driver.name}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      default:
+        return <p>Select a section from the sidebar to manage your store.</p>;
     }
   };
 
   return (
     <div className="store-manager-wrapper">
-      {/* Left-side Navbar */}
       <div className="sidebar">
-        <h3>Store Manager</h3>
+        <h3 onClick={() => setActiveSection("home")}>Store Manager</h3>
         <ul>
-          <li>
-            <button onClick={() => setActiveSection("myStore")}>My Store</button>
-          </li>
-          <li>
-            <button onClick={() => setActiveSection("drivers")}>Drivers</button>
-          </li>
-          <li>
-            <button onClick={() => setActiveSection("assistants")}>Assistants</button>
-          </li>
-          <li>
-            <button onClick={() => setActiveSection("products")}>Products</button>
-          </li>
+          <li><button onClick={() => setActiveSection("myStore")}>My Store</button></li>
+          <li><button onClick={() => setActiveSection("drivers")}>Drivers</button></li>
+          <li><button onClick={() => setActiveSection("assistants")}>Assistants</button></li>
+          <li><button onClick={() => setActiveSection("products")}>Products</button></li>
         </ul>
       </div>
-
-      {/* Main Content */}
       <div className="store-manager-container">
-        {renderContent()} {/* Content rendering based on switch case */}
+        {renderContent()}
       </div>
     </div>
   );
