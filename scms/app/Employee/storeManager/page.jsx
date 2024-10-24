@@ -17,10 +17,6 @@ const StoreManager = () => {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    setDrivers([
-      { id: 1, name: "John Doe", contact: "123-456-7890", email: "john.doe@example.com", weeklyHours: 40 },
-      { id: 2, name: "Jane Smith", contact: "987-654-3210", email: "jane.smith@example.com", weeklyHours: 35 },
-    ]);
 
     setAssistants([
       { id: 1, name: "Mike Johnson", contact: "555-123-4567", email: "mike.johnson@example.com", weeklyHours: 30 },
@@ -32,6 +28,7 @@ const StoreManager = () => {
       { orderId: 102, orderDate: "2023-10-02", deliveryDate: "2023-10-06", assignedDriver: "" },
     ]);
   }, []);
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -46,6 +43,8 @@ const StoreManager = () => {
 
     fetchUserDetails();
   }, [router]);
+
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,6 +65,45 @@ const StoreManager = () => {
     }
   }, [userDetails]);
 
+
+  useEffect(() => {
+    const fetchStoreDetails = async () => {
+      if (userDetails && userDetails.email) {
+        try {
+          const response = await axios.post("/api/Employee/getStoreDetails", { email: userDetails.email });
+          setStoreDetails(response.data); 
+        } catch (error) {
+          console.error("Failed to fetch store data", error);
+        }
+      }
+    };
+  
+    if (userDetails) {
+      fetchStoreDetails();
+    }
+  }, [userDetails]);
+
+
+
+  useEffect(() => {
+    const fetchDriverDetails = async () => {
+      if (userDetails && userDetails.email) {
+        try {
+          const response = await axios.post("/api/Employee/getDriverDetails", { email: userDetails.email });
+          setDrivers(response.data.drivers); // Set the fetched drivers
+        } catch (error) {
+          console.error("Failed to fetch driver details", error);
+        }
+      }
+    };
+  
+    if (userDetails) {
+      fetchDriverDetails();
+    }
+  }, [userDetails]);
+  
+  
+  
   // Function to handle toggling of the assigned driver
   const assignDriver = (orderId, selectedDriverId) => {
     setProductOrders((prevOrders) =>
@@ -104,16 +142,16 @@ const StoreManager = () => {
             <div className="store-details">
               <h2>My Store</h2>
               <p>
-                <strong>ID:</strong> {storeDetails.id}
+                <strong className="id">ID:</strong> {storeDetails.storeID}
               </p>
               <p>
-                <strong>Address:</strong> {storeDetails.address}
+                <strong className="address">Address:</strong> {storeDetails.address}
               </p>
               <p>
-                <strong>City:</strong> {storeDetails.city}
+                <strong className="city">City:</strong> {storeDetails.city}
               </p>
               <p>
-                <strong>Railway Contact:</strong> {storeDetails.railWayContact}
+                <strong className="contact">Railway Contact:</strong> {storeDetails.railwayContact}
               </p>
             </div>
           )
