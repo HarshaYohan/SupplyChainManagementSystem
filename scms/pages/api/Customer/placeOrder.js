@@ -1,70 +1,39 @@
+// pages/api/placeOrder.js
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
 export default async function handler(req, res) {
-  try {
-    await runCors(req, res);
-  } catch (error) {
-    console.error("CORS error:", error);
-    return res.status(500).json({ error: "CORS failed" });
-  }
-  if (req.method === "POST") {
-    const { userData, root, store, cartItems } = req.body;
-    
+    try {
+        // Run CORS middleware
+        await runCors(req, res);
 
-    const orderDate = new Date().toISOString().split("T")[0];
-    const deliveryDate = new Date();
-    deliveryDate.setDate(deliveryDate.getDate() + 7);
+        if (req.method === 'POST') {
+            const { CustomerID, OrderDate, RouteID, DeliveryAddress, CartID } = req.body;
 
-    const getCustomerIDQuery =
-      "select CustomerID from customer where Email = ?";
-    const getRouteID = "Select RouteID from route where RouteDescription = ?";
-    const placeOrder =
-      "INSERT INTO orders (CustomerID, OrderDate, DeliveryDate, RouteID, DeliveryAddress, CurrentStatus, City) VALUES (?,?,?,?,?,?,?)";
-    const orderDetailsQuery =
-      "insert into order_product (OrderID,ProductID,Quantity) values ?";
-
-    db.query(getCustomerIDQuery, [userData.email], (err, customerID) => {
-      if (err) {
-        console.log(err);
-      }
-
-      db.query(getRouteID, [req.body.selectedRoot], (err, routeID) => {
-        if (err) {
-          console.log(err);
-        }
-
-        db.query(
-          placeOrder,
-          [
-            userData.customerID,
-            orderDate,
-            deliveryDate,
-            routeID[0].RouteID,
-            "32/kandy",
-            "Pending",
-            req.body.selectedStore,
-          ],
-          (err, result) => {
-            if (err) {
-              console.log(err);
+            // Validate request body
+            if (!CustomerID || !OrderDate || !RouteID || !DeliveryAddress || !CartID) {
+                res.status(400).json({ message: 'All fields are required' });
+                return; // Ensure the function ends here
             }
-            const orderID = 27;
-            const orderDetails = cartItems.map((item) => [
-              orderID,
-              item.ProductID,
-              item.Quantity,
-            ]);
-            console.log(orderDetails);
-            db.query(orderDetailsQuery, [orderDetails], (err, r) => {
-              if (err) console.log(err);
-              console.log(r);
-            });
-          }
-        );
-      });
-    });
-  } else {
-    return res.status(405).json({ message: "Methos does not allowed" });
-  }
+
+            // Call the stored procedure to place the order
+            const [results] = await db.promise().query(
+                'CALL AddOrder(?, ?, ?, ?, ?)',
+                [CustomerID, OrderDate, RouteID, DeliveryAddress, CartID]
+            );
+
+            //const orderId = results[0][0].OrderID;
+
+            // Send a successful response
+           res.status(200).json({ message: 'Order placed successfully' });
+        } else {
+            // Handle unsupported HTTP methods
+            res.setHeader('Allow', ['POST']);
+            res.status(405).end(`Method ${req.method} Not Allowed`);
+        }
+    } catch (error) {
+        console.error(error);
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
