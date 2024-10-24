@@ -17,11 +17,15 @@ export default function DriverHomePage() {
   }, []);
   return (
     <div>
+     
       <Drivernavbar />
       <div className="greeting-box">
         <h1>Welcome to RAILTRUX!</h1>
         <p>Your journey in supply chain management starts here.</p>
       </div>
+      <button className="startButton1">Start My Work</button>
+      <button className="disabledButton1" disabled>End My Work</button>
+
       <div className="container1">
         <Card2
           title="New Orders"

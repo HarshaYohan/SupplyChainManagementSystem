@@ -40,6 +40,7 @@ export default async function handler(req, res) {
       res.send(user[0].email_checker);
       res.status(200).json({ message: "Login successful" });
     } catch (error) {
+      console.log(error);
       res.status(400).json({ error });
     }
   } else {
