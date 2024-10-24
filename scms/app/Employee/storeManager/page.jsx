@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// get the fontawesome
-// npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/fontawesome-svg-core
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
 import axios from "axios";
