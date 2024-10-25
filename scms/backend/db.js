@@ -5,7 +5,7 @@ db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "Dulakshi@2002",
-  database: "supplychainsystem",
+  database: "supplychainmanagement",
   port: 3306,
   host: process.env.DATABASE_HOST,
   user:  process.env.DATABASE_USER,
@@ -23,3 +23,6 @@ db.connect((err) => {
 });
 
 export default db;
+
+
+
