@@ -17,8 +17,8 @@ class UserSession {
       }
   }
 
-  login(email, role) {
-      this.userData = { email, role };
+  login(email, role, userId) {
+      this.userData = { email, role, userId };
       if (typeof window !== "undefined") { // Ensure we're in the browser
           localStorage.setItem("userData", JSON.stringify(this.userData));
       }
