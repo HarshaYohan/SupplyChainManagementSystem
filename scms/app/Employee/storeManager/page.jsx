@@ -18,11 +18,6 @@ const StoreManager = () => {
 
   useEffect(() => {
 
-    setAssistants([
-      { id: 1, name: "Mike Johnson", contact: "555-123-4567", email: "mike.johnson@example.com", weeklyHours: 30 },
-      { id: 2, name: "Emily Davis", contact: "555-987-6543", email: "emily.davis@example.com", weeklyHours: 25 },
-    ]);
-
     setProductOrders([
       { orderId: 101, orderDate: "2023-10-01", deliveryDate: "2023-10-05", assignedDriver: "" },
       { orderId: 102, orderDate: "2023-10-02", deliveryDate: "2023-10-06", assignedDriver: "" },
@@ -99,6 +94,24 @@ const StoreManager = () => {
   
     if (userDetails) {
       fetchDriverDetails();
+    }
+  }, [userDetails]);
+
+
+  useEffect(() => {
+    const fetchAssistantDetails = async () => {
+      if (userDetails && userDetails.email) {
+        try {
+          const response = await axios.post("/api/Employee/getAssistantDetails", { email: userDetails.email });
+          setAssistants(response.data.driverassistants); // Set the fetched assistants
+        } catch (error) {
+          console.error("Failed to fetch driver details", error);
+        }
+      }
+    };
+  
+    if (userDetails) {
+      fetchAssistantDetails();
     }
   }, [userDetails]);
   
