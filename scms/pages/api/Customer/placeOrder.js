@@ -8,18 +8,18 @@ export default async function handler(req, res) {
         await runCors(req, res);
 
         if (req.method === 'POST') {
-            const { CustomerID, OrderDate, RouteID, DeliveryAddress, CartID } = req.body;
+            const { CustomerID, OrderDate, RouteID, DeliveryAddress, CartID, City } = req.body;
 
             // Validate request body
-            if (!CustomerID || !OrderDate || !RouteID || !DeliveryAddress || !CartID) {
+            if (!CustomerID || !OrderDate || !RouteID || !DeliveryAddress || !CartID || !City) {
                 res.status(400).json({ message: 'All fields are required' });
                 return; // Ensure the function ends here
             }
 
             // Call the stored procedure to place the order
             const [results] = await db.promise().query(
-                'CALL AddOrder(?, ?, ?, ?, ?)',
-                [CustomerID, OrderDate, RouteID, DeliveryAddress, CartID]
+                'CALL AddOrder(?, ?, ?, ?, ?,?)',
+                [CustomerID, OrderDate, RouteID, DeliveryAddress, CartID, City]
             );
 
             //const orderId = results[0][0].OrderID;

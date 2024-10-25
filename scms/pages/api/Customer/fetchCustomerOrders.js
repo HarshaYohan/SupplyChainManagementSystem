@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const { customerID } = req.body;
 
     try {
-      const query = "SELECT OrderID, CurrentStatus,OrderDate FROM order_ WHERE CustomerID = ?";
+      const query = "SELECT OrderID, CurrentStatus,OrderDate FROM orders WHERE CustomerID = ?";
       db.query(query, [customerID], (err, results) => {
         if (err) {
           console.error("Error fetching orders:", err);

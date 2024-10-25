@@ -106,6 +106,7 @@ function Cart() {
         RouteID: 6, // Update this if needed
         DeliveryAddress: address,
         CartID: cartID,
+        City: selectedStore,
       });
       router.push("orders"); // Navigate to the orders page
     } catch (err) {
