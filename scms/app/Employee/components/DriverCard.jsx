@@ -1,4 +1,4 @@
-import "../../styles/DriverCard.css";
+import "../../../styles/employee/DriverCard.css";
 import Link from 'next/link';
 import { FaCheckCircle, FaTasks, FaUserCircle } from 'react-icons/fa'; // Icons from react-icons
 

@@ -1,4 +1,4 @@
-import "../../styles/DriverProfile.css";
+import "../../../../styles/employee/DriverProfile.css";
 
 const Profile = () => {
   const user = {

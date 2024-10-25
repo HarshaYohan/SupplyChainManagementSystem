@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Drivernavbar from "../../components/Drivernavbar";
-import "../../styles/DriverHomePage.css";
+import "../../../../styles/employee/DriverHomePage.css";
 import Card2 from "../../components/DriverCard";
 import { useEffect, useState } from "react";
 
@@ -26,21 +26,21 @@ export default function DriverHomePage() {
         <Card2
           title="New Orders"
           background="#FFD700"
-          link="/DriverNewOrders"
+          link="/Employee/Driver/DriverNewOrders"
           iconType="new" // Icon for "New Work"
         />
 
         <Card2
           title="Delivered Orders"
           background="#FF4500"
-          link="/DriverDeliveredOrders"
+          link="/Employee/Driver/DriverDeliveredOrders"
           iconType="finished" // Icon for "Finished Work"
         />
 
         <Card2
           title="My Efforts"
           background="#1E90FF"
-          link="/MyEffort"
+          link="/Employee/Driver/MyEffort"
           iconType="mywork" // Icon for "My Work"
         />
       </div>

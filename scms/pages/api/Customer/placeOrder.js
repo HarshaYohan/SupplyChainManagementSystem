@@ -3,12 +3,17 @@ import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
 export default async function handler(req, res) {
-    try {
-        // Run CORS middleware
-        await runCors(req, res);
+  try {
+    await runCors(req, res);
+  } catch (error) {
+    console.error("CORS error:", error);
+    return res.status(500).json({ error: "CORS failed" });
+  }
+
 
         if (req.method === 'POST') {
             const { CustomerID, OrderDate, RouteID, DeliveryAddress, CartID, City } = req.body;
+
 
             // Validate request body
             if (!CustomerID || !OrderDate || !RouteID || !DeliveryAddress || !CartID || !City) {
@@ -36,4 +41,4 @@ export default async function handler(req, res) {
         console.log(error);
         res.status(500).json({ message: 'Internal server error' });
     }
-}
+    }
