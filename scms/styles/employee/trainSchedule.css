@@ -1,4 +1,4 @@
-/* General styles for the Company Manager page */
+/* General styles for the Train Schedule page */
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -38,10 +38,11 @@
 }
 
 /* Button hover effect for sidebar */
-.sidebar button:hover {
+.sidebar button:hover .train-item button {
   background-color: #0056b3;
 }
-.sidebar button:active {
+
+.sidebar button:active .train-item button {
   background-color: #001f3f;
 }
 
@@ -60,6 +61,7 @@
   flex-direction: column;
   gap: 1rem;
 }
+
 .orders-container {
   padding: 20px;
 }
@@ -68,13 +70,21 @@
   max-width: 98%;
   margin-bottom: 20px;
   background-color: #f0f8fd;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
 }
 
-
+/* Orders list styles */
 .orders-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+}
+
+.order-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .order-box {
@@ -84,28 +94,17 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.6px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .order-item {
   display: flex;
-  flex: 0.5 0.5 20px;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .order-item strong {
   margin-right: 8px;
-}
-
-/* Input and textarea styles */
-select,
-input,
-textarea {
-  padding: 0.5rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  width: 100%;
 }
 
 /* Placeholder text styling */
@@ -113,6 +112,51 @@ textarea {
   text-align: center;
   font-style: italic;
   color: #6c757d;
+}
+
+/* Train details styles */
+.trainDetails-container {
+  padding: 10px;
+}
+
+.train-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.train-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Styling for the train schedule table */
+.train-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.train-schedule-table th,
+.train-schedule-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.train-schedule-table th {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+.train-schedule-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.train-schedule-table tr:hover {
+  background-color: #ddd;
 }
 
 /* Media Queries for Responsiveness */
