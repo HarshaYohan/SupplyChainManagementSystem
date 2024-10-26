@@ -58,8 +58,8 @@ export default async function handler(req, res) {
     City,
     RouteDescription,
     TruckNumber,
-    CurrentStatus
-
+    CurrentStatus,
+    DeliveryDate
     FROM
       finalorderdetails
 WHERE 

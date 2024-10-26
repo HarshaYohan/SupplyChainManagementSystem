@@ -3,7 +3,7 @@ import db from "../../../../backend/db.js";
 export default async function handler(req, res) {
   try {
     // Directly use req.body as it's already parsed by Next.js
-    const { email } = req.body; 
+    const { email } = req.body;
 
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
@@ -11,27 +11,41 @@ export default async function handler(req, res) {
 
     console.log("Fetching driver ID for email:", email);
 
-    // Step 1: Fetch the driverId using the provided email
-    const [driverRows] = await db.query(
-      `
+    const [emplyoeeRows] = await db.query(
+      `SELECT Roll FROM employee 
+        Where email=?`,
+      [email]
+    );
+    console.log(emplyoeeRows[0]);
+    if (emplyoeeRows.length === 0) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    const role = emplyoeeRows[0].Roll;
+    var orderRows;
+    if (role == "Driver") {
+      // Step 1: Fetch the driverId using the provided email
+
+      const [driverRows] = await db.query(
+        `
       SELECT d.DriverID 
       FROM Employee e
       JOIN Driver d ON d.EmployeeID = e.EmployeeID
       WHERE e.Email = ?
     `,
-      [email]
-    );
+        [email]
+      );
 
-    if (driverRows.length === 0) {
-      return res.status(404).json({ message: "Driver not found" });
-    }
+      if (driverRows.length === 0) {
+        return res.status(404).json({ message: "Driver not found" });
+      }
 
-    const driverId = driverRows[0].DriverID;
-    console.log("Driver ID found:", driverId);
+      const driverId = driverRows[0].DriverID;
+      console.log("Driver ID found:", driverId);
 
-    // Step 2: Fetch orders assigned to the driver
-    const [orderRows] = await db.query(
-      `
+      // Step 2: Fetch orders assigned to the driver
+      [orderRows] = await db.query(
+        `
       SELECT 
         CustomerName,
         PhoneNumber,
@@ -42,14 +56,17 @@ export default async function handler(req, res) {
         RouteDescription,
         TruckNumber,
         CurrentStatus
-      FROM DeliveredDataDetails
+      FROM DeliveredData
       WHERE DriverID = ?
     `,
-      [driverId]
-    );
+        [driverId]
+      );
+    }
 
     if (orderRows.length === 0) {
-      return res.status(404).json({ message: "No orders found for this driver" });
+      return res
+        .status(404)
+        .json({ message: "No orders found for this driver" });
     }
 
     res.status(200).json(orderRows);
