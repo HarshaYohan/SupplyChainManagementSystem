@@ -1,5 +1,5 @@
 "use client";
-import "../../../styles/customer/navbar.css";
+import "../../../styles/employee/employeeLogin.css";
 import { useRouter } from "next/navigation";
 
 function Navbar() {
