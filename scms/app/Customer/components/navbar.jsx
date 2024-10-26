@@ -10,7 +10,6 @@ function Navbar() {
 
   // Check login status on mount
   useEffect(() => {
-    //const userData = UserSession.getUserData();
     setIsLoggedIn(UserSession.isLoggedIn());
   }, []);
 
@@ -19,6 +18,14 @@ function Navbar() {
   const handleClickCart = () => {
     if (isLoggedIn) {
       router.push("/Customer/cart");
+    } else {
+      router.push("/Customer/customerLogin");
+    }
+  };
+
+  const handleClickOrders = () => {
+    if (isLoggedIn) {
+      router.push("/Customer/orders");
     } else {
       router.push("/Customer/customerLogin");
     }
@@ -53,6 +60,12 @@ function Navbar() {
           alt="Cart"
           className="icon"
           onClick={handleClickCart}
+        />
+        <img
+          src="../../../orders.png" // Replace with the actual path to your orders icon
+          alt="Orders"
+          className="icon"
+          onClick={handleClickOrders}
         />
         {isLoggedIn ? (
           <img

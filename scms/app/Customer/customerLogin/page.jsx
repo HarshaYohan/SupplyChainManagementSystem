@@ -20,9 +20,12 @@ function Login() {
     try {
       const response = await axios.post("/api/Customer/login", { email, password });
       
+      const { data } = await axios.get(`/api/Customer/getId?email=${email}`);
+      const customerId = data.customerId;
+      console.log("Customer ID:", customerId);
+      
       // Login and set role as "customer"
-      UserSession.login(email, "customer");  
-
+      UserSession.login(email, "customer", customerId);  
       console.log("Login successful", response.data);
       router.push("/Customer/product");
     } catch (err) {

@@ -1,71 +1,39 @@
-import db from "../../../backend/db.js";
-import runCors from "../../../utils/cors.js";
+// pages/api/Customer/addToCart.js
 
-const queryDatabase = (query, params) => {
-  return new Promise((resolve, reject) => {
-    db.query(query, params, (err, results) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(results);
-    });
-  });
-};
+import runCors from '../../../utils/cors'; // Adjust the path to your CORS setup
+import db from '../../../backend/db'; // Import the existing db connection
 
 export default async function handler(req, res) {
-  try {
-    await runCors(req, res);
-    
-    if (req.method !== "POST") {
-      return res.status(405).json({ message: "Method Not Allowed" });
+  await runCors(req, res); // Ensure CORS is applied to the request
+
+  if (req.method === 'POST') {
+    const { userData, productId, quantity } = req.body;
+
+    if (!userData || !productId || !quantity) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const { userData, productId } = req.body;
-    const email = userData.email;
-
-    const getCustomerIDQuery = "SELECT CustomerID FROM customer WHERE Email = ?";
-    const getCartQuery = "SELECT CartID FROM cart WHERE CustomerID = ?";
-    const createCartQuery = "INSERT INTO cart (CustomerID) VALUES (?)";
-    const checkCartItemQuery = "SELECT Cart_ItemsID, Quantity FROM cart_items WHERE CartID = ? AND ProductID = ?";
-    const updateCartItemQuery = "UPDATE cart_items SET Quantity = Quantity + 1 WHERE CartID = ? AND ProductID = ?";
-    const insertCartItemQuery = "INSERT INTO cart_items (CartID, ProductID, Quantity) VALUES (?, ?, ?)";
+    const customerId = userData.userId; // Get the customer ID from user data
 
     try {
-      // Get Customer ID
-      const customerResults = await queryDatabase(getCustomerIDQuery, [email]);
-      if (customerResults.length === 0) {
-        return res.status(401).json({ error: "Customer not found" });
-      }
-
-      const customerId = customerResults[0].CustomerID;
-
-      // Get Cart ID
-      const cartResults = await queryDatabase(getCartQuery, [customerId]);
-      let cartId;
-
-      // If cart does not exist, create a new one
-      if (cartResults.length === 0) {
-        const cartInsertResult = await queryDatabase(createCartQuery, [customerId]);
-        cartId = cartInsertResult.insertId;
-      } else {
-        cartId = cartResults[0].CartID;
-      }
-
-      // Check for cart item
-      const cartItemResults = await queryDatabase(checkCartItemQuery, [cartId, productId]);
-      if (cartItemResults.length > 0) {
-        await queryDatabase(updateCartItemQuery, [cartId, productId]);
-        return res.status(200).json({ message: "Cart item updated" });
-      } else {
-        await queryDatabase(insertCartItemQuery, [cartId, productId, 1]); // Assuming quantity starts at 1
-        return res.status(201).json({ message: "Item added to cart" });
-      }
-    } catch (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: "Database error" });
+      // Use the existing db connection to call the stored procedure
+      db.query(
+        'CALL ManageCartItem(?, ?, ?)',
+        [customerId, productId, quantity],
+        (error, results) => {
+          if (error) {
+            console.error('Error adding item to cart:', error);
+            return res.status(500).json({ error: 'Failed to add item to cart.' });
+          }
+          return res.status(200).json({ message: 'Item added to cart successfully!', results });
+        }
+      );
+    } catch (error) {
+      console.error('Error executing query:', error);
+      return res.status(500).json({ error: 'Failed to add item to cart.' });
     }
-  } catch (error) {
-    console.error("CORS error:", error);
-    return res.status(500).json({ error: "CORS failed" });
+  } else {
+    // Handle any other HTTP method
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 }

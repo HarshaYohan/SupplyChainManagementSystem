@@ -2,6 +2,7 @@ import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 import bcrypt from "bcrypt";
+import userSession from "../../../utils/userSession.js";
 
 export default async function handler(req, res) {
   try {
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
       res
         .status(200)
         .json({ message: "Login successful"});
+     
     } catch (error) {
       res.status(400).json({ error });
     }

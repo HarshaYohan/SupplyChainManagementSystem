@@ -7,6 +7,7 @@ function Home() {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
+
   // Ensure the component is mounted before rendering fully
   useEffect(() => {
     setIsMounted(true);

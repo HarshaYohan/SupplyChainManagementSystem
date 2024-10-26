@@ -1,5 +1,9 @@
 "use client";
+<<<<<<< HEAD
 import "../../../styles/employee/employeeLogin.css";
+=======
+import "../../../styles/employee/NavbarEmployee.css";
+>>>>>>> b2862c40bd34a5e8630d338cf1d8b5a0394078bd
 import { useRouter } from "next/navigation";
 
 function Navbar() {
