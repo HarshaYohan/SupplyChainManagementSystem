@@ -10,23 +10,19 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { productName } = req.body;
+    const { productID, cartID } = req.body; // Receive ProductID
+    console.log(productID);
 
-    const getProductID = "select ProductID from product where ProductName = ?";
-    db.query(getProductID, [productName], (err, result) => {
+    const updateCartItems = "DELETE FROM cart_items WHERE ProductID = ? and CartID = ?";
+    db.query(updateCartItems, [productID, cartID], (err, result) => {
       if (err) {
         console.log(err);
-        return; 
+        return res.status(500).json({ error: "Failed to update cart" });
       }
-
-      if (result.length > 0) {
-        const productID = result[0].ProductID;
-        const updateCartItems = "DELETE FROM cart_items WHERE ProductID = ?";
-        db.query(updateCartItems, productID, (err) => {
-          if (err) console.log(err);
-        });
+      if (result.affectedRows > 0) {
+        res.status(200).json({ message: "Item removed from cart" });
       } else {
-        console.log("Product not found");
+        res.status(404).json({ message: "Product not found in cart" });
       }
     });
   } else {

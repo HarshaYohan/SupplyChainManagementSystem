@@ -40,11 +40,14 @@ function Signup() {
         email: email
       }
      // setUserData(response.data);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      //localStorage.setItem("userData", JSON.stringify(userData));
 
       if (response.status === 200) {
         console.log("Signup successful", response.data);
-        userSession.login(email, "customer");
+        const { data } = await axios.get(`/api/Customer/getId?email=${email}`);
+      const customerId = data.customerId;
+      console.log("Customer ID:", customerId);
+        userSession.login(email, "customer", customerId);
         router.push("/Customer/product");
       }
     } catch (err) {

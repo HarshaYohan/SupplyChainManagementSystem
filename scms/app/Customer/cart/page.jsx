@@ -1,26 +1,40 @@
-"use client";
+"use client"; // Ensure this is a client component
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar.jsx";
 import "../../../styles/customer/cart.css";
 import axios from "axios";
+import UserSession from "../../../utils/userSession.js";
+import { useRouter } from 'next/navigation'; // Correct import for App Router
 
 function Cart() {
+  const router = useRouter(); // Initialize router
   const [cartItems, setCartItems] = useState([]);
   const [userData, setUserData] = useState(null);
   const [selectedStore, setSelectedStore] = useState("");
   const [roots, setRoots] = useState([]);
   const [selectedRoot, setSelectedRoot] = useState("");
+  const [rootID, setRootID] = useState(null);
+  const [cartID, setCartID] = useState(null);
+  const [address, setAddress] = useState("");
 
-  // Fetch user data from localStorage when the component mounts
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
+    const storedUserData = UserSession.getUser();
     if (storedUserData) {
-      const parsedData = JSON.parse(storedUserData);
-      setUserData(parsedData);
+      setUserData(storedUserData);
+      const fetchCartID = async () => {
+        try {
+          const response = await axios.post("/api/Customer/cartId", {
+            userID: storedUserData.userId,
+          });
+          setCartID(response.data.cartID);
+        } catch (err) {
+          console.error("Error fetching cart ID:", err);
+        }
+      };
+      fetchCartID();
     }
   }, []);
-  console.log(userData);
-  // Fetch cart items when userData is available
+
   useEffect(() => {
     if (userData) {
       const handleAddCart = async () => {
@@ -30,27 +44,27 @@ function Cart() {
           });
           setCartItems(response.data);
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       };
-
       handleAddCart();
     }
   }, [userData]);
 
   const handleRemoveItem = async (index) => {
-    const productName = cartItems[index].ProductName;
+    const productID = cartItems[index].ProductID;
     const updatedItems = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedItems);
+
     try {
-      await axios.post("/api/Customer/updateCart", { productName });
+      await axios.post("/api/Customer/updateCart", { productID, cartID });
     } catch (err) {
-      console.log("Error updating the cart.", err);
+      console.error("Error updating the cart:", err);
     }
   };
 
   const handleQuantityChange = (index, newQuantity) => {
-    if (newQuantity < 1) return; // Prevent setting quantity to less than 1
+    if (newQuantity < 1) return;
     const updatedItems = [...cartItems];
     updatedItems[index].Quantity = newQuantity;
     setCartItems(updatedItems);
@@ -65,38 +79,47 @@ function Cart() {
 
   useEffect(() => {
     const fetchRoots = async () => {
-      const store = selectedStore;
       try {
         const response = await axios.post("/api/Customer/fetchRoots", {
-          store,
+          store: selectedStore,
         });
         setRoots(response.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
-    fetchRoots();
+
+    if (selectedStore) fetchRoots();
   }, [selectedStore]);
 
-  const handleStoreChange = (e) => {
-    setSelectedStore(e.target.value);
-  };
-
+  const handleStoreChange = (e) => setSelectedStore(e.target.value);
   const handleRootChange = (e) => {
     setSelectedRoot(e.target.value);
+    setRootID(e.target.index);
   };
 
   const handlePlaceOrderClick = async () => {
     try {
       await axios.post("/api/Customer/placeOrder", {
-        userData,
-        selectedRoot,
-        selectedStore,
-        cartItems,
+        CustomerID: userData.userId,
+        OrderDate: new Date().toISOString().split('T')[0],
+        RouteID: 6, // Update this if needed
+        DeliveryAddress: address,
+        CartID: cartID,
+        City: selectedStore,
       });
-      console.log("Succesfull!");
+      router.push("orders"); // Navigate to the orders page
     } catch (err) {
-      console.log(err);
+      console.error("Error placing order:", err.response?.data || err.message);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      await axios.post("/api/Customer/updateCartItems", { cartItems });
+      window.location.reload();
+    } catch (err) {
+      console.error("Error saving cart changes:", err);
     }
   };
 
@@ -110,7 +133,7 @@ function Cart() {
             {cartItems.map((item, index) => (
               <div key={item.ProductName + index} className="cart-item">
                 <h2>{item.ProductName}</h2>
-                <p>Price: ${parseFloat(item.Price).toFixed(2)}</p>
+                <p>Price: {parseFloat(item.Price).toFixed(2)}</p>
                 <div className="quantity-section">
                   <label>Quantity:</label>
                   <input
@@ -131,67 +154,74 @@ function Cart() {
               </div>
             ))}
             <div className="total-section">
-              <h2>Total: ${calculateTotal().toFixed(2)}</h2>
+              <h2>Total: LKR {calculateTotal().toFixed(2)}</h2>
             </div>
           </div>
         ) : (
           <p className="empty-cart">Your cart is empty</p>
         )}
       </div>
-      <div className="confirmationSection">
-        <h1 className="cart-title">Order Confirmation</h1>
-        <div className="cart-item">
-          <label htmlFor="storeDropdown">Choose The Relevant Store: </label>
-          <select
-            id="storeDropdown"
-            value={selectedStore}
-            onChange={handleStoreChange}
-            disabled={!cartItems.length}
-          >
-            <option value="">Select the Store</option>
-            <option value="Colombo">Colombo</option>
-            <option value="Negombo">Negombo</option>
-            <option value="Matara">Matara</option>
-            <option value="Galle">Galle</option>
-            <option value="Badulla">Badulla</option>
-            <option value="Anuradhapura">Anuradhapura</option>
-            <option value="Trincomalee">Trincomalee</option>
-            <option value="Jaffna">Jaffna</option>
-          </select>
 
-          <label htmlFor="route-dropdown">Choose The Relevant Route:</label>
-          <select
-            id="route-dropdown"
-            value={selectedRoot}
-            onChange={handleRootChange}
-            disabled={!roots.length}
-          >
-            <option value="">Select the Route</option>
-            {roots && roots.length > 0 ? (
-              roots.map((root) => (
-                <option
-                  key={root.RouteDescription}
-                  value={root.RouteDescription}
-                >
+      {cartItems.length > 0 && ( // Only show this section if the cart is not empty
+        <div className="confirmationSection">
+          <h1 className="cart-title">Order Confirmation</h1>
+
+          <p className="delivery-time-message">
+            Please note: It may take up to 7 days to deliver your order.
+          </p>
+
+          <div className="cart-item">
+            <label htmlFor="storeDropdown">Choose The Relevant Store:</label>
+            <select
+              id="storeDropdown"
+              value={selectedStore}
+              onChange={handleStoreChange}
+            >
+              <option value="">Select the Store</option>
+              {["Colombo", "Negombo", "Matara", "Galle", "Badulla", "Anuradhapura", "Trincomalee", "Jaffna"].map(
+                (store) => (
+                  <option key={store} value={store}>
+                    {store}
+                  </option>
+                )
+              )}
+            </select>
+
+            <label htmlFor="route-dropdown">Choose The Relevant Route:</label>
+            <select
+              id="route-dropdown"
+              value={selectedRoot}
+              onChange={handleRootChange}
+              disabled={!roots.length}
+            >
+              <option value="">Select the Route</option>
+              {roots.map((root) => (
+                <option key={root.RouteDescription} value={root.RouteDescription}>
                   {root.RouteDescription}
                 </option>
-              ))
-            ) : (
-              <option value="" disabled>
-                No routes available
-              </option>
-            )}
-          </select>
+              ))}
+            </select>
 
-          <button
-            className="placeorder-button"
-            onClick={handlePlaceOrderClick}
-            disabled={!selectedStore && !selectedRoot}
-          >
-            Place Order
-          </button>
+            <label htmlFor="address-input">Enter Delivery Address:</label>
+            <input
+              id="address-input"
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter your address"
+              required
+            />
+
+            <button
+              className="placeorder-button"
+              onClick={handlePlaceOrderClick}
+              disabled={!selectedStore || !selectedRoot || !address}
+            >
+              Place Order
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
