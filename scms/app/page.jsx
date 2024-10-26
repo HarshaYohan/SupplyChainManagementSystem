@@ -14,6 +14,7 @@ function Home() {
   }, []);
 
   const handleNavigateShop = () => {
+    localStorage.clear();
     router.push("/Customer/product");
   };
 

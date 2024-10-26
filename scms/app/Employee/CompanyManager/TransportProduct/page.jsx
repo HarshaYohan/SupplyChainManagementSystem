@@ -12,9 +12,7 @@ const TrainSchedule = () => {
   const [cityTrainDetails, setCityTrainDetails] = useState([]);
   const [expandedOrderIndex, setExpandedOrderIndex] = useState(null);
   // const [showPendingOrders, setShowPendingOrders] = useState(false);
-  const [currentDate, setCurrentDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString());
 
   const fetchData = async (url, setter) => {
     try {
@@ -30,29 +28,6 @@ const TrainSchedule = () => {
     fetchData("/api/Employee/fetchTrainDetails", setTrainDetails);
     fetchData("/api/Employee/fetchCityTrainDetails", setCityTrainDetails);
   }, []);
-
-  const today = '2024-10-27'
-  useEffect(() => {
-    
-  
-    if (currentDate !== today) {
-      setCurrentDate(today);  // Only update state if the date has changed
-    }
-  }, []);  // Run this effect when currentDate changes
-  
-  useEffect(() => {
-    if (currentDate) {  // Ensure the currentDate is set before making the request
-      axios.post("/api/Employee/resetTrainDetails")
-        .then(response => {
-          setCityTrainDetails(response.data);  // Update the train details
-        })
-        .catch(error => {
-          console.error("Failed to reset train details", error);
-        });
-    }
-  }, [currentDate]);  // Trigger this effect when the currentDate changes
-  
-
 
   const handleClick = async (order, train) => {
     if (order.TrainCapacityConsumption > train.AllocatedCapacity)
@@ -73,6 +48,16 @@ const TrainSchedule = () => {
         alert("Failed to allocate order to train");
       }
     }
+  };
+
+  const handleEndWork = async () => {
+    axios.post("/api/Employee/resetTrainDetails")
+      .then((response) => {
+        setCityTrainDetails(response.data); // Update the train details
+      })
+      .catch((error) => {
+        console.error("Failed to reset train details", error);
+      });
   };
 
   const filteredOrders = orderDetails.filter((order) =>
@@ -118,6 +103,7 @@ const TrainSchedule = () => {
           <div className="orders-container">
             <div className="head">
               <h2>Pending Orders</h2>
+              <h2><strong>Date :</strong>{currentDate}</h2>
               {/* <button onClick={() => setShowPendingOrders(!showPendingOrders)}>
                 {showPendingOrders
                   ? "Hide Pending Orders"
@@ -162,6 +148,9 @@ const TrainSchedule = () => {
                   {expandedOrderIndex === index && renderTrainDetails(order)}
                 </div>
               ))}
+              <div>
+                <button onClick={handleEndWork}>End Work</button>
+              </div>
             </div>
             {/* </> */}
             {/* )} */}
@@ -190,13 +179,9 @@ const TrainSchedule = () => {
                 ))}
               </tbody>
             </table>
-            <divc className="head">
+            <div className="head">
               <h2>City-Train Details</h2>
-              <h2>
-                <strong>Date :</strong>
-                {currentDate}
-              </h2>
-            </divc>
+            </div>
             <table className="train-schedule-table">
               <thead>
                 <tr>
