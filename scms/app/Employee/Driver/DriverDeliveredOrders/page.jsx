@@ -2,15 +2,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../../../styles/employee/DriverDeliverdOrders.css"; // Your CSS path
+import "../../../../styles/employee/DriverDeliverdOrders.css"; 
 
 const DeliveredItems = () => {
   const [deliveredItems, setDeliveredItems] = useState([]);
-  const [visibleDetails, setVisibleDetails] = useState(null); // State to track visible details
+  const [visibleDetails, setVisibleDetails] = useState(null); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch delivered orders when the component is mounted
+
   useEffect(() => {
     const fetchDeliveredOrders = async () => {
       try {
@@ -19,14 +19,14 @@ const DeliveredItems = () => {
           throw new Error("User data not found in localStorage.");
         }
 
-        const { email } = userData; // Assuming email is part of the stored user data
+        const { email } = userData; 
 
         const response = await fetch(
           `/api/Employee/Driver/DriverDeliverddata`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }), // Send the email only
+            body: JSON.stringify({ email }), 
           }
         );
 
@@ -48,9 +48,9 @@ const DeliveredItems = () => {
 
   const toggleDetails = async (OrderID) => {
     if (visibleDetails === OrderID) {
-      setVisibleDetails(null); // Hide details if already visible
+      setVisibleDetails(null); 
     } else {
-      setVisibleDetails(OrderID); // Show the details of the current order
+      setVisibleDetails(OrderID); 
     }
   };
 
