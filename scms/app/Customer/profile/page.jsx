@@ -68,13 +68,19 @@ function Profile() {
         name: name,
         address: address,
         phone: phone,
-        email: email,
+        email: email, // Keeping the email in the request, but it will not change
       });
+      alert("Profile updated successfully!");
     } catch (err) {
-      if (err) {
-        console.log(error);
-      }
+      console.log(err);
     }
+  };
+
+  const handleLogout = () => {
+    // Clear user data and redirect to login page
+    localStorage.removeItem("userData");
+    // Redirect to login page (adjust as necessary)
+    window.location.href = "/Customer/product";
   };
 
   return (
@@ -122,13 +128,16 @@ function Profile() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                readOnly // Makes the email field unchangeable
                 className="input-box"
               />
             </div>
 
             <button onClick={handleSave} className="save-button">
               Save Changes
+            </button>
+            <button onClick={handleLogout} className="logout-button">
+              Logout
             </button>
           </div>
         </div>

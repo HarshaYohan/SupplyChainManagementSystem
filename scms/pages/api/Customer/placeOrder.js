@@ -10,59 +10,41 @@ export default async function handler(req, res) {
   }
   if (req.method === "POST") {
     const { userData, root, store, cartItems } = req.body;
-    
 
     const orderDate = new Date().toISOString().split("T")[0];
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + 7);
 
-    const getCustomerIDQuery =
-      "select CustomerID from customer where Email = ?";
-    const getRouteID = "Select RouteID from route where RouteDescription = ?";
-    const placeOrder =
-      "INSERT INTO orders (CustomerID, OrderDate, DeliveryDate, RouteID, DeliveryAddress, CurrentStatus, City) VALUES (?,?,?,?,?,?,?)";
+    const placeOrderQuery = "call  placeOrder(?,?,?,?,?,?)";
     const orderDetailsQuery =
       "insert into order_product (OrderID,ProductID,Quantity) values ?";
 
-    db.query(getCustomerIDQuery, [userData.email], (err, customerID) => {
-      if (err) {
-        console.log(err);
-      }
-
-      db.query(getRouteID, [req.body.selectedRoot], (err, routeID) => {
-        if (err) {
-          console.log(err);
+    const result = await new Promise((resolve, reject) => {
+      db.query(
+        placeOrderQuery,
+        [
+          req.body.selectedStore,
+          orderDate,
+          deliveryDate,
+          "24/halawatha",
+          userData.email,
+          req.body.selectedRoot,
+        ],
+        (err,result) => {
+          if (err) reject(err);
+          resolve(result);
         }
+      );
+    });
+    console.log(result[0][0].OrderID);
+    const orderDetails = cartItems.map((item) => [
+      result[0][0].OrderID,
 
-        db.query(
-          placeOrder,
-          [
-            userData.customerID,
-            orderDate,
-            deliveryDate,
-            routeID[0].RouteID,
-            "32/kandy",
-            "Pending",
-            req.body.selectedStore,
-          ],
-          (err, result) => {
-            if (err) {
-              console.log(err);
-            }
-            const orderID = 27;
-            const orderDetails = cartItems.map((item) => [
-              orderID,
-              item.ProductID,
-              item.Quantity,
-            ]);
-            console.log(orderDetails);
-            db.query(orderDetailsQuery, [orderDetails], (err, r) => {
-              if (err) console.log(err);
-              console.log(r);
-            });
-          }
-        );
-      });
+      item.ProductID,
+      item.Quantity,
+    ]);
+    db.query(orderDetailsQuery, [orderDetails], (err) => {
+      if (err) console.log(err);
     });
   } else {
     return res.status(405).json({ message: "Methos does not allowed" });
