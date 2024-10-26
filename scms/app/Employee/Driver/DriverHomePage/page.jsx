@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Drivernavbar from "../../components/navbarEmployee";
+import Drivernavbar from "../../components/Drivernavbar";
 import "../../../../styles/employee/DriverHomePage.css";
 import Card2 from "../../components/DriverCard";
 import { useEffect, useState } from "react";
