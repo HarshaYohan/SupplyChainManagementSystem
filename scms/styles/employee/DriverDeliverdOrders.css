@@ -1,113 +1,142 @@
 .orders {
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: auto;
-    transition: transform 0.3s;
-  }
-  
-  .orders:hover {
-    transform: scale(1.02);
-  }
-  
-  .title2 {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 3rem;
-    margin-bottom: 30px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    background: linear-gradient(45deg, #3498db, #2ecc71);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    border-radius: 5px;
-    transition: color 0.3s ease;
-  }
-  
-  .title2:hover {
-    color: #2980b9;
-    transform: scale(1.05);
-  }
-  
-  .orderList {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .orderItem {
-    margin-bottom: 20px;
-  }
-  
-  .orderCard {
-    padding: 20px;
-    border: none;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .orderCard:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .orderText {
-    margin: 0 0 10px;
-    color: #2c3e50;
-    font-size: 1.6rem;
-    font-weight: 600;
-  }
-  
-  .buttonContainer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .toggleButton {
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    background-color: #3498db;
-    color: #fff;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .toggleButton:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  @media (max-width: 600px) {
-    .orders {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
+  transition: transform 0.3s;
+}
+
+.orders:hover {
+  transform: scale(1.02);
+}
+
+.title2 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 3rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  background: linear-gradient(45deg, #3498db, #2ecc71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-radius: 5px;
+  transition: color 0.3s ease;
+}
+
+.title2:hover {
+  color: #2980b9;
+  transform: scale(1.05);
+}
+
+.orderList {
+  list-style: none;
+  padding: 0;
+}
+
+.orderItem {
+  margin-bottom: 20px;
+}
+
+.orderCard {
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.orderCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.orderText {
+  margin: 0 0 10px;
+  color: #2c3e50;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.toggleButton {
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  background-color: #3498db;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+.toggleButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detailsContainer {
+  margin-top: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detailsText {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+  font-size: 1rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 5px 0;
+}
+
+.detailsText strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.detailsText em {
+  color: #e67e22;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .orders {
       padding: 15px;
-    }
-  
-    .title {
+  }
+
+  .title2 {
       font-size: 2rem;
-    }
-  
-    .orderText {
+  }
+
+  .orderText {
       font-size: 1.3rem;
-    }
-  
-    .toggleButton {
+  }
+
+  .toggleButton {
       font-size: 0.9rem;
       padding: 10px 15px;
-    }
   }
-  
-  .toggleButton:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
-  }
-  
+}
+
+.toggleButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+}

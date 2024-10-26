@@ -17,31 +17,33 @@ export default function DriverHomePage() {
   }, []);
   return (
     <div>
+     
       <Drivernavbar />
       <div className="greeting-box">
         <h1>Welcome to RAILTRUX!</h1>
         <p>Your journey in supply chain management starts here.</p>
       </div>
+
       <div className="container1">
-        <Card2
-          title="New Orders"
-          background="#FFD700"
-          link="/Employee/Driver/DriverNewOrders"
-          iconType="new" // Icon for "New Work"
+      <Card2
+         title="New Orders"
+         background="linear-gradient(135deg, #b3d4ff, #91c7ff)"
+         link="/Employee/Driver/DriverNewOrders"
+         iconType="new" 
         />
 
         <Card2
           title="Delivered Orders"
-          background="#FF4500"
+          background="linear-gradient(135deg, #ffe7d9, #ffb3a7)"
           link="/Employee/Driver/DriverDeliveredOrders"
-          iconType="finished" // Icon for "Finished Work"
+          iconType="finished" 
         />
 
         <Card2
           title="My Efforts"
-          background="#1E90FF"
+          background="linear-gradient(135deg, #b3d4ff, #91c7ff)"
           link="/Employee/Driver/MyEffort"
-          iconType="mywork" // Icon for "My Work"
+          iconType="mywork" 
         />
       </div>
     </div>

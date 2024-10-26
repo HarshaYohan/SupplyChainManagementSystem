@@ -1,8 +1,8 @@
-/* Navbar Container */
+
 .Drivernavbar {
-    display: flex; /* Flexbox layout */
-    justify-content: space-between; /* Space between left and right sections */
-    align-items: center; /* Vertically align items */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
     background-color: #001f3f;
     color: #fff;
     padding: 1rem 2rem;
@@ -16,7 +16,7 @@
     border-radius: 10px;
   }
   
-  /* Logo Section */
+  
   .logo .logo-text {
     font-size: 30px;
     font-weight: bold;
@@ -24,7 +24,7 @@
     
   }
   
-  /* Navigation Links */
+  
   .nav-links {
     display: flex;
     gap: 20px;
@@ -38,10 +38,10 @@
   }
   
   .nav-links a:hover {
-    color: #ccc; /* Light grey on hover */
+    color: #ccc; 
   }
   
-  /* Login Section */
+  
   .login-section {
     display: flex;
     align-items: center;
@@ -61,8 +61,8 @@
     border-radius: 50%;
   }
   
-  /* Hover Effects */
+  
   .login-section a:hover {
-    color: #ccc; /* Light grey on hover */
+    color: #ccc; 
   }
   
