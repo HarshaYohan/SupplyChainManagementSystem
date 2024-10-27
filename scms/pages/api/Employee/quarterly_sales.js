@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       });
     });
 
-    console.log(reportDetails[0]);
+    //console.log(reportDetails[0]);
     res.status(200).json(reportDetails[0]);
   } else {
     res.status(405).json({ message: "Method not allowed" });
