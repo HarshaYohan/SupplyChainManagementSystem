@@ -27,16 +27,22 @@ const Profile = () => {
     return <p>Loading profile...</p>;
   }
 
-  return (
-    <div className="container2">
-      <div className="profile-container">
-        <h2 className="profile-name">{user.Name}</h2>
+return (
+  <div className="Container">
+    <div className="BodySection">
+      <div className="profile-header">PROFILE</div> {/* Profile header */}
+      <div className="profileContainer">
+        <div className="profilepicturesection">
+          <img src="../../../OIP.jpeg" alt="Profile" />
+        </div>
+        <h2 className="profile-name">{user.Name || "Name not available"}</h2>
         <p className="profile-email">{user.Email}</p>
         <p className="profile-address"><strong>Address:</strong> {user.Address}</p>
         <p className="profile-phone"><strong>Phone Number:</strong> {user.PhoneNumber}</p>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Profile;
