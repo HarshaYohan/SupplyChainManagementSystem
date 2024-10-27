@@ -3,6 +3,7 @@ import "../../../styles/customer/signup_login.css";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import axios from "axios";
+import userSession from "../../../utils/userSession";
 
 function Signup() {
   const router = useRouter();
@@ -43,6 +44,7 @@ function Signup() {
 
       if (response.status === 200) {
         console.log("Signup successful", response.data);
+        userSession.login(email, "customer");
         router.push("/Customer/product");
       }
     } catch (err) {

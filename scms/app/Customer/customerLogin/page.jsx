@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
+import UserSession from "../../../utils/userSession";
 import "../../../styles/customer/signup_login.css";
 
 function Login() {
@@ -15,24 +16,21 @@ function Login() {
     e.preventDefault();
     setIsClicked(true);
     setInterval(() => setIsClicked(false), 200);
-    try {
-      const response = await axios.post("/api/Customer/login", {
-        email,
-        password,
-      });
 
-      const userData = {
-        email: email,
-      };
-      localStorage.setItem("userData", JSON.stringify(userData));
+    try {
+      const response = await axios.post("/api/Customer/login", { email, password });
+      
+      // Login and set role as "customer"
+      UserSession.login(email, "customer");  
 
       console.log("Login successful", response.data);
       router.push("/Customer/product");
     } catch (err) {
       console.error("Login failed", err);
-      setErrorMessage("Login failed. Please check your email and password."); // Step 2: Set error message
+      setErrorMessage("Login failed. Please check your email and password.");
     }
   };
+
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
     setErrorMessage("");
@@ -70,7 +68,6 @@ function Login() {
               {errorMessage}
             </p>
           )}
-          {/* Display error message */}
           <button
             type="submit"
             style={{
