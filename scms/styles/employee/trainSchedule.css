@@ -107,6 +107,12 @@
   margin-right: 8px;
 }
 
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Placeholder text styling */
 .placeholder-text {
   text-align: center;

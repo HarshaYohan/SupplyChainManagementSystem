@@ -16,6 +16,7 @@ function Login() {
     setIsClicked(true);
     setInterval(() => setIsClicked(false), 200);
     try {
+      
       const response = await axios.post("/api/Employee/employeeLogin", {
         email,
         password,
@@ -30,7 +31,7 @@ function Login() {
       localStorage.setItem("userData", JSON.stringify(userData));
 
       console.log("Login successful", response.data);
-      if (userData.role === "Store Manager") router.push("/Employee/storeManager");
+      if (userData.role === "Store Manager") router.push("/Employee/StoreManager");
       else if (
         userData.role === "Driver" ||
         userData.role === "Driver Assistant"

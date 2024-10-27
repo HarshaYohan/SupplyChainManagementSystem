@@ -76,6 +76,24 @@ textarea {
   text-align: center;
   font-style: italic;
   color: #6c757d;
+  font-size: 1.2rem;
+  padding: 2rem;
+  margin-top: 2rem;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 1px dashed #adb5bd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  max-width: 60%;
+  margin: 2rem auto; /* Center align horizontally */
+}
+
+.placeholder-text:hover {
+  opacity: 1;
+  transform: scale(1.02);
+  color: #495057;
+  border-color: #495057;
+  background-color: #e9ecef;
 }
 
 /* Media Queries for Responsiveness */
@@ -88,4 +106,19 @@ textarea {
   .sidebar {
     width: 100%;
   }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
+.placeholder-text {
+  animation: fadeIn 0.5s ease-in-out;
 }

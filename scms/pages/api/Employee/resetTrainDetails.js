@@ -1,7 +1,5 @@
-import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
-
 
 export default async function handler(req, res) {
   try {
@@ -12,9 +10,9 @@ export default async function handler(req, res) {
     return;
   }
 
-  const fetchTrainOrders = "select * from trainDetails";
+  const fetchTrainOrders = "select * from resetTrainDetails";
 
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     const result = await new Promise((resolve, reject) => {
       db.query(fetchTrainOrders, (err, result) => {
         if (err) reject(err);
