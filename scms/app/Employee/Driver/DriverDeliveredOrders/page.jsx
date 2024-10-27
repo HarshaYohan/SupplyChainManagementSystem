@@ -88,6 +88,9 @@ const DeliveredItems = () => {
                     Address: {order.DeliveryAddress}
                   </p>
                   <p className="detailsText">
+                    Truck  Number: {order.TruckNumber}
+                  </p>
+                  <p className="detailsText">
                     Route Description: {order.RouteDescription}
                   </p>
                   <p className="detailsText">
