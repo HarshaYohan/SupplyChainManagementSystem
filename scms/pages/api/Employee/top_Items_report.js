@@ -2,6 +2,7 @@ import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
+
 export default async function handler(req, res) {
   try {
     await runCors(req, res);
@@ -11,7 +12,19 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
+    const report = "call GetTopProducts()";
+    const reportDetails = await new Promise((resolve,reject) => {
+      db.query(report, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    })
 
+    console.log(reportDetails[0]);
+    res.status(200).json(reportDetails[0]);
    } else {
     res.status(405).json({ message: "Method not allowed" });
   }

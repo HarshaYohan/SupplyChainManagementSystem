@@ -9,28 +9,55 @@ const CustomerOrderSales = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchSalesData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/Employee/quarterly_sales");
-  //       setSalesData(response.data);
-  //     } catch (err) {
-  //       setError("Failed to load sales data.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get("/api/Employee/custome_order_sales");
+        setSalesData(response.data);
+      } catch (err) {
+        setError("Failed to load sales data.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchSalesData();
-  // }, []);
+    fetchSalesData();
+  }, []);
 
-  // if (loading) {
-  //   return <p className="loading-text">Loading sales data...</p>;
-  // }
+  if (loading) {
+    return <p className="loading-text">Loading sales data...</p>;
+  }
 
-  // if (error) {
-  //   return <p className="error-text">{error}</p>;
-  // }
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
+
+  const generateCSV = () => {
+    const headers = [
+      "Customer ID",
+      "Customer Name",
+      "Order ID",
+      "Order Date",
+      "Total Amount",
+    ];
+    const rows = salesData.map((sales) => [
+      sales.CustomerID,
+      sales.CustomerName,
+      sales.OrderID,
+      sales.OrderDate,
+      sales.TotalAmount,
+    ]);
+
+    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "quarterly_sales_report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="quarterly-sales-container">
@@ -46,8 +73,20 @@ const CustomerOrderSales = () => {
           </tr>
         </thead>
         <tbody>
+          {salesData.map((sales, index) => (
+            <tr key={index}>
+              <td>{sales.CustomerID}</td>
+              <td>{sales.CustomerName}</td>
+              <td>{sales.OrderID}</td>
+              <td>{sales.OrderDate}</td>
+              <td>{sales.TotalAmount}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
+      <button onClick={generateCSV} className="download-button">
+        Download Report
+      </button>
     </div>
   );
 };
