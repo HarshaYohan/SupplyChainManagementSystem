@@ -1,3 +1,59 @@
+// // components/QuarterlySales.js
+// "use client";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+// import "../../../styles/employee/reports.css";
+
+// const QuarterlySales = () => {
+//   const [salesData, setSalesData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   // useEffect(() => {
+//   //   const fetchSalesData = async () => {
+//   //     try {
+//   //       const response = await axios.get("/api/Employee/quarterly_sales");
+//   //       setSalesData(response.data);
+//   //     } catch (err) {
+//   //       setError("Failed to load sales data.");
+//   //     } finally {
+//   //       setLoading(false);
+//   //     }
+//   //   };
+
+//   //   fetchSalesData();
+//   // }, []);
+
+//   // if (loading) {
+//   //   return <p className="loading-text">Loading sales data...</p>;
+//   // }
+
+//   // if (error) {
+//   //   return <p className="error-text">{error}</p>;
+//   // }
+
+//   return (
+//     <div className="quarterly-sales-container">
+//       <h2>Quarterly Sales Report</h2>
+//       <table className="sales-table">
+//         <thead>
+//           <tr>
+//             <th>Quarter</th>
+//             <th>Total Sales</th>
+//             <th>Number of Orders</th>
+//             <th>Top-Selling Product</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// export default QuarterlySales;
+
+
 // components/QuarterlySales.js
 "use client";
 import { useState, useEffect } from "react";
@@ -9,28 +65,31 @@ const QuarterlySales = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchSalesData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/Employee/quarterly_sales");
-  //       setSalesData(response.data);
-  //     } catch (err) {
-  //       setError("Failed to load sales data.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get("/api/Employee/quartely_sales_report");
+        console.log('Received request for quarterly sales');
 
-  //   fetchSalesData();
-  // }, []);
+        console.log("API Response:", response.data); // Check the structure here
+        setSalesData(response.data);
+      } catch (err) {
+        setError("Failed to load sales data.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // if (loading) {
-  //   return <p className="loading-text">Loading sales data...</p>;
-  // }
+    fetchSalesData();
+  }, []);
 
-  // if (error) {
-  //   return <p className="error-text">{error}</p>;
-  // }
+  if (loading) {
+    return <p className="loading-text">Loading sales data...</p>;
+  }
+
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
 
   return (
     <div className="quarterly-sales-container">
@@ -45,10 +104,18 @@ const QuarterlySales = () => {
           </tr>
         </thead>
         <tbody>
+          {salesData.map((data, index) => (
+            <tr key={index}> 
+              <td>{data.Quarter}</td>                        
+              <td>{data.TotalSales}</td> 
+              <td>{data.NoOfOrders}</td>
+              <td>{data.TopSellingProduct}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default QuarterlySales;
+export default QuarterlySales;
