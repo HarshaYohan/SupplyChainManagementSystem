@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const report = "CALL GetQuarterlySalesReport()";
+    const report = "CALL GetDriverHours()";
     const reportDetails = await new Promise((resolve, reject) => {
       db.query(report, (err, result) => {
         if (err) {

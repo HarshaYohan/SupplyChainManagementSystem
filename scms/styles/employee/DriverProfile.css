@@ -29,7 +29,7 @@
 }
 
 .content-section h2 {
-  font-size: 26px;
+  font-size: 30px; /* Increased from 26px */
   font-weight: 600;
   color: #333;
   text-align: center;
@@ -37,7 +37,7 @@
 }
 
 .content-section p {
-  font-size: 18px;
+  font-size: 20px; /* Increased from 18px */
   color: #555;
   text-align: center;
   margin-bottom: 25px;
@@ -51,7 +51,7 @@
 }
 
 .field label {
-  font-size: 15px;
+  font-size: 18px; /* Increased from 15px */
   font-weight: 500;
   color: #555;
   margin-bottom: 6px;
@@ -59,7 +59,7 @@
 
 .input-box {
   padding: 12px;
-  font-size: 17px;
+  font-size: 20px; /* Increased from 17px */
   border: 1px solid #ddd;
   border-radius: 6px;
   transition: border-color 0.2s;
@@ -69,30 +69,6 @@
   border-color: #294C9D;
   outline: none;
   box-shadow: 0 0 0 2px rgba(41, 76, 157, 0.2);
-}
-
-/* Button styling */
-.edit-button {
-  background-color: #294C9D;
-  color: #fff;
-  border: none;
-  padding: 14px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 17px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-  width: 100%;
-  max-width: 220px;
-  margin-top: 25px;
-}
-
-.edit-button:hover {
-  background-color: #041743;
-}
-
-.edit-button:active {
-  background-color: #16213a;
 }
 
 /* Responsive design */
@@ -107,12 +83,12 @@
   }
 
   .content-section h2 {
-    font-size: 22px;
+    font-size: 26px; /* Increased from 22px */
     margin-bottom: 8px;
   }
 
   .content-section p {
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px */
     margin-bottom: 20px;
   }
 
@@ -121,19 +97,13 @@
   }
 
   .field label {
-    font-size: 14px;
+    font-size: 16px; /* Increased from 14px */
     margin-bottom: 5px;
   }
 
   .input-box {
     padding: 10px;
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px */
   }
 
-  .edit-button {
-    padding: 12px 18px;
-    font-size: 16px;
-    max-width: 200px;
-    margin-top: 20px;
-  }
 }

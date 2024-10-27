@@ -9,28 +9,28 @@ const QuarterlySales = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchSalesData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/Employee/quarterly_sales");
-  //       setSalesData(response.data);
-  //     } catch (err) {
-  //       setError("Failed to load sales data.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get("/api/Employee/quarterly_sales");
+        setSalesData(response.data);
+      } catch (err) {
+        setError("Failed to load sales data.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchSalesData();
-  // }, []);
+    fetchSalesData();
+  }, []);
 
-  // if (loading) {
-  //   return <p className="loading-text">Loading sales data...</p>;
-  // }
+  if (loading) {
+    return <p className="loading-text">Loading sales data...</p>;
+  }
 
-  // if (error) {
-  //   return <p className="error-text">{error}</p>;
-  // }
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
 
   return (
     <div className="quarterly-sales-container">
@@ -45,6 +45,14 @@ const QuarterlySales = () => {
           </tr>
         </thead>
         <tbody>
+          {salesData.map((data, index) => (
+            <tr key={index}> 
+              <td>{data.Quarter}</td>                        
+              <td>{data.TotalSales}</td> 
+              <td>{data.NoOfOrders}</td>
+              <td>{data.TopSellingProduct}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

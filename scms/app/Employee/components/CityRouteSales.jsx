@@ -9,28 +9,28 @@ const CityRouteSales = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchSalesData = async () => {
-  //     try {
-  //       const response = await axios.get("/api/Employee/quarterly_sales");
-  //       setSalesData(response.data);
-  //     } catch (err) {
-  //       setError("Failed to load sales data.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get("/api/Employee/city_route_sales");
+        setSalesData(response.data);
+      } catch (err) {
+        setError("Failed to load sales data.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchSalesData();
-  // }, []);
+    fetchSalesData();
+  }, []);
 
-  // if (loading) {
-  //   return <p className="loading-text">Loading sales data...</p>;
-  // }
+  if (loading) {
+    return <p className="loading-text">Loading sales data...</p>;
+  }
 
-  // if (error) {
-  //   return <p className="error-text">{error}</p>;
-  // }
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
 
   return (
     <div className="quarterly-sales-container">
@@ -44,6 +44,13 @@ const CityRouteSales = () => {
           </tr>
         </thead>
         <tbody>
+          {salesData.map((data, index) => (
+            <tr key={index}>
+              <td>{data.City}</td>
+              <td>{data.Route}</td>
+              <td>{data.TotalSales}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
