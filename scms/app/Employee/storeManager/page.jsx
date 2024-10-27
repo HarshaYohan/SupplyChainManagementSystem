@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
+import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt, faTruckLoading } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -15,15 +15,6 @@ const StoreManager = () => {
   const [productOrders, setProductOrders] = useState([]);
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
-
-  useEffect(() => {
-
-    setProductOrders([
-      { orderId: 101, orderDate: "2023-10-01", deliveryDate: "2023-10-05", assignedDriver: "" },
-      { orderId: 102, orderDate: "2023-10-02", deliveryDate: "2023-10-06", assignedDriver: "" },
-    ]);
-  }, []);
-
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -114,22 +105,48 @@ const StoreManager = () => {
       fetchAssistantDetails();
     }
   }, [userDetails]);
-  
-  
-  
-  // Function to handle toggling of the assigned driver
-  const assignDriver = (orderId, selectedDriverId) => {
-    setProductOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.orderId === orderId
-          ? {
-              ...order,
-              assignedDriver: order.assignedDriver === selectedDriverId ? "" : selectedDriverId, // Toggle logic
-            }
-          : order
-      )
-    );
+
+
+  const fetchProductOrders = async (city) => {
+    try {
+      const response = await axios.post("/api/Employee/getProductDetails", { city: city });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch product orders:", error);
+      return [];
+    }
   };
+  
+  const handleStatusChange = async (productId, orderId, checked) => {
+    try {
+      await axios.post("/api/Employee/updateProductStatus", {
+        productId,
+        orderId,
+        status: checked ? "At Distribution Center" : ""
+      });
+    } catch (error) {
+      console.error("Failed to update product status:", error);
+    }
+  };
+  
+  useEffect(() => {
+    const fetchProductOrdersData = async () => {
+      if (storeDetails?.city) {
+        try {
+          const products = await fetchProductOrders(storeDetails.city);
+          setProductOrders(products);
+        } catch (error) {
+          console.error("Failed to fetch products data:", error);
+        }
+      }
+    };
+  
+    if (activeSection === "products") {
+      fetchProductOrdersData();
+    }
+  }, [activeSection, storeDetails]);
+  
+  
 
   // Logout handler
   const handleLogout = () => {
@@ -228,44 +245,40 @@ const StoreManager = () => {
           </div>
         );
 
-      case "products":
-        return (
-          <div className="products-section">
-            <h2>Product Orders</h2>
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Order Date</th>
-                  <th>Delivery Date</th>
-                  <th>Assign Driver</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productOrders.map((order) => (
-                  <tr key={order.orderId}>
-                    <td>{order.orderId}</td>
-                    <td>{order.orderDate}</td>
-                    <td>{order.deliveryDate}</td>
-                    <td>
-                      <select
-                        value={order.assignedDriver}
-                        onChange={(e) => assignDriver(order.orderId, e.target.value)}
-                      >
-                        <option value="">Select Driver</option>
-                        {drivers.map((driver) => (
-                          <option key={driver.id} value={driver.id}>
-                            {driver.name}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
+        case "products":
+          return (
+            <div className="products-section">
+              <h2>Product Arrival</h2>
+              <table className="product-table">
+                <thead>
+                  <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Order ID</th>
+                    <th>Current Status</th>
+                    <th>Set Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        );
+                </thead>
+                <tbody>
+                  {productOrders.map((product) => (
+                    <tr key={`${product.ProductID}-${product.OrderID}`}>
+                      <td>{product.ProductID}</td>
+                      <td>{product.ProductName}</td>
+                      <td>{product.OrderID}</td>
+                      <td>{product.status}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={product.status === "At Distribution Center"}
+                          onChange={(e) => handleStatusChange(product.ProductID, product.OrderID, e.target.checked)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
@@ -294,11 +307,10 @@ const StoreManager = () => {
           </li>
           <li>
             <button onClick={() => setActiveSection("products")}>
-              <FontAwesomeIcon icon={faBoxOpen} /> Products
+              <FontAwesomeIcon icon={faTruckLoading} /> Products Arrival
             </button>
           </li>
         </ul>
-        {/* Add the Logout button at the bottom of the sidebar */}
         <div className="logout-section">
           <button onClick={handleLogout}>
             <FontAwesomeIcon icon={faSignOutAlt} /></button>
