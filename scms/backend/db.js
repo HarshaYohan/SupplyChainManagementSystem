@@ -34,7 +34,7 @@ db = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   port: process.env.DATABASE_PORT
-}).promise();  // Wrap connection in .promise() to use async/await
+});  // Wrap connection in .promise() to use async/await
 
 db.connect((err) => {
   if (err) {

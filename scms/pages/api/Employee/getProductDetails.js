@@ -12,11 +12,9 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const { city } = req.body;
     const query = `
-    SELECT product.ProductID, product.ProductName, orders.OrderID, orders.CurrentStatus 
+    SELECT OrderID, CurrentStatus 
       FROM orders
-      JOIN order_product ON orders.OrderID = order_product.OrderID
-      JOIN product ON order_product.ProductID = product.ProductID
-      WHERE orders.City = ?
+      WHERE City = ?
     `;
 
     db.query(query, [city], (err, results) => {

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt, faTruckLoading } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -116,19 +116,9 @@ const StoreManager = () => {
       return [];
     }
   };
-  
-  const handleStatusChange = async (productId, orderId, checked) => {
-    try {
-      await axios.post("/api/Employee/updateProductStatus", {
-        productId,
-        orderId,
-        status: checked ? "At Distribution Center" : ""
-      });
-    } catch (error) {
-      console.error("Failed to update product status:", error);
-    }
-  };
-  
+
+
+    
   useEffect(() => {
     const fetchProductOrdersData = async () => {
       if (storeDetails?.city) {
@@ -141,12 +131,31 @@ const StoreManager = () => {
       }
     };
   
-    if (activeSection === "products") {
+    if (storeDetails) {
       fetchProductOrdersData();
     }
-  }, [activeSection, storeDetails]);
+  }, [storeDetails]);
   
   
+  const handleStatusChange = async (orderId) => {
+    try {
+      await axios.post("/api/Employee/updateProductStatus", { orderId });
+      
+      // Optionally update the UI to indicate the change
+      setProductOrders((prevOrders) =>
+        prevOrders.map((product) =>
+          product.OrderID === orderId
+            ? { ...product, CurrentStatus: "At Distribution Center" }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+    }
+  };
+  
+  
+
 
   // Logout handler
   const handleLogout = () => {
@@ -252,27 +261,24 @@ const StoreManager = () => {
               <table className="product-table">
                 <thead>
                   <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
                     <th>Order ID</th>
                     <th>Current Status</th>
-                    <th>Set Status</th>
+                    <th>Arrived</th>
                   </tr>
                 </thead>
                 <tbody>
                   {productOrders.map((product) => (
-                    <tr key={`${product.ProductID}-${product.OrderID}`}>
-                      <td>{product.ProductID}</td>
-                      <td>{product.ProductName}</td>
+                    <tr key={product.OrderID}>
                       <td>{product.OrderID}</td>
-                      <td>{product.status}</td>
+                      <td>{product.CurrentStatus}</td>
                       <td>
                         <input
                           type="checkbox"
-                          checked={product.status === "At Distribution Center"}
-                          onChange={(e) => handleStatusChange(product.ProductID, product.OrderID, e.target.checked)}
+                          checked={product.CurrentStatus === "At Distribution Center"}
+                          onChange={() => handleStatusChange(product.OrderID)}
+                          //disabled={product.CurrentStatus === "At Distribution Center"} // Disable checkbox after ticking
                         />
-                      </td>
+                    </td>
                     </tr>
                   ))}
                 </tbody>
