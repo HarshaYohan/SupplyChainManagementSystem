@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -15,6 +15,8 @@ const StoreManager = () => {
   const [productOrders, setProductOrders] = useState([]);
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
+  const [isFiltered, setFilter] = useState(true);
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -255,36 +257,46 @@ const StoreManager = () => {
         );
 
         case "products":
-          return (
-            <div className="products-section">
-              <h2>Product Arrival</h2>
-              <table className="product-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Current Status</th>
-                    <th>Arrived</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productOrders.map((product) => (
-                    <tr key={product.OrderID}>
-                      <td>{product.OrderID}</td>
-                      <td>{product.CurrentStatus}</td>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={product.CurrentStatus === "At Distribution Center"}
-                          onChange={() => handleStatusChange(product.OrderID)}
-                          //disabled={product.CurrentStatus === "At Distribution Center"} // Disable checkbox after ticking
-                        />
-                    </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
+  return (
+    <div className="products-section">
+      <div className="products-header">
+        <button onClick={() => setFilter((prev) => !prev)}>
+          {isFiltered ?  "Show All": "Show At Distribution Center Only"  }
+        </button>
+        <h2>Product Arrival</h2>
+      </div>
+      <table className="product-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Current Status</th>
+            <th>Arrived</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productOrders
+            .filter((product) =>
+              isFiltered ? product.CurrentStatus === "At Distribution Center" : true
+            )
+            .map((product) => (
+              <tr key={product.OrderID}>
+                <td>{product.OrderID}</td>
+                <td>{product.CurrentStatus}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={product.CurrentStatus === "At Distribution Center"}
+                    onChange={() => handleStatusChange(product.OrderID)}
+                    disabled={product.CurrentStatus === "At Distribution Center"}
+                  />
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
