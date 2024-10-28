@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Drivernavbar from "../../components/Drivernavbar";
 import "../../../../styles/employee/DriverHomePage.css";
+
 import Card2 from "../../components/DriverCard";
 import axios from "axios";
 
@@ -62,6 +63,7 @@ export default function DriverHomePage() {
   return (
     <div>
       <Drivernavbar />
+      <div className="OR">
       <div className="greeting-box">
         <h1>Welcome to RAILTRUX!</h1>
         <p>Your journey in supply chain management starts here.</p>
@@ -87,6 +89,7 @@ export default function DriverHomePage() {
           iconType="mywork"
         />
       </div>
+      
 
       <button onClick={handleStartClick}>Start</button>
       <button onClick={handleEndClick}>End</button>
@@ -96,6 +99,7 @@ export default function DriverHomePage() {
           <p>Duration: {`${duration.hours}:${duration.minutes}:${duration.seconds}`}</p>
         </div>
       )}
+    </div>
     </div>
   );
 }
