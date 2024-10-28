@@ -91,6 +91,7 @@ function Orders() {
                   Order Date: {new Date(order.OrderDate).toLocaleDateString()}
                 </p>
                 <p>Order ID: {order.OrderID}</p>
+                <p>Amount: {order.Amount}</p>
                 <p>Status: {order.CurrentStatus}</p>
               </div>
             ))
