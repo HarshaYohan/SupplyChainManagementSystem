@@ -1,6 +1,7 @@
 
 "use client";
 import React, { useState, useEffect } from "react";
+import Drivernavbar from "../../components/Drivernavbar";
 import axios from "axios";
 import "../../../../styles/employee/DriverNewOrders.css"; // Adjust the path as needed
 
@@ -74,7 +75,10 @@ const NewWork = () => {
   console.log(orders);
   // Display a title when there are no orders
   return (
+    <div className="RR">
+      <Drivernavbar/>
     <div className="orders">
+    
       <h1 className="title1">Orders</h1>
       {orders.length === 0 ? (
         <h2>No orders available</h2>
@@ -115,6 +119,9 @@ const NewWork = () => {
                       Address: {order.DeliveryAddress}
                     </p>
                     <p className="detailsText">
+                      Truck Number: {order.TruckNumber}
+                    </p>
+                    <p className="detailsText">
                       Route Description: {order.RouteDescription}
                     </p>
                     <p className="detailsText">
@@ -131,6 +138,7 @@ const NewWork = () => {
           ))}
         </ul>
       )}
+    </div>
     </div>
   );
 };
