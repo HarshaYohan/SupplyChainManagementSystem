@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import "../../../../styles/employee/trainSchedule.css";
 import Navbar from "../../../Employee/components/navbarEmployee.jsx";
+import { CircleGauge } from "lucide-react";
 
 const TrainSchedule = () => {
   const [activeTab, setActiveTab] = useState(null);
@@ -10,16 +11,31 @@ const TrainSchedule = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [trainDetails, setTrainDetails] = useState([]);
   const [cityTrainDetails, setCityTrainDetails] = useState([]);
+  const [rescheduledOrders, setRescheduledOrders] = useState([]);
   const [expandedOrderIndex, setExpandedOrderIndex] = useState(null);
-  // const [showPendingOrders, setShowPendingOrders] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString());
+  const [acknowledged, setAcknowledged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const currentDate = useMemo(() => new Date().toLocaleDateString(), []);
+  const tomorrow = useMemo(
+    () =>
+      new Date(
+        new Date().setDate(new Date().getDate() + 1)
+      ).toLocaleDateString(),
+    []
+  );
 
   const fetchData = async (url, setter) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(url);
       setter(response.data);
     } catch (error) {
-      console.error(`Failed to fetch data from ${url}`, error);
+      setError(`Failed to fetch data from ${url}`);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -29,10 +45,25 @@ const TrainSchedule = () => {
     fetchData("/api/Employee/fetchCityTrainDetails", setCityTrainDetails);
   }, []);
 
+  const handleRescheduledOrders = async (order) => {
+    try {
+      const response = await axios.post("/api/Employee/rescheduleOrder", {
+        OrderID: order.OrderID,
+      });
+      alert("Order rescheduled for another day successfully");
+      fetchData("/api/Employee/fetchOrders", setOrderDetails);
+      setRescheduledOrders(response.data)
+    } catch (error) {
+      console.error("Failed to reschedule order", error);
+      alert("Failed to reschedule order");
+    }
+  };
+
   const handleClick = async (order, train) => {
-    if (order.TrainCapacityConsumption > train.AllocatedCapacity)
-      alert("reschedule for another train");
-    else {
+    if (order.TrainCapacityConsumption > train.AllocatedCapacity) {
+      alert("Rescheduling for another day...");
+      handleRescheduledOrders(order);
+    } else {
       try {
         await axios.post("/api/Employee/allocateTrain", {
           TrainID: train.TrainScheduleID,
@@ -51,22 +82,47 @@ const TrainSchedule = () => {
   };
 
   const handleEndWork = async () => {
-    axios.post("/api/Employee/resetTrainDetails")
-      .then((response) => {
-        setCityTrainDetails(response.data); // Update the train details
-      })
-      .catch((error) => {
-        console.error("Failed to reset train details", error);
-      });
+    setAcknowledged(false);
+    alert("All orders are assigned for tomorrow.");
+    try {
+      const response = await axios.post("/api/Employee/resetTrainDetails");
+      setCityTrainDetails(response.data);
+      fetchData("/api/Employee/fetchCityTrainDetails", setCityTrainDetails);
+    } catch (error) {
+      console.error("Failed to reset train details", error);
+    }
   };
 
-  const filteredOrders = orderDetails.filter((order) =>
-    order.City.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredOrders = useMemo(
+    () =>
+      orderDetails.filter((order) =>
+        order.City.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [orderDetails, searchQuery]
   );
 
   const toggleOrderDetails = (index) => {
     setExpandedOrderIndex(expandedOrderIndex === index ? null : index);
   };
+
+  const handleAcknowledge = () => {
+    setAcknowledged(true);
+  };
+  const handleAddToPending = (ID) => async () => {
+    try {
+      console.log("Attempting to add to pending orders:", ID); 
+      alert("Transferring the order");
+      const response = await axios.post("/api/Employee/handleRescheduling", {
+        OrderId: ID,
+      });
+      alert("Order added to pending orders");
+      console.log("Response from server:", response.data); 
+    } catch (error) {
+      console.error("Error adding to pending orders:", error); 
+      alert("Error adding to pending orders");
+    }
+  };
+  
 
   const renderTrainDetails = (order) => (
     <div className="trainDetails-container">
@@ -86,8 +142,12 @@ const TrainSchedule = () => {
                 {train.AllocatedCapacity || "N/A"}
               </div>
               <div>
-                <button onClick={() => handleClick(order, train)}>
-                  Add to Train
+                <button
+                  onClick={() => handleClick(order, train)}
+                  disabled={isLoading}
+                  aria-label={`Add order ${order.OrderID} to train ${train.Description}`}
+                >
+                  {isLoading ? "Processing..." : "Add to Train"}
                 </button>
               </div>
             </div>
@@ -97,32 +157,85 @@ const TrainSchedule = () => {
   );
 
   const renderContent = () => {
+    if (error) {
+      return <div className="error">{error}</div>;
+    }
+
     switch (activeTab) {
       case "Orders":
         return (
           <div className="orders-container">
             <div className="head">
               <h2>Pending Orders</h2>
-              <h2><strong>Date :</strong>{currentDate}</h2>
-              {/* <button onClick={() => setShowPendingOrders(!showPendingOrders)}>
-                {showPendingOrders
-                  ? "Hide Pending Orders"
-                  : "View Pending Orders"}
-              </button> */}
+              <h2>
+                <strong>Date :</strong> {currentDate}
+              </h2>
             </div>
-            {/* {showPendingOrders && (
-              <> */}
             <input
               type="text"
               placeholder="Search by City"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-box"
+              aria-label="Search orders by city"
             />
-            <div className="orders-list">
-              {filteredOrders.map((order, index) => (
-                <div key={index} className="order-container">
-                  <div className="order-box">
+            {isLoading ? (
+              <p>Loading orders...</p>
+            ) : (
+              <div className="orders-list">
+                {filteredOrders.map((order, index) => (
+                  <div key={index} className="order-container">
+                    <div className="order-box">
+                      <div className="order-item">
+                        <strong>Order ID:</strong> {order.OrderID}
+                      </div>
+                      <div className="order-item">
+                        <strong>Customer ID:</strong> {order.CustomerID}
+                      </div>
+                      <div className="order-item">
+                        <strong>Train Capacity:</strong>{" "}
+                        {order.TrainCapacityConsumption}
+                      </div>
+                      <div className="order-item">
+                        <strong>Order Date:</strong> {order.oDate}
+                      </div>
+                      <div className="order-item">
+                        <strong>City:</strong> {order.City}
+                      </div>
+                      <button onClick={() => toggleOrderDetails(index)}>
+                        {expandedOrderIndex === index
+                          ? "Hide Train Details"
+                          : "View Train Details"}
+                      </button>
+                    </div>
+                    {expandedOrderIndex === index && renderTrainDetails(order)}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div>
+              <p>
+                If you are finished assigning orders for today, click the "End Order
+                Assignment" button.
+              </p>
+              <button onClick={handleAcknowledge} disabled={acknowledged}>
+                Confirm
+              </button>
+              <button onClick={handleEndWork} disabled={!acknowledged}>
+                End Order Assignment
+              </button>
+            </div>
+          </div>
+        );
+
+      case "RescheduleOrders":
+        return (
+          <div className="orders-list">
+            <div className="order-container">
+              <h2>Rescheduled Orders</h2>
+              {rescheduledOrders.length > 0 ? (
+                rescheduledOrders.map((order, index) => (
+                  <div className="order-box" key={index}>
                     <div className="order-item">
                       <strong>Order ID:</strong> {order.OrderID}
                     </div>
@@ -130,30 +243,22 @@ const TrainSchedule = () => {
                       <strong>Customer ID:</strong> {order.CustomerID}
                     </div>
                     <div className="order-item">
-                      <strong>Train Capacity:</strong>{" "}
-                      {order.TrainCapacityConsumption}
-                    </div>
-                    <div className="order-item">
-                      <strong>Order Date:</strong> {order.oDate}
+                      <strong>Order Date:</strong> {order.OrderDate.split("T")[0]}
                     </div>
                     <div className="order-item">
                       <strong>City:</strong> {order.City}
                     </div>
-                    <button onClick={() => toggleOrderDetails(index)}>
-                      {expandedOrderIndex === index
-                        ? "Hide Train Details"
-                        : "View Train Details"}
-                    </button>
+                    <div>
+                      <button onClick={() => handleAddToPending(order.OrderID)}>
+                        Add to Pending Orders
+                      </button>
+                    </div>
                   </div>
-                  {expandedOrderIndex === index && renderTrainDetails(order)}
-                </div>
-              ))}
-              <div>
-                <button onClick={handleEndWork}>End Work</button>
-              </div>
+                ))
+              ) : (
+                <p>No rescheduled orders available.</p>
+              )}
             </div>
-            {/* </> */}
-            {/* )} */}
           </div>
         );
 
@@ -181,6 +286,12 @@ const TrainSchedule = () => {
             </table>
             <div className="head">
               <h2>City-Train Details</h2>
+            </div>
+            <div className="dates">
+              <strong className="todayDate">Today : {currentDate}</strong>
+              <strong className="NextDate">
+                City train Allocation details for {tomorrow}
+              </strong>
             </div>
             <table className="train-schedule-table">
               <thead>
@@ -216,6 +327,9 @@ const TrainSchedule = () => {
       <div className="content">
         <div className="sidebar">
           <button onClick={() => setActiveTab("Orders")}>Pending Orders</button>
+          <button onClick={() => setActiveTab("RescheduleOrders")}>
+            Reschedule Orders
+          </button>
           <button onClick={() => setActiveTab("TrainSchedule")}>
             Train Schedule
           </button>

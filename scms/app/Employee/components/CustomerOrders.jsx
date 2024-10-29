@@ -78,7 +78,7 @@ const CustomerOrderSales = () => {
               <td>{sales.CustomerID}</td>
               <td>{sales.CustomerName}</td>
               <td>{sales.OrderID}</td>
-              <td>{sales.OrderDate}</td>
+              <td>{sales.OrderDate.split("T")[0]}</td>
               <td>{sales.TotalAmount}</td>
             </tr>
           ))}
