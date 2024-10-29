@@ -1,6 +1,7 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
+import Drivernavbar from "../../components/Drivernavbar";
 import axios from "axios";
 import "../../../../styles/employee/DriverDeliverdOrders.css"; 
 
@@ -55,6 +56,8 @@ const DeliveredItems = () => {
   };
 
   return (
+    <div>
+   <Drivernavbar/>
     <div className="orders">
       <h1 className="title2">Delivered Items</h1>
 
@@ -88,6 +91,9 @@ const DeliveredItems = () => {
                     Address: {order.DeliveryAddress}
                   </p>
                   <p className="detailsText">
+                    Truck  Number: {order.TruckNumber}
+                  </p>
+                  <p className="detailsText">
                     Route Description: {order.RouteDescription}
                   </p>
                   <p className="detailsText">
@@ -103,6 +109,7 @@ const DeliveredItems = () => {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   );
 };
