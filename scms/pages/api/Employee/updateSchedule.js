@@ -26,7 +26,9 @@ export default async function handler(req, res) {
     try {
       // Clear existing data in truckschedule and order_schedule tables
       await dbQuery(`DELETE FROM order_schedule`);
+      await dbQuery(`ALTER TABLE order_schedule AUTO_INCREMENT = 1`);
       await dbQuery(`DELETE FROM truckschedule`);
+      await dbQuery(`ALTER TABLE truckschedule AUTO_INCREMENT = 1`);
 
       // Fetch orders, drivers, assistants, trucks, and routes
       const orders = await dbQuery(
