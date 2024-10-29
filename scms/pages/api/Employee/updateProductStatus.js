@@ -11,19 +11,20 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "POST") {
-    const { productId, orderId, status } = req.body;
+    const { orderId } = req.body;
     const query = `
-      UPDATE order_product
-      SET Status = ?
-      WHERE ProductID = ? AND OrderID = ?
+      UPDATE orders 
+      SET CurrentStatus = 'At Distribution Center'
+      WHERE OrderID = ?
     `;
 
-    db.query(query, [status, productId, orderId], (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to update product status" });
-      }
-      res.json({ message: "Status updated successfully" });
-    });
+db.query(query, [orderId], (err) => {
+  if (err) {
+    return res.status(500).json({ error: "Failed to update product status" });
+  }
+  res.json({ message: "Status updated successfully" });
+});
+
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
