@@ -11,18 +11,29 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const report = "CALL GetSalesByCityAndRoute()";
-    const reportDetails = await new Promise((resolve, reject) => {
-      db.query(report, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
+    const { city } = req.query;
 
-    res.status(200).json(reportDetails[0]);
+    if (!city) {
+      return res.status(400).json({ error: "City parameter is required" });
+    }
+
+    const report = "CALL GetSalesByCityAndRoute(?)";
+    try {
+      const reportDetails = await new Promise((resolve, reject) => {
+        db.query(report, [city], (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+
+      res.status(200).json(reportDetails[0]);
+    } catch (error) {
+      console.error("Database query error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

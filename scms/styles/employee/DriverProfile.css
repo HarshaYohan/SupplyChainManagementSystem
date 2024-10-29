@@ -21,23 +21,6 @@
   position: relative;
 }
 
-/* Profile header bar */
-.profile-header {
-  width: 100%;
-  background-color:  #001f3f; /* Dark blue color */
-  color: #fff;
-  text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  padding: 15px 0;
-  border-radius: 12px 12px 0 0;
-  position: absolute;
-  top: -50px;
-  left: 0;
-  right: 0;
-}
-
-
 /* Profile Container */
 .profileContainer {
   display: flex;
@@ -86,43 +69,6 @@
   margin-bottom: 5px;
 }
 
-.input-box {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: border-color 0.2s;
-}
-
-.input-box:focus {
-  border-color: #4caf50;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
-/* Save button styling */
-.save-button {
-  background-color: #041743;
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-  width: 100%;
-  max-width: 200px;
-  margin-top: 20px;
-}
-
-.save-button:hover {
-  background-color: #294C9D;
-}
-.save-button:active {
-  background-color: #16213a;
-}
-
 /* Loading overlay */
 .loading-overlay {
   position: fixed;
@@ -145,6 +91,8 @@
   text-align: center;
 }
 
+
+
 /* Responsive design */
 @media (max-width: 600px) {
   .BodySection {
@@ -160,8 +108,4 @@
     font-size: 20px;
   }
 
-  .save-button {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
 }

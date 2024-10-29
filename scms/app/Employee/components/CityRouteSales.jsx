@@ -1,60 +1,92 @@
-// components/QuarterlySales.js
-"use client";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import "../../../styles/employee/reports.css";
+'use client'
 
-const CityRouteSales = () => {
-  const [salesData, setSalesData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import "../../../styles/employee/reports.css"
+
+const cityList = [
+  "Colombo",
+  "Negombo",
+  "Galle",
+  "Matara",
+  "Jaffna",
+  "Trincomalee",
+  "Badulla",
+  "Anuradhapura"
+]
+
+export default function CityRouteSales() {
+  const [city, setCity] = useState("")
+  const [salesData, setSalesData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchSalesData = async () => {
+      if (!city) return
+
+      setLoading(true)
+      setError(null)
+
       try {
-        const response = await axios.get("/api/Employee/city_route_sales");
-        setSalesData(response.data);
+        const response = await axios.get(`/api/Employee/city_route_sales?city=${encodeURIComponent(city)}`)
+        setSalesData(response.data)
       } catch (err) {
-        setError("Failed to load sales data.");
+        setError("Failed to load sales data. Please try again later.")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchSalesData();
-  }, []);
+    fetchSalesData()
+  }, [city])
 
-  if (loading) {
-    return <p className="loading-text">Loading sales data...</p>;
-  }
-
-  if (error) {
-    return <p className="error-text">{error}</p>;
+  const handleCityChange = (event) => {
+    setCity(event.target.value)
   }
 
   return (
     <div className="quarterly-sales-container">
       <h2>City-Route Sales Report</h2>
-      <table className="sales-table">
-        <thead>
-          <tr>
-            <th>City</th>
-            <th>Route</th>
-            <th>Total Sales</th>
-          </tr>
-        </thead>
-        <tbody>
-          {salesData.map((data, index) => (
-            <tr key={index}>
-              <td>{data.City}</td>
-              <td>{data.Route}</td>
-              <td>{data.TotalSales}</td>
-            </tr>
+      <div className="mb-4">
+        <select
+          value={city}
+          onChange={handleCityChange}
+          className="city-select"
+        >
+          <option value="">Select a city</option>
+          {cityList.map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+      </div>
+      {loading && <p className="loading-text">Loading sales data...</p>}
+      {error && <p className="error-text">{error}</p>}
+      {!loading && !error && salesData.length > 0 && (
+        <table className="sales-table">
+          <thead>
+            <tr>
+              <th>City</th>
+              <th>Route</th>
+              <th>Total Sales</th>
+            </tr>
+          </thead>
+          <tbody>
+            {salesData.map((data, index) => (
+              <tr key={index}>
+                <td>{data.City}</td>
+                <td>{data.Route}</td>
+                <td>{data.TotalSales}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {!loading && !error && salesData.length === 0 && city && (
+        <p className="no-data-text">No sales data available for the selected city.</p>
+      )}
     </div>
-  );
-};
-
-export default CityRouteSales;
+  )
+}
