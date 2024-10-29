@@ -15,7 +15,8 @@ const StoreManager = () => {
   const [productOrders, setProductOrders] = useState([]);
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
-  const [isFiltered, setFilter] = useState(false);
+  const [isFiltered, setFilter] = useState(true);
+
 
 
   useEffect(() => {
