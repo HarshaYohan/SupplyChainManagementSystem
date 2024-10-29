@@ -4,7 +4,7 @@ import Navbar from "../components/navbar.jsx";
 import "../../../styles/customer/cart.css";
 import axios from "axios";
 import UserSession from "../../../utils/userSession.js";
-import { useRouter } from 'next/navigation'; // Correct import for App Router
+import { useRouter } from "next/navigation"; // Correct import for App Router
 
 function Cart() {
   const router = useRouter(); // Initialize router
@@ -100,13 +100,15 @@ function Cart() {
 
   const handlePlaceOrderClick = async () => {
     try {
+      const totalAmount = calculateTotal(); // Calculate total amount
       await axios.post("/api/Customer/placeOrder", {
         CustomerID: userData.userId,
-        OrderDate: new Date().toISOString().split('T')[0],
+        OrderDate: new Date().toISOString().split("T")[0],
         RouteID: 6, // Update this if needed
         DeliveryAddress: address,
         CartID: cartID,
         City: selectedStore,
+        Amount: totalAmount,
       });
       router.push("orders"); // Navigate to the orders page
     } catch (err) {
@@ -178,13 +180,20 @@ function Cart() {
               onChange={handleStoreChange}
             >
               <option value="">Select the Store</option>
-              {["Colombo", "Negombo", "Matara", "Galle", "Badulla", "Anuradhapura", "Trincomalee", "Jaffna"].map(
-                (store) => (
-                  <option key={store} value={store}>
-                    {store}
-                  </option>
-                )
-              )}
+              {[
+                "Colombo",
+                "Negombo",
+                "Matara",
+                "Galle",
+                "Badulla",
+                "Anuradhapura",
+                "Trincomalee",
+                "Jaffna",
+              ].map((store) => (
+                <option key={store} value={store}>
+                  {store}
+                </option>
+              ))}
             </select>
 
             <label htmlFor="route-dropdown">Choose The Relevant Route:</label>
@@ -196,7 +205,10 @@ function Cart() {
             >
               <option value="">Select the Route</option>
               {roots.map((root) => (
-                <option key={root.RouteDescription} value={root.RouteDescription}>
+                <option
+                  key={root.RouteDescription}
+                  value={root.RouteDescription}
+                >
                   {root.RouteDescription}
                 </option>
               ))}
