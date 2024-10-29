@@ -43,6 +43,7 @@ const TrainSchedule = () => {
     fetchData("/api/Employee/fetchOrders", setOrderDetails);
     fetchData("/api/Employee/fetchTrainDetails", setTrainDetails);
     fetchData("/api/Employee/fetchCityTrainDetails", setCityTrainDetails);
+    fetchData("/api/Employee/fetchRescheduledOrders", setRescheduledOrders);
   }, []);
 
   const handleRescheduledOrders = async (order) => {
@@ -52,7 +53,7 @@ const TrainSchedule = () => {
       });
       alert("Order rescheduled for another day successfully");
       fetchData("/api/Employee/fetchOrders", setOrderDetails);
-      setRescheduledOrders(response.data)
+      setRescheduledOrders(response.data);
     } catch (error) {
       console.error("Failed to reschedule order", error);
       alert("Failed to reschedule order");
@@ -108,21 +109,19 @@ const TrainSchedule = () => {
   const handleAcknowledge = () => {
     setAcknowledged(true);
   };
-  const handleAddToPending = (ID) => async () => {
+  const handleAddToPending = async (ID) => {
     try {
-      console.log("Attempting to add to pending orders:", ID); 
-      alert("Transferring the order");
-      const response = await axios.post("/api/Employee/handleRescheduling", {
+      alert("Adding the order to Pending List");
+      await axios.post("/api/Employee/handleRescheduling", {
         OrderId: ID,
       });
       alert("Order added to pending orders");
-      console.log("Response from server:", response.data); 
+      fetchData("/api/Employee/fetchRescheduledOrders", setRescheduledOrders);
     } catch (error) {
-      console.error("Error adding to pending orders:", error); 
+      console.error("Error adding to pending orders:", error);
       alert("Error adding to pending orders");
     }
   };
-  
 
   const renderTrainDetails = (order) => (
     <div className="trainDetails-container">
@@ -215,8 +214,8 @@ const TrainSchedule = () => {
             )}
             <div>
               <p>
-                If you are finished assigning orders for today, click the "End Order
-                Assignment" button.
+                If you are finished assigning orders for today, click the "End
+                Order Assignment" button.
               </p>
               <button onClick={handleAcknowledge} disabled={acknowledged}>
                 Confirm
@@ -243,16 +242,19 @@ const TrainSchedule = () => {
                       <strong>Customer ID:</strong> {order.CustomerID}
                     </div>
                     <div className="order-item">
-                      <strong>Order Date:</strong> {order.OrderDate.split("T")[0]}
+                      <strong>Order Date:</strong>{" "}
+                      {order.OrderDate.split("T")[0]}
                     </div>
                     <div className="order-item">
                       <strong>City:</strong> {order.City}
                     </div>
-                    <div>
-                      <button onClick={() => handleAddToPending(order.OrderID)}>
-                        Add to Pending Orders
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => {
+                        handleAddToPending(order.OrderID); // Directly call the function here
+                      }}
+                    >
+                      Add to Pending Orders
+                    </button>
                   </div>
                 ))
               ) : (

@@ -17,11 +17,13 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     await new Promise((resolve,reject) => {
-      db.query(updateStatusQuery, [req.body.OrderID], (err) => {
+      db.query(updateStatusQuery, [req.body.OrderId], (err) => {
         if (err) reject(err);
         resolve();
       });
     });
+
+    res.status(200).json({message: "Rescheduling successful"});
 
   } else {
     res.status(405).json({ message: "Method Not Allowed" });
