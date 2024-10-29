@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const query = `
     SELECT OrderID, CurrentStatus 
       FROM orders
-      WHERE City = ?
+      WHERE City = ? and CurrentStatus = 'In Transit to Store'  or CurrentStatus = 'At Distribution Center' 
     `;
 
     db.query(query, [city], (err, results) => {

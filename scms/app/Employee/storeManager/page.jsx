@@ -19,6 +19,7 @@ const StoreManager = () => {
   const [truckschedule, setTruckSchedule] = useState([]);
 
 
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       const storedUserData = JSON.parse(localStorage.getItem("userData"));

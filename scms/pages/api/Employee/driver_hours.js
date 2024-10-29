@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const report = "CALL GenerateQuarterlySalesReport()";
+    const report = "CALL GetDriverHours()";
     const reportDetails = await new Promise((resolve, reject) => {
       db.query(report, (err, result) => {
         if (err) {
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       });
     });
 
-  
     res.status(200).json(reportDetails[0]);
   } else {
     res.status(405).json({ message: "Method not allowed" });
