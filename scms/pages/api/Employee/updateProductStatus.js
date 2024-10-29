@@ -18,14 +18,14 @@ export default async function handler(req, res) {
       WHERE OrderID = ?
     `;
 
-db.query(query, [orderId], (err) => {
-  if (err) {
-    return res.status(500).json({ error: "Failed to update product status" });
-  }
-  res.json({ message: "Status updated successfully" });
-});
+  db.query(query, [orderId], (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to update product status" });
+    }
+    res.json({ message: "Status updated successfully" });
+  });
 
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
+    } else {
+      res.status(405).json({ message: "Method not allowed" });
   }
 }

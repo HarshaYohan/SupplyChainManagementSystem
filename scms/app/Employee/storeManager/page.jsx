@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading} from "@fortawesome/free-solid-svg-icons";
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -15,7 +15,8 @@ const StoreManager = () => {
   const [productOrders, setProductOrders] = useState([]);
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
-  const [isFiltered, setFilter] = useState(true);
+  const [isFiltered, setFilter] = useState(false);
+  const [truckschedule, setTruckSchedule] = useState([]);
 
 
   useEffect(() => {
@@ -119,8 +120,6 @@ const StoreManager = () => {
     }
   };
 
-
-    
   useEffect(() => {
     const fetchProductOrdersData = async () => {
       if (storeDetails?.city) {
@@ -155,10 +154,18 @@ const StoreManager = () => {
       console.error("Failed to update order status:", error);
     }
   };
+
+  
+  const handleUpdateSchedule = async () => {
+    try {
+      const response = await axios.post("/api/Employee/updateSchedule", {city: storeDetails.city});
+      setTruckSchedule(response.data);
+    } catch (error) {
+      console.error("Failed to update schedule:", error);
+    }
+  };
   
   
-
-
   // Logout handler
   const handleLogout = () => {
     // Remove user data from localStorage
@@ -256,47 +263,78 @@ const StoreManager = () => {
           </div>
         );
 
-        case "products":
-  return (
-    <div className="products-section">
-      <div className="products-header">
-        <button onClick={() => setFilter((prev) => !prev)}>
-          {isFiltered ?  "Show All": "Show At Distribution Center Only"  }
-        </button>
-        <h2>Product Arrival</h2>
-      </div>
-      <table className="product-table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Current Status</th>
-            <th>Arrived</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productOrders
-            .filter((product) =>
-              isFiltered ? product.CurrentStatus === "At Distribution Center" : true
-            )
-            .map((product) => (
-              <tr key={product.OrderID}>
-                <td>{product.OrderID}</td>
-                <td>{product.CurrentStatus}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={product.CurrentStatus === "At Distribution Center"}
-                    onChange={() => handleStatusChange(product.OrderID)}
-                    disabled={product.CurrentStatus === "At Distribution Center"}
-                  />
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
-  );
+      case "products":
+          return (
+            <div className="products-section">
+              <div className="products-header">
+                <button onClick={() => setFilter((prev) => !prev)}>
+                  {isFiltered ?  "Show All": "Not Arrived"  }
+                </button>
+                <h2>Orders Arrival</h2>
+              </div>
+              <table className="product-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Current Status</th>
+                    <th>Arrived</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productOrders
+                    .filter((product) =>
+                      isFiltered ? product.CurrentStatus !== "At Distribution Center" : true
+                    )
+                    .map((product) => (
+                      <tr key={product.OrderID}>
+                        <td>{product.OrderID}</td>
+                        <td>{product.CurrentStatus}</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={product.CurrentStatus === "At Distribution Center"}
+                            onChange={() => handleStatusChange(product.OrderID)}
+                            disabled={product.CurrentStatus === "At Distribution Center"}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          );
 
+        case "truckschedule":
+          return (
+            <div className="truckschedule-section">
+              <h2>Truck Schedule</h2>
+              <button onClick={() => handleUpdateSchedule()} className="update-schedule-button">
+                Update Schedule
+              </button>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Schedule ID</th>
+                    <th>Truck ID</th>
+                    <th>Route ID</th>
+                    <th>Driver ID</th>
+                    <th>Assistant ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {truckschedule.map((schedule) => (
+                    <tr key={schedule.ScheduleID}>
+                      <td>{schedule.ScheduleID}</td>
+                      <td>{schedule.TruckID}</td>
+                      <td>{schedule.RouteID}</td>
+                      <td>{schedule.DriverID}</td>
+                      <td>{schedule.AssistantID}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
@@ -325,7 +363,12 @@ const StoreManager = () => {
           </li>
           <li>
             <button onClick={() => setActiveSection("products")}>
-              <FontAwesomeIcon icon={faTruckLoading} /> Products Arrival
+              <FontAwesomeIcon icon={faTruckLoading} /> Orders Arrival
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("truckschedule")}>
+              <FontAwesomeIcon icon={faCalendarAlt} /> Truck Schedule
             </button>
           </li>
         </ul>
