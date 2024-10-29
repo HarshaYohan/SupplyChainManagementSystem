@@ -137,7 +137,7 @@ const TrainSchedule = () => {
                 <strong>Capacity:</strong> {train.Capacity || "N/A"}
               </div>
               <div>
-                <strong>Allocated Capacity:</strong>{" "}
+                <strong>Availble Capacity:</strong>{" "}
                 {train.AllocatedCapacity || "N/A"}
               </div>
               <div>
