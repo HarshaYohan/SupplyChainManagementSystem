@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const fetchOrders = "select * from orderDetails";
+  const fetchOrders = "select * from orderDetails WHERE CurrentStatus = 'pending'";
 
   if (req.method === "GET") {
     const results = await new Promise((resolve, reject) => {

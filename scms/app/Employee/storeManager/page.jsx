@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
+import CreateSchedule from '../components/CreateSchedule';
+import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+
+
 
 const StoreManager = () => {
   const router = useRouter();
@@ -60,6 +64,11 @@ const StoreManager = () => {
         try {
           const response = await axios.post("/api/Employee/getStoreDetails", { email: userDetails.email });
           setStoreDetails(response.data); 
+            const store = {
+            id: response.data.storeID,
+            city: response.data.city, // Ensure the correct property name is used
+            };
+            localStorage.setItem("store", JSON.stringify(store));
         } catch (error) {
           console.error("Failed to fetch store data", error);
         }
@@ -163,6 +172,7 @@ const StoreManager = () => {
   const handleLogout = () => {
     // Remove user data from localStorage
     localStorage.removeItem("userData");
+    localStorage.removeItem("store");
     // Redirect to login
     router.push("/Employee/EmployeeLogin");
   };
@@ -297,6 +307,8 @@ const StoreManager = () => {
     </div>
   );
 
+case "schedule":
+      return <CreateSchedule />;
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
@@ -328,6 +340,11 @@ const StoreManager = () => {
               <FontAwesomeIcon icon={faTruckLoading} /> Products Arrival
             </button>
           </li>
+          <li>
+         <button onClick={() => setActiveSection("schedule")}>
+      <FontAwesomeIcon icon={faCalendarPlus} /> Create Schedule
+        </button>
+      </li>
         </ul>
         <div className="logout-section">
           <button onClick={handleLogout}>

@@ -19,8 +19,8 @@ export default async function handler(req, res) {
 
             // Call the stored procedure to place the order
             const [results] = await db.promise().query(
-                'CALL AddOrder(?, ?, ?, ?, ?,?)',
-                [CustomerID, OrderDate, RouteID, DeliveryAddress, CartID, City]
+                'CALL AddOrder(?, ?, ?, ?, ?,?,?)',
+                [CustomerID, OrderDate, RouteID, DeliveryAddress, CartID, City, 6000]
             );
 
             //const orderId = results[0][0].OrderID;
