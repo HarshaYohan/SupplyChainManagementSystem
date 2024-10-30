@@ -7,6 +7,13 @@ import "../../../../styles/employee/DriverProfile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    phoneNumber: "",
+    email: ""
+  });
 
   // Fetch driver profile from the backend
   useEffect(() => {
@@ -16,16 +23,28 @@ const Profile = () => {
         const response = await axios.post("/api/Employee/fetchDriverProfile", { email });
         const data = response.data;
         setUser(data);
+        setFormData({
+          name: data.Name || "",
+          address: data.Address || "",
+          phoneNumber: data.PhoneNumber || "",
+          email: data.Email || ""
+        });
       } catch (error) {
         console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (!user) {
-    return <p>Loading profile...</p>;
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-message">Loading profile...</div>
+      </div>
+    );
   }
 
   return (
@@ -37,10 +56,49 @@ const Profile = () => {
             <div className="profilepicturesection">
               <img src="../../../OIP.jpeg" alt="Profile" />
             </div>
-            <h2 className="profile-name">{user.Name || "Name not available"}</h2>
-            <p className="profile-email">{user.Email}</p>
-            <p className="profile-address"><strong>Address:</strong> {user.Address}</p>
-            <p className="profile-phone"><strong>Phone Number:</strong> {user.PhoneNumber}</p>
+            <div className="contentSection">
+              <h1>{user?.Name || "Name not available"}</h1>
+              
+              <div className="field">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  readOnly
+                  className="input-box"
+                />
+              </div>
+
+              <div className="field">
+                <label>Address:</label>
+                <input
+                  type="text"
+                  value={formData.address}
+                  readOnly
+                  className="input-box"
+                />
+              </div>
+
+              <div className="field">
+                <label>Phone Number:</label>
+                <input
+                  type="text"
+                  value={formData.phoneNumber}
+                  readOnly
+                  className="input-box"
+                />
+              </div>
+
+              <div className="field">
+                <label>Email:</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  readOnly
+                  className="input-box"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

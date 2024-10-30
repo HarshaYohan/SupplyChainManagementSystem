@@ -21,6 +21,7 @@ export default function handler(req, res) {
       return res.status(404).json({ message: 'Driver not found.' });
     }
 
+
     const driverProfile = results[0];
     return res.status(200).json(driverProfile);
   });

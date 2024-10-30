@@ -1,4 +1,3 @@
-// components/QuarterlySales.jsx
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -16,7 +15,6 @@ const QuarterlySales = () => {
       try {
         const response = await axios.get("/api/Employee/quarterly_sales");
         setSalesData(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to load sales data.");
       } finally {

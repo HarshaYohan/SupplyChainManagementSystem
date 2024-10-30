@@ -69,6 +69,17 @@
   margin-bottom: 5px;
 }
 
+.input-box {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: border-color 0.2s;
+  background-color: #fff; /* Added for clearer visibility */
+  color: #333; /* Text color for input fields */
+  cursor: not-allowed; /* Indicating that the fields are read-only */
+}
+
 /* Loading overlay */
 .loading-overlay {
   position: fixed;
@@ -91,8 +102,6 @@
   text-align: center;
 }
 
-
-
 /* Responsive design */
 @media (max-width: 600px) {
   .BodySection {
@@ -107,5 +116,4 @@
   .contentSection h1 {
     font-size: 20px;
   }
-
 }
