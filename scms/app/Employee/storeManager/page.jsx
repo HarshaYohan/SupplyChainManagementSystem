@@ -123,7 +123,7 @@ const StoreManager = () => {
 
   useEffect(() => {
     const fetchProductOrdersData = async () => {
-      if (storeDetails?.city) {
+      if (storeDetails?.city && activeSection === "products") {
         try {
           const products = await fetchProductOrders(storeDetails.city);
           setProductOrders(products);
@@ -133,10 +133,9 @@ const StoreManager = () => {
       }
     };
   
-    if (storeDetails) {
-      fetchProductOrdersData();
-    }
-  }, [storeDetails]);
+    fetchProductOrdersData();
+  }, [storeDetails, activeSection]);
+  
   
   
   const handleStatusChange = async (orderId) => {
