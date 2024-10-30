@@ -8,7 +8,7 @@ db = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   port: process.env.DATABASE_PORT
-});
+}).promise();
 
 db.connect((err) => {
   if (err) {

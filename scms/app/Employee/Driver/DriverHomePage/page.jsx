@@ -56,6 +56,7 @@ export default function DriverHomePage() {
       );
       const { currentDate, TimeDifference } = response.data;
       if (response.status === 200) {
+        alert("End time recorded");
         const driverWorkingHours =
           JSON.parse(localStorage.getItem("driverWorkingHours")) || [];
         if (currentDate == 0) {
