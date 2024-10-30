@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faCalendarAlt,  faFilter} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -17,7 +17,19 @@ const StoreManager = () => {
   const [name, setName] = useState("");
   const [isFiltered, setFilter] = useState(false);
   const [truckschedule, setTruckSchedule] = useState([]);
+  const [isDateFiltered, setIsDateFiltered] = useState(false);
 
+  const isTomorrow = (dateString) => {
+    const date = new Date(dateString);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (date.toDateString() === tomorrow.toDateString()) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  };
 
 
   useEffect(() => {
@@ -264,8 +276,8 @@ const StoreManager = () => {
           return (
             <div className="products-section">
               <div className="products-header">
-                <button onClick={() => setFilter((prev) => !prev)}>
-                  {isFiltered ?  "Show All": "Not Arrived"  }
+                <button onClick={() => setFilter((prev) => !prev)} className="filter-button">
+                <FontAwesomeIcon icon={faFilter} />{isFiltered ?  "Show All": "Not Arrived"  }
                 </button>
                 <h2>Orders Arrival</h2>
               </div>
@@ -301,37 +313,46 @@ const StoreManager = () => {
             </div>
           );
 
-        case "truckschedule":
-          return (
-            <div className="truckschedule-section">
-              <h2>Truck Schedule</h2>
-              <button onClick={() => handleUpdateSchedule()} className="update-schedule-button">
-                Update Schedule
-              </button>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Schedule ID</th>
-                    <th>Truck ID</th>
-                    <th>Route ID</th>
-                    <th>Driver ID</th>
-                    <th>Assistant ID</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {truckschedule.map((schedule) => (
-                    <tr key={schedule.ScheduleID}>
-                      <td>{schedule.ScheduleID}</td>
-                      <td>{schedule.TruckID}</td>
-                      <td>{schedule.RouteID}</td>
-                      <td>{schedule.DriverID}</td>
-                      <td>{schedule.AssistantID}</td>
+          case "truckschedule":
+            return (
+              <div className="truckschedule-section">
+                <div className="truckschedule-header">
+                  <button onClick={() => setIsDateFiltered((prev) => !prev)} className="filter-button">
+                    <FontAwesomeIcon icon={faFilter} /> {isDateFiltered ? "Show All" : "Show Tomorrow"}
+                  </button>
+                  <h2>Truck Schedule</h2>
+                </div>
+                <button onClick={() => handleUpdateSchedule()} className="update-schedule-button">
+                  Update Schedule
+                </button>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Schedule ID</th>
+                      <th>Truck ID</th>
+                      <th>Route ID</th>
+                      <th>Driver ID</th>
+                      <th>Assistant ID</th>
+                      <th>Scheduled Date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
+                  </thead>
+                  <tbody>
+                    {truckschedule
+                      .filter((schedule) => (isDateFiltered ? isTomorrow(schedule.ScheduleDate) : true))
+                      .map((schedule) => (
+                        <tr key={schedule.ScheduleID}>
+                          <td>{schedule.ScheduleID}</td>
+                          <td>{schedule.TruckID}</td>
+                          <td>{schedule.RouteID}</td>
+                          <td>{schedule.DriverID}</td>
+                          <td>{schedule.AssistantID}</td>
+                          <td>{schedule.ScheduleDate.split("T")[0]}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            );
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
@@ -365,7 +386,7 @@ const StoreManager = () => {
           </li>
           <li>
             <button onClick={() => setActiveSection("truckschedule")}>
-              <FontAwesomeIcon icon={faCalendarAlt} /> Truck Schedule
+              <FontAwesomeIcon icon={faCalendarAlt} /> Truck Schedule  
             </button>
           </li>
         </ul>
