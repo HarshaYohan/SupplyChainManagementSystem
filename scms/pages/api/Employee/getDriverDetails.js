@@ -26,7 +26,7 @@ export default async function handler(req, res) {
       JOIN 
           storeManager ON storeManager.StoreID = driver.StoreID
       JOIN 
-          employee AS manager ON storeManager.ManagerID = manager.EmployeeID
+          employee AS manager ON storeManager.EmployeeID = manager.EmployeeID
       WHERE 
           manager.Email = ?
     `;

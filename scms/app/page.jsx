@@ -14,6 +14,7 @@ function Home() {
   }, []);
 
   const handleNavigateShop = () => {
+    localStorage.clear();
     router.push("/Customer/product");
   };
 
@@ -29,7 +30,7 @@ function Home() {
       {/* Header Section */}
       <div className="header">
         <div className="logoContainer">
-          <img src="./RailTruxLogo.jpeg" alt="RailTrux Logo" className="logo" />
+          <img src="./RailTruxLogo.png" alt="RailTrux Logo" className="logo" />
         </div>
         <h1 className="title">Welcome to RailTrux</h1>
         <p className="subtitle">Your seamless link between products and logistics.</p>

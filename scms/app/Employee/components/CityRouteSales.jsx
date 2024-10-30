@@ -85,8 +85,14 @@ export default function CityRouteSales() {
         </table>
       )}
       {!loading && !error && salesData.length === 0 && city && (
-        <p className="no-data-text">No sales data available for the selected city.</p>
+        <p className="no-data-text">
+          No sales data available for the selected city.
+        </p>
       )}
+      <button onClick={generateCSV} className="download-button">
+        Download Report
+      </button>
     </div>
-  )
+  );
 }
+

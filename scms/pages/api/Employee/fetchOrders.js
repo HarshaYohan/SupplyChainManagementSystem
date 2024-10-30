@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
@@ -48,7 +47,6 @@ export default async function handler(req, res) {
       });
     });
     const orders = mergeOrdersByOrderID(results);
-    console.log(orders);
     res.status(200).json(orders);
   } else {
     res.status(405).json({ message: "Method Not Allowed" });

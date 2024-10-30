@@ -1,3 +1,6 @@
+
+// components/QuarterlySales.jsx
+
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -15,6 +18,9 @@ const QuarterlySales = () => {
       try {
         const response = await axios.get("/api/Employee/quarterly_sales");
         setSalesData(response.data);
+
+        console.log(response.data);
+
       } catch (err) {
         setError("Failed to load sales data.");
       } finally {
@@ -25,6 +31,8 @@ const QuarterlySales = () => {
     fetchSalesData();
   }, []);
 
+
+
   if (loading) {
     return <p className="loading-text">Loading sales data...</p>;
   }
@@ -33,6 +41,25 @@ const QuarterlySales = () => {
     return <p className="error-text">{error}</p>;
   }
 
+
+  const generateCSV = () => {
+    const headers = ["Year", "Quarter", "Total Sales","Number of Orders","Top-Selling Product","Top-Selling Product Quantity"];
+    const rows = salesData.map(data => [data.ReportYear, data.ReportQuarter, data.TotalOrders,data.TotalSalesAmount,data.BestSellingItem,data.BestSellingItemQuantity]);
+
+    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "quarterly_sales_report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+
+
+
   return (
     <div className="quarterly-sales-container">
       <h2>Quarterly Sales Report</h2>
@@ -40,9 +67,9 @@ const QuarterlySales = () => {
         <thead>
           <tr>
             <th>Year</th>
-            <th>Quarter</th>
-            <th>Total Sales</th>
+            <th>Quarter</th> 
             <th>Number of Orders</th>
+            <th>Total Sales</th>
             <th>Top-Selling Product</th>
             <th>Top-Selling Product Quantity</th>
           </tr>
@@ -60,10 +87,13 @@ const QuarterlySales = () => {
           ))}
         </tbody>
       </table>
+      <button onClick={generateCSV} className="download-button">
+        Download Report
+      </button>
     </div>
   );
 };
 
-export default QuarterlySales;
 
+export default QuarterlySales;
 

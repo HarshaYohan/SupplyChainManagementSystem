@@ -1,25 +1,52 @@
+.OR{
+  margin-top: 100px;
+}
 .greeting-box {
-  background-color: #f9f9f9; /* Light background color */
+  background-color: #f9f9f9;
   padding: 40px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-  text-align: center; /* Center align the text */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
   margin: 20px auto;
   max-width: 600px;
-  padding-top: 60px; 
-   /* Optional: Limit the width */
+  padding-top: 60px;
 }
 
-/* Styling for the heading */
 .greeting-box h1 {
   font-size: 28px;
-  color: #0a2a5e; /* Dark blue text color */
+  color: #0a2a5e;
   margin-bottom: 15px;
-
 }
 
-/* Styling for the paragraph */
 .greeting-box p {
   font-size: 18px;
-  color: #555; /* Grey color for the paragraph */
+  color: #555;
+}
+
+.startButton1 {
+  background-color: #3498db;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  margin: 10px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.disabledButton1 {
+  background-color: #2980b9;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  margin: 10px;
 }

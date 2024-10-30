@@ -137,10 +137,12 @@ const CompanyManagerHome = () => {
         );
       case "reportGenerating":
         router.push("/Employee/CompanyManager/Reports");
+        break;
       case "transportHandling":
         router.push("/Employee/CompanyManager/TransportProduct");
+        break;
       default:
-        return <p className="placeholder-text"></p>;
+        return <p className="placeholder-text">Welcome To Logistic Management!</p>;
     }
   };
 

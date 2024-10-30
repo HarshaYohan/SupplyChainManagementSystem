@@ -107,6 +107,12 @@
   margin-right: 8px;
 }
 
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Placeholder text styling */
 .placeholder-text {
   text-align: center;
@@ -127,10 +133,34 @@
   margin-top: 10px;
 }
 
+.finishAssign {
+  /* background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px; */
+}
+
 .train-item {
   display: flex;
   justify-content: space-between;
 }
+
+.dates {
+  display: flex; 
+  flex-direction: column; 
+  padding: 20px; 
+  margin: 20px; 
+  border-radius: 10px; 
+  background-color: white; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.todayDate, .NextDate {
+  margin-bottom: 10px; 
+  font-size: 1.2em; 
+}
+
 
 /* Styling for the train schedule table */
 .train-schedule-table {

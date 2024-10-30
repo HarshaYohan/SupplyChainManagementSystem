@@ -13,11 +13,11 @@ export default async function handler(req, res) {
     const { email } = req.body;
 
     const getStoreDetailsQuery = `
-      SELECT store.StoreID, store.Address, store.CityName, RailwayStationContact  
-      FROM store
-      JOIN storeManager ON storeManager.StoreID = store.StoreID
-      JOIN employee ON employee.EmployeeID = storeManager.ManagerID
-      WHERE employee.Email = ?
+     select store.StoreID,store.Address, store.CityName,store.RailwayStationContact
+      from store
+      inner join storemanager on store.StoreID = storemanager.StoreID
+      inner join employee on storemanager.EmployeeID = employee.EmployeeID
+      where Employee.Email = ?;
     `;
 
     db.query(getStoreDetailsQuery, [email], (err, results) => {

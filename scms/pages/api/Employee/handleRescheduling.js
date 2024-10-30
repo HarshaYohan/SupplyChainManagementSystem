@@ -1,7 +1,5 @@
-import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
-
 
 export default async function handler(req, res) {
   try {
@@ -12,16 +10,21 @@ export default async function handler(req, res) {
     return;
   }
 
-  const fetchTrainOrders = "select * from trainDetails";
+  console.log(req.body);
 
-  if (req.method === "GET") {
-    const result = await new Promise((resolve, reject) => {
-      db.query(fetchTrainOrders, (err, result) => {
+  const updateStatusQuery =
+    "update orders set CurrentStatus = 'Pending' where OrderID = ?";
+
+  if (req.method === "POST") {
+    await new Promise((resolve,reject) => {
+      db.query(updateStatusQuery, [req.body.OrderId], (err) => {
         if (err) reject(err);
-        else resolve(result);
+        resolve();
       });
     });
-    res.status(200).json(result);
+
+    res.status(200).json({message: "Rescheduling successful"});
+
   } else {
     res.status(405).json({ message: "Method Not Allowed" });
   }

@@ -1,66 +1,70 @@
+
+
 .Drivernavbar {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  background-color: #001f3f;
-  color: #fff;
-  padding: 1rem 2rem;
-  position: fixed;
-  top: 10px;
-  left: 30px;
-  right: 30px;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  border: 2px solid black;
-  border-radius: 10px;
-}
-
-
-.logo .logo-text {
-  font-size: 30px;
-  font-weight: bold;
-  color: white;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: #001f3f;
+    color: #fff;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 10px;
+    left: 30px;
+    right: 30px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 2px solid black;
+    border-radius: 10px;
+  }
   
-}
+  
+  .logo .logo-text {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    
+  }
+  
+  
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #ccc; 
+  }
+  
+  
+  .login-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .login-section a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  
+  .login-section .user-icon {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+  }
+  
+  
+  .login-section a:hover {
+    color: #ccc; 
+  }
+  
 
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #ccc; 
-}
-
-
-.login-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.login-section a {
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-}
-
-.login-section .user-icon {
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  border-radius: 50%;
-}
-
-
-.login-section a:hover {
-  color: #ccc;
-}
