@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading} from "@fortawesome/free-solid-svg-icons";
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faShippingFast } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 import CreateSchedule from '../components/CreateSchedule';
@@ -17,6 +17,7 @@ const StoreManager = () => {
   const [drivers, setDrivers] = useState([]);
   const [assistants, setAssistants] = useState([]);
   const [productOrders, setProductOrders] = useState([]);
+  const [dispatchedOrders, setDispatchedOrders] = useState([]); // NEW STATE
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
   const [isFiltered, setFilter] = useState(true);
@@ -80,7 +81,24 @@ const StoreManager = () => {
     }
   }, [userDetails]);
 
+  useEffect(() => {
+    const fetchDispatchedOrders = async () => {
+      if (storeDetails?.city) {
+        try {
+          const response = await axios.post("/api/Employee/getDispatchedOrders", {
+            city: storeDetails.city,
+          });
+          setDispatchedOrders(response.data); // Set fetched dispatched orders
+        } catch (error) {
+          console.error("Failed to fetch dispatched orders", error);
+        }
+      }
+    };
 
+    if (storeDetails) {
+      fetchDispatchedOrders();
+    }
+  }, [storeDetails]);
 
   useEffect(() => {
     const fetchDriverDetails = async () => {
@@ -186,6 +204,33 @@ const StoreManager = () => {
             <p>Select a section from the sidebar to manage your store.</p>
           </div>
         );
+
+        case "dispatchedOrders":
+          return (
+            <div className="dispatched-orders-section">
+              <h2>Dispatched Orders</h2>
+              <table className="order-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Dispatch Date</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dispatchedOrders.map((order) => (
+                    <tr key={order.OrderID}>
+                      <td>{order.OrderID}</td>
+                      <td>{order.DispatchDate}</td>
+                      <td>{order.Destination}</td>
+                      <td>{order.Status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
 
       case "myStore":
         return (
@@ -338,6 +383,11 @@ case "schedule":
           <li>
             <button onClick={() => setActiveSection("products")}>
               <FontAwesomeIcon icon={faTruckLoading} /> Products Arrival
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("dispatchedOrders")}>
+              <FontAwesomeIcon icon={faShippingFast} /> Order Dispatch
             </button>
           </li>
           <li>

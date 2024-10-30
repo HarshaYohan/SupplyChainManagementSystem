@@ -20,11 +20,12 @@ export default async function handler(req, res) {
       if (results.length === 0) {
         return res.status(401).json({ error: "No Store Available" });
       } else {
-        const getRoots = "select RouteDescription from route where StoreID = ?";
+        const getRoots = "SELECT RouteID, RouteDescription FROM route WHERE StoreID = ?";
         db.query(getRoots, [results[0].StoreID], (err, resultRoutes) => {
           if (err) {
             return res.status(500).json({ error: "Database error" });
           }
+          //console.log("Fetched routes:", resultRoutes);
           return res.status(200).json(resultRoutes); 
         });
       }
