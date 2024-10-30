@@ -30,7 +30,7 @@ function Home() {
       {/* Header Section */}
       <div className="header">
         <div className="logoContainer">
-          <img src="./RailTruxLogo.png" alt="RailTrux Logo" className="logo" />
+          <img src="./RailTrux.jpg" alt="RailTrux Logo" className="logo" />
         </div>
         <h1 className="title">Welcome to RailTrux</h1>
         <p className="subtitle">Your seamless link between products and logistics.</p>

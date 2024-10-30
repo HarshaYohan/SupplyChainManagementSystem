@@ -22,8 +22,8 @@ const Reports = () => {
         return <CustomerOrders />;
       case "Report4":
         return <CityRouteSales />;
-      case "Report5":
-        return <DriverHours />;
+      // case "Report5":
+      //   return <DriverHours />;
       default:
         return (
           <p className="placeholder-text">Select a report from the sidebar</p>
@@ -60,12 +60,12 @@ const Reports = () => {
           >
             City-Route Sales Report
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab("Report5")}
             className={activeTab === "Report5" ? "active" : ""}
           >
             DriverHours Report
-          </button>
+          </button> */}
         </div>
         <div className="body">{renderContent()}</div>
       </div>

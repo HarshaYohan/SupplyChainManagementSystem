@@ -19,6 +19,7 @@ export default async function handler(req, res) {
   if (method === "PUT") {
     try {
       const { status } = req.body;
+      const today=new Date().toISOString().split('T')[0];
 
       if (!status || !id) {
         return res.status(400).json({ message: "Status and ID are required" });
@@ -26,8 +27,8 @@ export default async function handler(req, res) {
 
       const result = await new Promise((resolve, reject) => {
         db.query(
-          `UPDATE Orders SET CurrentStatus = ? WHERE OrderID = ?`,
-          [status, id],
+          `UPDATE Orders SET CurrentStatus = ?, DeliveryDate = ? WHERE OrderID = ?`,
+          [status, today, id],
           (error, results) => {
             if (error) {
               return reject(error);

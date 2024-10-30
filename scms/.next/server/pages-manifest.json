@@ -2,11 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/Employee/fetchOrders": "pages/api/Employee/fetchOrders.js",
-  "/api/Employee/fetchTrainDetails": "pages/api/Employee/fetchTrainDetails.js",
-  "/api/Employee/fetchCityTrainDetails": "pages/api/Employee/fetchCityTrainDetails.js",
-  "/api/Employee/fetchRescheduledOrders": "pages/api/Employee/fetchRescheduledOrders.js",
-  "/api/Employee/allocateTrain": "pages/api/Employee/allocateTrain.js",
-  "/api/Employee/resetTrainDetails": "pages/api/Employee/resetTrainDetails.js",
-  "/api/Employee/handleRescheduling": "pages/api/Employee/handleRescheduling.js"
+  "/api/Employee/employeeLogin": "pages/api/Employee/employeeLogin.js",
+  "/api/Employee/fetchDriverProfile1": "pages/api/Employee/fetchDriverProfile1.js"
 }

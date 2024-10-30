@@ -54,7 +54,7 @@ function Login() {
     <div className="Container">
       <div className="RightSide">
         <div className="ImgBlock">
-          <img src="../../../RailTruxLogo.jpeg" alt="Logo" />
+          <img src="../../../RailTrux.jpg" alt="Logo" />
           <h1>Welcome back!</h1>
         </div>
       </div>

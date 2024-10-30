@@ -40,7 +40,7 @@ function Navbar() {
       {/* Branding Section */}
       <div className="leftSection">
         <img
-          src="../../../logo.png"
+          src="../../../RailTrux.jpg"
           alt="RailTrux Logo"
           className="logo"
           onClick={handleClickLogo}
