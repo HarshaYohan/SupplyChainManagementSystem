@@ -1,7 +1,6 @@
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
-
 function dbQuery(query, values = []) {
   return new Promise((resolve, reject) => {
     db.query(query, values, (err, result) => {
@@ -27,6 +26,7 @@ export default async function handler(req, res) {
         `SELECT * FROM orders WHERE CurrentStatus = 'At Distribution Center' AND City = ?`, 
         [city]
       );
+
       const drivers = await dbQuery(
         `SELECT driver.DriverID, driver.WeeklyWorkHours, driver.StoreID, driver.EmployeeID
          FROM driver 
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
          WHERE store.CityName = ? AND driver.WeeklyWorkHours < 40`, 
         [city]
       );
+
       const assistants = await dbQuery(
         `SELECT driverassistant.AssistantID, driverassistant.WeeklyWorkHours, driverassistant.StoreID, driverassistant.EmployeeID
          FROM driverassistant 
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
          WHERE store.CityName = ? AND driverassistant.WeeklyWorkHours < 60`, 
         [city]
       );
+
       const trucks = await dbQuery(
         `SELECT truck.TruckID, truck.StoreID, truck.TruckNumber, truck.Capacity, truck.Condition_
          FROM truck 
@@ -48,93 +50,95 @@ export default async function handler(req, res) {
          WHERE store.CityName = ? AND truck.Condition_ = 'Good'`, 
         [city]
       );
+
       const routes = await dbQuery(
         `SELECT DISTINCT route.RouteID, route.StoreID, route.RouteDescription, route.MaxTimeHrs
          FROM route
          JOIN store ON route.StoreID = store.StoreID
-         WHERE store.CityName = ?
-         AND route.RouteID IN (
+         WHERE store.CityName = ? AND route.RouteID IN (
            SELECT DISTINCT orders.RouteID
            FROM orders
            WHERE orders.CurrentStatus = 'At Distribution Center' AND orders.City = ?)
          `, [city, city]
       );
 
-      let assignedSchedules = [];
-      let driverScheduleMap = {};
-      let assistantScheduleMap = {};
-
+      // Group orders by RouteID
+      const ordersByRoute = {};
       for (const order of orders) {
-        let assignedTruck, assignedRoute, assignedDriver, assignedAssistant, scheduleId;
-
-        for (const truck of trucks) {
-          assignedTruck = truck.TruckID;
-          assignedRoute = routes.find(route => route.RouteID)?.RouteID;
-          if (assignedTruck && assignedRoute) break;
+        if (!ordersByRoute[order.RouteID]) {
+          ordersByRoute[order.RouteID] = [];
         }
+        ordersByRoute[order.RouteID].push(order);
+      }
 
-        for (const driver of drivers) {
-          if (!driverScheduleMap[driver.DriverID] || driverScheduleMap[driver.DriverID] !== order.OrderID - 1) {
-            assignedDriver = driver.DriverID;
-            driverScheduleMap[driver.DriverID] = order.OrderID;
-            break;
-          }
-        }
+      let assignedSchedules = [];
+      let driverIndex = 0;
+      let assistantIndex = 0;
 
-        for (const assistant of assistants) {
-          if (!assistantScheduleMap[assistant.AssistantID] || assistantScheduleMap[assistant.AssistantID] < 2) {
-            assignedAssistant = assistant.AssistantID;
-            assistantScheduleMap[assistant.AssistantID] = (assistantScheduleMap[assistant.AssistantID] || 0) + 1;
-            break;
-          } else {
-            assistantScheduleMap[assistant.AssistantID] = 0;
-          }
-        }
 
-        if (assignedTruck && assignedRoute && assignedDriver && assignedAssistant) {
-      
+      const today = new Date();
+      today.setDate(today.getDate() + 1);
+      const formattedDate = today.toISOString().split('T')[0];
+
+      // Iterate through each route and assign resources
+      for (const route of routes) {
+        const ordersForRoute = ordersByRoute[route.RouteID];
+        if (!ordersForRoute) continue; 
+
+        const assignedTruck = trucks.shift(); // Rotate trucks
+        const assignedDriver = drivers[driverIndex]; // Rotate drivers
+        const assignedAssistant = assistants[assistantIndex]; // Rotate assistants
+
+        // Increment driver and assistant index for rotation
+        driverIndex = (driverIndex + 1) % drivers.length;
+        assistantIndex = (assistantIndex + 1) % assistants.length;
+
+        if (assignedTruck && assignedDriver && assignedAssistant) {
+          // Check if schedule already exists for the same route, truck, driver, and assistant
+          let scheduleId;
           const existingSchedule = await dbQuery(
             `SELECT ScheduleID FROM truckschedule 
              WHERE TruckID = ? AND RouteID = ? AND DriverID = ? AND AssistantID = ?`,
-            [assignedTruck, assignedRoute, assignedDriver, assignedAssistant]
+            [assignedTruck.TruckID, route.RouteID, assignedDriver.DriverID, assignedAssistant.AssistantID]
           );
 
           if (existingSchedule.length > 0) {
-           
             scheduleId = existingSchedule[0].ScheduleID;
           } else {
-           
             const result = await dbQuery(
-              `INSERT INTO truckschedule (TruckID, RouteID, DriverID, AssistantID) VALUES (?, ?, ?, ?)`,
-              [assignedTruck, assignedRoute, assignedDriver, assignedAssistant]
+              `INSERT INTO truckschedule (TruckID, RouteID, DriverID, AssistantID, ScheduleDate) VALUES (?, ?, ?, ?, ?)`,
+              [assignedTruck.TruckID, route.RouteID, assignedDriver.DriverID, assignedAssistant.AssistantID, formattedDate]
             );
             scheduleId = result.insertId;
           }
 
-          
-          await dbQuery(
-            `INSERT INTO order_schedule (ScheduleID, OrderID) VALUES (?, ?)`,
-            [scheduleId, order.OrderID]
-          );
+          // Assign schedule to each order in this route group
+          for (const order of ordersForRoute) {
+            await dbQuery(
+              `INSERT INTO order_schedule (ScheduleID, OrderID) VALUES (?, ?)`,
+              [scheduleId, order.OrderID]
+            );
+          }
 
-          // Track this schedule
           assignedSchedules.push({
             ScheduleID: scheduleId,
-            TruckID: assignedTruck,
-            RouteID: assignedRoute,
-            DriverID: assignedDriver,
-            AssistantID: assignedAssistant,
+            TruckID: assignedTruck.TruckID,
+            RouteID: route.RouteID,
+            DriverID: assignedDriver.DriverID,
+            AssistantID: assignedAssistant.AssistantID,
           });
         }
       }
 
+      // Update orders' status
       await dbQuery(
         `UPDATE orders SET CurrentStatus = 'Out for Final Delivery' WHERE CurrentStatus = 'At Distribution Center' AND City = ?`,
         [city]
       );
 
+      // Fetch the updated schedule
       const updatedSchedule = await dbQuery(
-        `SELECT truckschedule.ScheduleID, truckschedule.TruckID, truckschedule.RouteID, truckschedule.DriverID, truckschedule.AssistantID
+        `SELECT truckschedule.ScheduleID, truckschedule.TruckID, truckschedule.RouteID, truckschedule.DriverID, truckschedule.AssistantID, truckschedule.ScheduleDate
          FROM truckschedule 
          JOIN route ON route.RouteID = truckschedule.RouteID
          JOIN store ON store.StoreID = route.StoreID
