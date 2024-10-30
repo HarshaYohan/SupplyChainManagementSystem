@@ -42,3 +42,30 @@
   color: #555;
   font-size: 1.1rem;
 }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download-button {
+  display: block;
+  align-items: center;
+  width: 20%;
+  padding: 10px;
+  background-color: #001f3f;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.download-button:hover {
+  background-color: #004080;
+}
+
+.download-button:active {
+  background-color: #001f3f;
+}

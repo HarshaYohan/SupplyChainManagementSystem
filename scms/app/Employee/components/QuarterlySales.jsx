@@ -12,7 +12,6 @@ const QuarterlySales = () => {
 
   useEffect(() => {
     const fetchSalesData = async () => {
-    
       try {
         const response = await axios.get("/api/Employee/quarterly_sales");
         setSalesData(response.data);
@@ -35,13 +34,26 @@ const QuarterlySales = () => {
     return <p className="error-text">{error}</p>;
   }
 
-
   const generateCSV = () => {
-    const headers = ["Year", "Quarter", "Total Sales","Number of Orders","Top-Selling Product","Top-Selling Product Quantity"];
-    const rows = salesData.map(data => [data.ReportYear, data.ReportQuarter, data.TotalOrders,data.TotalSalesAmount,data.BestSellingItem,data.BestSellingItemQuantity]);
+    const headers = [
+      "Year",
+      "Quarter",
+      "Total Sales",
+      "Number of Orders",
+      "Top-Selling Product",
+      "Top-Selling Product Quantity",
+    ];
+    const rows = salesData.map((data) => [
+      data.ReportYear,
+      data.ReportQuarter,
+      data.TotalOrders,
+      data.TotalSalesAmount,
+      data.BestSellingItem,
+      data.BestSellingItemQuantity,
+    ]);
 
-    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -50,8 +62,6 @@ const QuarterlySales = () => {
     link.click();
     document.body.removeChild(link);
   };
-
-
 
   return (
     <div className="quarterly-sales-container">
@@ -69,20 +79,22 @@ const QuarterlySales = () => {
         </thead>
         <tbody>
           {salesData.map((data, index) => (
-            <tr key={index}> 
-            <td>{data.ReportYear}</td> 
-            <td>{data.ReportQuarter}</td>                        
-            <td>{data.TotalOrders}</td> 
-            <td>{data.TotalSalesAmount}</td>
-            <td>{data.BestSellingItem}</td>
-            <td>{data.BestSellingItemQuantity}</td>
-          </tr>
+            <tr key={index}>
+              <td>{data.ReportYear}</td>
+              <td>{data.ReportQuarter}</td>
+              <td>{data.TotalOrders}</td>
+              <td>{data.TotalSalesAmount}</td>
+              <td>{data.BestSellingItem}</td>
+              <td>{data.BestSellingItemQuantity}</td>
+            </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={generateCSV} className="download-button">
-        Download Report
-      </button>
+      <div className="button-container">
+        <button onClick={generateCSV} className="download-button">
+          Download Report
+        </button>
+      </div>
     </div>
   );
 };

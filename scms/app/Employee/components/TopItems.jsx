@@ -68,9 +68,11 @@ const TopItemsSales = () => {
           ))}
         </tbody>
       </table>
-      <button onClick={generateCSV} className="download-button">
-        Download Report
-      </button>
+      <div className="button-container">
+        <button onClick={generateCSV} className="download-button">
+          Download Report
+        </button>
+      </div>
     </div>
   );
 };

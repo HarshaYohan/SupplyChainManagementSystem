@@ -38,7 +38,8 @@ const CompanyManagerHome = () => {
       email: "",
       password: "",
     });
-    setActiveTab(null); // Close the tab after submission
+    alert("Employee Added Successfully!");
+    setActiveTab(true); // Close the tab after submission
   };
 
   const handleTransportProduct = async (e) => {
@@ -132,7 +133,7 @@ const CompanyManagerHome = () => {
                 setEmployee({ ...employee, password: e.target.value })
               }
             />
-            <button type="submit">Add Employee</button>
+            <button className="Add-employee" type="submit">Add Employee</button>
           </form>
         );
       case "reportGenerating":
