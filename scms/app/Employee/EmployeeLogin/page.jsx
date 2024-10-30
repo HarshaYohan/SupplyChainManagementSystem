@@ -31,7 +31,7 @@ function Login() {
       localStorage.setItem("userData", JSON.stringify(userData));
 
       console.log("Login successful", response.data);
-      if (userData.role === "Store Manager") router.push("/Employee/StoreManager");
+      if (userData.role === "Store Manager") router.push("/Employee/storeManager");
       else if (
         userData.role === "Driver" ||
         userData.role === "Driver Assistant"

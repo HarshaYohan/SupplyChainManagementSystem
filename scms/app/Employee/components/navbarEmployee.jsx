@@ -23,7 +23,7 @@ function Navbar() {
     <div className="Header">
       <div className="leftSection">
           <img
-            src="../../logo.png"
+            src="../../RailTruxLogo.png"
             alt="RailTrux Logo"
             onClick={handleClickLogo}
           />

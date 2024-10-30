@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore, faTruck, faUserTie, faBoxOpen, faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Added logout icon
+import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../../../styles/employee/storeManager.css";
 
@@ -15,14 +15,9 @@ const StoreManager = () => {
   const [productOrders, setProductOrders] = useState([]);
   const [activeSection, setActiveSection] = useState("home");
   const [name, setName] = useState("");
+  const [isFiltered, setFilter] = useState(false);
+  const [truckschedule, setTruckSchedule] = useState([]);
 
-  useEffect(() => {
-
-    setProductOrders([
-      { orderId: 101, orderDate: "2023-10-01", deliveryDate: "2023-10-05", assignedDriver: "" },
-      { orderId: 102, orderDate: "2023-10-02", deliveryDate: "2023-10-06", assignedDriver: "" },
-    ]);
-  }, []);
 
 
   useEffect(() => {
@@ -32,7 +27,7 @@ const StoreManager = () => {
         setUserDetails(storedUserData);
         console.log("User details: ", storedUserData);
       } else {
-        router.push("/EmployeeLogin"); // Redirect to login if not logged in or not a store manager
+        router.push("/EmployeeLogin"); 
       }
     };
 
@@ -45,9 +40,7 @@ const StoreManager = () => {
     const fetchUserData = async () => {
       if (userDetails && userDetails.email) {
         try {
-          // Fetch the manager details, including name, from backend
           const storeRes = await axios.post("/api/Employee/getStoreManager", { email: userDetails.email });
-          // Set fetched name to userDetails
           setName(storeRes.data.name);
         } catch (error) {
           console.error("Failed to fetch store data", error);
@@ -114,28 +107,67 @@ const StoreManager = () => {
       fetchAssistantDetails();
     }
   }, [userDetails]);
-  
-  
-  
-  // Function to handle toggling of the assigned driver
-  const assignDriver = (orderId, selectedDriverId) => {
-    setProductOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.orderId === orderId
-          ? {
-              ...order,
-              assignedDriver: order.assignedDriver === selectedDriverId ? "" : selectedDriverId, // Toggle logic
-            }
-          : order
-      )
-    );
+
+
+  const fetchProductOrders = async (city) => {
+    try {
+      const response = await axios.post("/api/Employee/getProductDetails", { city: city });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch product orders:", error);
+      return [];
+    }
   };
 
-  // Logout handler
+  useEffect(() => {
+    const fetchProductOrdersData = async () => {
+      if (storeDetails?.city && activeSection === "products") {
+        try {
+          const products = await fetchProductOrders(storeDetails.city);
+          setProductOrders(products);
+        } catch (error) {
+          console.error("Failed to fetch products data:", error);
+        }
+      }
+    };
+  
+    fetchProductOrdersData();
+  }, [storeDetails, activeSection]);
+  
+  
+  
+  const handleStatusChange = async (orderId) => {
+    try {
+      await axios.post("/api/Employee/updateProductStatus", { orderId });
+      
+
+      setProductOrders((prevOrders) =>
+        prevOrders.map((product) =>
+          product.OrderID === orderId
+            ? { ...product, CurrentStatus: "At Distribution Center" }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+    }
+  };
+
+  
+  const handleUpdateSchedule = async () => {
+    try {
+      const response = await axios.post("/api/Employee/updateSchedule", {city: storeDetails.city});
+      setTruckSchedule(response.data);
+    } catch (error) {
+      console.error("Failed to update schedule:", error);
+    }
+  };
+  
+  
   const handleLogout = () => {
-    // Remove user data from localStorage
+  
     localStorage.removeItem("userData");
-    // Redirect to login
+    
     router.push("/Employee/EmployeeLogin");
   };
 
@@ -229,43 +261,77 @@ const StoreManager = () => {
         );
 
       case "products":
-        return (
-          <div className="products-section">
-            <h2>Product Orders</h2>
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Order Date</th>
-                  <th>Delivery Date</th>
-                  <th>Assign Driver</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productOrders.map((order) => (
-                  <tr key={order.orderId}>
-                    <td>{order.orderId}</td>
-                    <td>{order.orderDate}</td>
-                    <td>{order.deliveryDate}</td>
-                    <td>
-                      <select
-                        value={order.assignedDriver}
-                        onChange={(e) => assignDriver(order.orderId, e.target.value)}
-                      >
-                        <option value="">Select Driver</option>
-                        {drivers.map((driver) => (
-                          <option key={driver.id} value={driver.id}>
-                            {driver.name}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
+          return (
+            <div className="products-section">
+              <div className="products-header">
+                <button onClick={() => setFilter((prev) => !prev)}>
+                  {isFiltered ?  "Show All": "Not Arrived"  }
+                </button>
+                <h2>Orders Arrival</h2>
+              </div>
+              <table className="product-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Current Status</th>
+                    <th>Arrived</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        );
+                </thead>
+                <tbody>
+                  {productOrders
+                    .filter((product) =>
+                      isFiltered ? product.CurrentStatus !== "At Distribution Center" : true
+                    )
+                    .map((product) => (
+                      <tr key={product.OrderID}>
+                        <td>{product.OrderID}</td>
+                        <td>{product.CurrentStatus}</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={product.CurrentStatus === "At Distribution Center"}
+                            onChange={() => handleStatusChange(product.OrderID)}
+                            disabled={product.CurrentStatus === "At Distribution Center"}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          );
+
+        case "truckschedule":
+          return (
+            <div className="truckschedule-section">
+              <h2>Truck Schedule</h2>
+              <button onClick={() => handleUpdateSchedule()} className="update-schedule-button">
+                Update Schedule
+              </button>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Schedule ID</th>
+                    <th>Truck ID</th>
+                    <th>Route ID</th>
+                    <th>Driver ID</th>
+                    <th>Assistant ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {truckschedule.map((schedule) => (
+                    <tr key={schedule.ScheduleID}>
+                      <td>{schedule.ScheduleID}</td>
+                      <td>{schedule.TruckID}</td>
+                      <td>{schedule.RouteID}</td>
+                      <td>{schedule.DriverID}</td>
+                      <td>{schedule.AssistantID}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
 
       default:
         return <p>Select a section from the sidebar to manage your store.</p>;
@@ -294,11 +360,15 @@ const StoreManager = () => {
           </li>
           <li>
             <button onClick={() => setActiveSection("products")}>
-              <FontAwesomeIcon icon={faBoxOpen} /> Products
+              <FontAwesomeIcon icon={faTruckLoading} /> Orders Arrival
+            </button>
+          </li>
+          <li>
+            <button onClick={() => setActiveSection("truckschedule")}>
+              <FontAwesomeIcon icon={faCalendarAlt} /> Truck Schedule
             </button>
           </li>
         </ul>
-        {/* Add the Logout button at the bottom of the sidebar */}
         <div className="logout-section">
           <button onClick={handleLogout}>
             <FontAwesomeIcon icon={faSignOutAlt} /></button>
