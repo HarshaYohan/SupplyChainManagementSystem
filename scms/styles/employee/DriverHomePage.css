@@ -1,15 +1,17 @@
-.OR{
+/* Overall Margin Adjustment */
+.OR {
   margin-top: 100px;
 }
+
+/* Greeting Box Styling */
 .greeting-box {
   background-color: #f9f9f9;
-  padding: 40px;
+  padding: 60px 40px; /* Unified padding */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin: 20px auto;
+  margin: 10px auto;
   max-width: 600px;
-  padding-top: 60px;
 }
 
 .greeting-box h1 {
@@ -23,30 +25,50 @@
   color: #555;
 }
 
-.startButton1 {
-  background-color: #3498db;
+/* Main Button Styling */
+button {
   padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
-  border: none;
-  font-weight: bold;
-  color: #fff;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-  margin: 10px;
 }
 
-button:hover {
+/* Start Button Specific Style */
+.start-button {
+  background-color: #081ae2; /* Dark blue for Start */
+}
+
+.start-button:hover,
+.disabledButton1:hover {
   background-color: #2980b9;
 }
 
+.start-button:active {
+  transform: scale(0.98);
+}
+
+/* Disabled Button Styling */
 .disabledButton1 {
   background-color: #2980b9;
-  padding: 12px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  font-weight: bold;
-  color: #fff;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-  margin: 10px;
+  cursor: not-allowed;
+  opacity: 0.7; /* Indicates disabled state */
+}
+
+/* End Button Specific Style */
+.end-button {
+  background-color: #081ae2; /* Same dark blue for End */
+}
+
+/* Action Button Hover & Focus Effects */
+button.action-button:hover {
+  opacity: 0.9;
+}
+
+button.action-button:focus {
+  outline: none;
 }

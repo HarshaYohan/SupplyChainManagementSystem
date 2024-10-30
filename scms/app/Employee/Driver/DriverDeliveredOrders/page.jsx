@@ -59,7 +59,7 @@ const DeliveredItems = () => {
     <div>
    <Drivernavbar/>
     <div className="orders">
-      <h1 className="title2">Delivered Items</h1>
+      <h1 className="title3">Delivered Items</h1>
 
       {error && <p className="error"><h2>No Avaiable</h2></p>}
 
