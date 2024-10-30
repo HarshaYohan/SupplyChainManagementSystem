@@ -1,0 +1,7 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/api/Employee/employeeLogin": "pages/api/Employee/employeeLogin.js",
+  "/api/Employee/fetchDriverProfile1": "pages/api/Employee/fetchDriverProfile1.js"
+}

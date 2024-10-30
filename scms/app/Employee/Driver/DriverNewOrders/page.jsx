@@ -127,10 +127,7 @@ const NewWork = () => {
                     <p className="detailsText">
                       Phone Number: {order.PhoneNumber}
                     </p>
-                    <p className="detailsText">
-                      Delivery Date:{" "}
-                      {new Date(order.DeliveryDate).toLocaleDateString()}
-                    </p>
+                    
                   </div>
                 )}
               </div>

@@ -1,0 +1,160 @@
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/customer/signup_login.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.Container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  max-width: 1200px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.RightSide,
+.LeftSide {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.RightSide {
+  background-color: #110E56;
+  color: white;
+}
+
+.LeftSide {
+  background-color: #fff;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+/* Buttons */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #110E56;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #085bb5;
+}
+
+/* Input Styles */
+input {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #0a74da;
+}
+
+
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .Container {
+    flex-direction: column;
+  }
+
+  .RightSide,
+  .LeftSide {
+    width: 100%;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  input {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  input {
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* Image Block */
+.ImgBlock {
+  text-align: center;
+}
+
+.ImgBlock img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 50%
+}
+
+/* Form Styles */
+form {
+  width: 100%;
+  max-width: 400px;
+}
+
+form input,
+form button {
+  width: 100%;
+}
+
+form button {
+  margin-top: 20px;
+}
+

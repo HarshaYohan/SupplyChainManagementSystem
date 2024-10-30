@@ -11,20 +11,23 @@ export default async function handler(req, res) {
   }
 
   const fetchTrainOrders = "select * from resetTrainDetails";
-  const updateQuery = `
-  UPDATE citytrainallocation
-  SET AllocatedCapacity = CASE
-    WHEN CityTrainAllocationID = 1 THEN 300
-    WHEN CityTrainAllocationID = 3 THEN 200
-    WHEN CityTrainAllocationID = 5 THEN 200
-    WHEN CityTrainAllocationID = 6 THEN 250
-    WHEN CityTrainAllocationID = 7 THEN 300
-    WHEN CityTrainAllocationID = 8 THEN 150
-    WHEN CityTrainAllocationID = 9 THEN 200
-    WHEN CityTrainAllocationID = 10 THEN 200
-    ELSE AllocatedCapacity
-END;
-  `;
+//   const updateQuery = `
+//   UPDATE citytrainallocation
+//   SET AllocatedCapacity = CASE
+//     WHEN CityTrainAllocationID = 11 THEN 300
+//     WHEN CityTrainAllocationID = 12 THEN 200
+//     WHEN CityTrainAllocationID = 15 THEN 200
+//     WHEN CityTrainAllocationID = 16 THEN 250
+//     WHEN CityTrainAllocationID = 17 THEN 300
+//     WHEN CityTrainAllocationID = 18 THEN 150
+//     WHEN CityTrainAllocationID = 19 THEN 200
+//     WHEN CityTrainAllocationID = 20 THEN 200
+//     ELSE AllocatedCapacity
+// END;
+//   `;
+
+const updateQuery ='call ResetAllocatedCapacity()';
+
 
   if (req.method === "POST") {
     await new Promise((reject) => {

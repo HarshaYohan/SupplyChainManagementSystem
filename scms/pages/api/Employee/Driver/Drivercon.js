@@ -3,6 +3,7 @@ import runCors from "../../../../utils/cors.js";
 
 export default async function handler(req, res) {
   try {
+    // Ensure CORS is properly handled before proceeding
     await runCors(req, res);
   } catch (error) {
     console.error("CORS error:", error);
@@ -13,23 +14,26 @@ export default async function handler(req, res) {
   const { method } = req;
   const { id } = req.query;
 
-  console.log("Request body:", req.body); // Log the incoming request body
+  console.log("Request body:", req.body); // Log request body for debugging
 
   if (method === "PUT") {
     try {
       const { status } = req.body;
-      console.log(status);
+      const today=new Date().toISOString().split('T')[0];
+
+      if (!status || !id) {
+        return res.status(400).json({ message: "Status and ID are required" });
+      }
 
       const result = await new Promise((resolve, reject) => {
         db.query(
-          `UPDATE Orders SET CurrentStatus = ? WHERE OrderID = ?`,
-          [status, id],
+          `UPDATE Orders SET CurrentStatus = ?, DeliveryDate = ? WHERE OrderID = ?`,
+          [status, today, id],
           (error, results) => {
             if (error) {
-              reject(error);
-            } else {
-              resolve(results);
+              return reject(error);
             }
+            resolve(results);
           }
         );
       });

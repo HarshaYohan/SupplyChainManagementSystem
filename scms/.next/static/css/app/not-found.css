@@ -1,0 +1,115 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/notFound.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************/
+/* Enhanced gradient background with black, purple, blue, and red */
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #000000, #4b0082, #0000ff, #ff0000);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Responsive and centered content with hover card effect */
+.not-found-content {
+  max-width: 600px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.not-found-content:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 404 title style */
+.not-found-content h1 {
+  font-size: 8rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s;
+}
+
+.not-found-content h1:hover {
+  transform: scale(1.1);
+}
+
+/* Subtitle */
+.not-found-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Text description */
+.not-found-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Home link styles */
+.home-link {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  color: #fff;
+  text-decoration: none;
+  background: #b80b7c;
+  border-radius: 30px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.home-link:hover {
+  background: #FF0000;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Font Awesome Icon inside the link */
+.home-link .home-icon {
+  margin-right: 10px;
+}
+
+.home-link .hover-arrow {
+  margin-right: 8px;
+  transition: transform 0.3s;
+}
+
+.home-link:hover .hover-arrow {
+  transform: translateX(-5px);
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .not-found-content h1 {
+    font-size: 6rem;
+  }
+  .not-found-content h2 {
+    font-size: 1.5rem;
+  }
+  .home-link {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-content h1 {
+    font-size: 4rem;
+  }
+  .not-found-content h2 {
+    font-size: 1.2rem;
+  }
+  .home-link {
+    padding: 8px 15px;
+    font-size: 1rem;
+  }
+}
+
