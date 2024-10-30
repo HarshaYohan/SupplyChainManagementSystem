@@ -1,8 +1,7 @@
-// Filename: /api/Employee/updateSchedule.js
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
-// Helper function to wrap db.query in a Promise
+
 function dbQuery(query, values = []) {
   return new Promise((resolve, reject) => {
     db.query(query, values, (err, result) => {
@@ -93,7 +92,7 @@ export default async function handler(req, res) {
         }
 
         if (assignedTruck && assignedRoute && assignedDriver && assignedAssistant) {
-          // Check if a schedule already exists with the same TruckID, RouteID, DriverID, and AssistantID
+      
           const existingSchedule = await dbQuery(
             `SELECT ScheduleID FROM truckschedule 
              WHERE TruckID = ? AND RouteID = ? AND DriverID = ? AND AssistantID = ?`,
@@ -101,10 +100,10 @@ export default async function handler(req, res) {
           );
 
           if (existingSchedule.length > 0) {
-            // Use existing ScheduleID
+           
             scheduleId = existingSchedule[0].ScheduleID;
           } else {
-            // Insert a new record and get the new ScheduleID
+           
             const result = await dbQuery(
               `INSERT INTO truckschedule (TruckID, RouteID, DriverID, AssistantID) VALUES (?, ?, ?, ?)`,
               [assignedTruck, assignedRoute, assignedDriver, assignedAssistant]
@@ -112,7 +111,7 @@ export default async function handler(req, res) {
             scheduleId = result.insertId;
           }
 
-          // Insert the ScheduleID and OrderID into order_schedule (OrderScheduleID will auto-increment)
+          
           await dbQuery(
             `INSERT INTO order_schedule (ScheduleID, OrderID) VALUES (?, ?)`,
             [scheduleId, order.OrderID]

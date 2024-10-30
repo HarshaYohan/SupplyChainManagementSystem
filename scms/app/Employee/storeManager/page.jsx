@@ -27,7 +27,7 @@ const StoreManager = () => {
         setUserDetails(storedUserData);
         console.log("User details: ", storedUserData);
       } else {
-        router.push("/EmployeeLogin"); // Redirect to login if not logged in or not a store manager
+        router.push("/EmployeeLogin"); 
       }
     };
 
@@ -40,9 +40,7 @@ const StoreManager = () => {
     const fetchUserData = async () => {
       if (userDetails && userDetails.email) {
         try {
-          // Fetch the manager details, including name, from backend
           const storeRes = await axios.post("/api/Employee/getStoreManager", { email: userDetails.email });
-          // Set fetched name to userDetails
           setName(storeRes.data.name);
         } catch (error) {
           console.error("Failed to fetch store data", error);
@@ -142,7 +140,7 @@ const StoreManager = () => {
     try {
       await axios.post("/api/Employee/updateProductStatus", { orderId });
       
-      // Optionally update the UI to indicate the change
+
       setProductOrders((prevOrders) =>
         prevOrders.map((product) =>
           product.OrderID === orderId
@@ -166,11 +164,10 @@ const StoreManager = () => {
   };
   
   
-  // Logout handler
   const handleLogout = () => {
-    // Remove user data from localStorage
+  
     localStorage.removeItem("userData");
-    // Redirect to login
+    
     router.push("/Employee/EmployeeLogin");
   };
 
