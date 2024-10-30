@@ -1,8 +1,0 @@
-{
-  "/Employee/EmployeeLogin/page": "app/Employee/EmployeeLogin/page.js",
-  "/Employee/CompanyManager/TransportProduct/page": "app/Employee/CompanyManager/TransportProduct/page.js",
-  "/Employee/CompanyManager/Reports/page": "app/Employee/CompanyManager/Reports/page.js",
-  "/page": "app/page.js",
-  "/Employee/Driver/DriverHomePage/page": "app/Employee/Driver/DriverHomePage/page.js",
-  "/Employee/Driver/DriverProfile/page": "app/Employee/Driver/DriverProfile/page.js"
-}
