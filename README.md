@@ -84,11 +84,3 @@ views/: UI components for interacting with the system.
 📊 Usage
 Once running, the platform can be accessed via the specified local host or deployment server. Employees of Company A can manage orders, schedules, and generate reports from the system dashboard.
 
-🖊️ Contributing
-Contributions are welcome! To suggest changes, please open an issue or submit a pull request.
-
-📜 License
-This project is licensed under the MIT License. For details, see the LICENSE file.
-
-👤 Author
-Developed by [Your Name]. For inquiries, reach out via email or GitHub.
