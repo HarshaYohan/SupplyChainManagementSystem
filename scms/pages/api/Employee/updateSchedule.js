@@ -1,5 +1,7 @@
+import { CleaningServices } from "@mui/icons-material";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
+import { log } from "console";
 
 function dbQuery(query, values = []) {
   return new Promise((resolve, reject) => {
@@ -77,9 +79,10 @@ export default async function handler(req, res) {
 
 
       const today = new Date();
-      today.setDate(today.getDate() + 1);
-      const formattedDate = today.toISOString().split('T')[0];
-
+      today.setDate(today.getDate() + 1); // Schedule for tomorrow
+      const formattedDate = today.toISOString().split("T")[0];
+  
+       
       // Iterate through each route and assign resources
       for (const route of routes) {
         const ordersForRoute = ordersByRoute[route.RouteID];

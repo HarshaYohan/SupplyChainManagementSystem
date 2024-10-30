@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useMemo } from 'react';
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore, faTruck, faUserTie, faSignOutAlt, faTruckLoading, faCalendarAlt,  faFilter} from "@fortawesome/free-solid-svg-icons";
@@ -19,16 +20,16 @@ const StoreManager = () => {
   const [truckschedule, setTruckSchedule] = useState([]);
   const [isDateFiltered, setIsDateFiltered] = useState(false);
 
+  const tomorrow = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
+  }, []);
+  
+  // Updated isTomorrow function
   const isTomorrow = (dateString) => {
-    const date = new Date(dateString);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    if (date.toDateString() === tomorrow.toDateString()) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    const date = new Date(dateString).toISOString().split("T")[0];
+    return date === tomorrow;
   };
 
 
