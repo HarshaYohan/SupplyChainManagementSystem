@@ -13,7 +13,7 @@
   transform: scale(1.02);
 }
 
-.title2 {
+.title3 {
   text-align: center;
   color: #2c3e50;
   font-size: 3rem;
@@ -30,7 +30,7 @@
   transition: color 0.3s ease;
 }
 
-.title2:hover {
+.title3:hover {
   color: #2980b9;
   transform: scale(1.05);
 }

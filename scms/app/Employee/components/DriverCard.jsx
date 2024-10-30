@@ -21,7 +21,7 @@ export default function Card2({ title, background, link, iconType }) {
     <Link href={link} passHref>
       <div className="card" style={{ background }}>
         {renderIcon()}
-        <h2 className="title">{title}</h2>
+        <h2 className="title2">{title}</h2>
       </div>
     </Link>
   );
