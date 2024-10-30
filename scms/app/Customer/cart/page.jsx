@@ -109,6 +109,7 @@ function Cart() {
 
   const handlePlaceOrderClick = async () => {
     try {
+      const totalAmount = calculateTotal(); // Calculate total amount
       await axios.post("/api/Customer/placeOrder", {
         CustomerID: userData.userId,
         OrderDate: new Date().toISOString().split('T')[0],
@@ -116,6 +117,7 @@ function Cart() {
         DeliveryAddress: address,
         CartID: cartID,
         City: selectedStore,
+        Amount: totalAmount,
       });
       router.push("orders"); // Navigate to the orders page
     } catch (err) {
