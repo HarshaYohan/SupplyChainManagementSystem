@@ -1,0 +1,246 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/employee/NavbarEmployee.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+/* Navbar styling */
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #001f3f;
+  color: #fff;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 10px;
+  left: 50px;
+  right: 50px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+/* Left section styling */
+.leftSection img {
+  height: 45px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.leftSection img:hover {
+  transform: scale(1.1);
+}
+
+/* Icon group styling */
+.iconGroup {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+/* Icon styles */
+.icon,
+.profileImage {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.icon:hover,
+.profileImage:hover {
+  transform: scale(1.1);
+}
+
+/* Profile image */
+.profileImage {
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+/* Login button hover effect */
+.loginButton:hover {
+  background-color: #004080;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .Header {
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .icon,
+  .profileImage {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Header {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .iconGroup {
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .leftSection img {
+    height: 40px;
+  }
+
+  .icon,
+  .profileImage {
+    width: 28px;
+    height: 28px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .Header {
+    padding: 0.8rem;
+  }
+
+  .leftSection img {
+    height: 35px;
+  }
+
+  .icon,
+  .profileImage {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/employee/DriverHomePage.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+/* Overall Margin Adjustment */
+.OR {
+  margin-top: 100px;
+}
+
+/* Greeting Box Styling */
+.greeting-box {
+  background-color: #f9f9f9;
+  padding: 60px 40px; /* Unified padding */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 10px auto;
+  max-width: 600px;
+}
+
+.greeting-box h1 {
+  font-size: 28px;
+  color: #0a2a5e;
+  margin-bottom: 15px;
+}
+
+.greeting-box p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Main Button Styling */
+button {
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+/* Start Button Specific Style */
+.start-button {
+  background-color: #081ae2; /* Dark blue for Start */
+}
+
+.start-button:hover,
+.disabledButton1:hover {
+  background-color: #2980b9;
+}
+
+.start-button:active {
+  transform: scale(0.98);
+}
+
+/* Disabled Button Styling */
+.disabledButton1 {
+  background-color: #2980b9;
+  cursor: not-allowed;
+  opacity: 0.7; /* Indicates disabled state */
+}
+
+/* End Button Specific Style */
+.end-button {
+  background-color: #081ae2; /* Same dark blue for End */
+}
+
+/* Action Button Hover & Focus Effects */
+button.action-button:hover {
+  opacity: 0.9;
+}
+
+button.action-button:focus {
+  outline: none;
+}
+
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./styles/employee/DriverCard.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+.container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 50vh;
+  padding: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 250px;
+  height: 300px;
+  margin: 10px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cardIcon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.title2 {
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
+  margin: 0;
+}
+

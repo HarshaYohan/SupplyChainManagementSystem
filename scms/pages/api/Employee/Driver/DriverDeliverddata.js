@@ -10,56 +10,63 @@ export default async function handler(req, res) {
 
     console.log("Fetching driver ID for email:", email);
 
-    const [employeeRows] = await db.query(
-     `CALL GetRoleByEmail(?)`,
-      [email]
-    );
+    // Step 1: Fetch the role of the employee by email
+    const employeeRows = await new Promise((resolve, reject) => {
+      db.query(`CALL GetRoleByEmail(?)`, [email], (error, results) => {
+        if (error) return reject(error);
+        resolve(results);
+      });
+    });
 
-    if (employeeRows.length === 0) {
+    if (employeeRows[0].length === 0) {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    const role = employeeRows[0][0].Roll;
+    const role = employeeRows[0][0].Role;
     let driverRows;
     let driverId;
 
+    // Step 2: Fetch driver or assistant ID based on role
     if (role === "Driver") {
-      const [driverData] = await db.query(
-        `CALL GetDriverIDByEmail(?)`,
-        [email]
-      );
-      driverRows = driverData; // Keep the query result for later use
+      driverRows = await new Promise((resolve, reject) => {
+        db.query(`CALL GetDriverIDByEmail(?)`, [email], (error, results) => {
+          if (error) return reject(error);
+          resolve(results);
+        });
+      });
     } else if (role === "DriverAssisant") {
-      const [assistantData] = await db.query(
-      `CALL GetAssistantIDByEmail(?)`,
-        [email]
-      );
-      driverRows = assistantData; // Keep the query result for later use
+      driverRows = await new Promise((resolve, reject) => {
+        db.query(`CALL GetAssistantIDByEmail(?)`, [email], (error, results) => {
+          if (error) return reject(error);
+          resolve(results);
+        });
+      });
     } else {
       return res.status(403).json({ message: "Access denied for this role" });
     }
 
-    if (!driverRows || driverRows.length === 0) {
+    if (!driverRows[0] || driverRows[0].length === 0) {
       return res.status(404).json({ message: "Driver not found" });
     }
 
-    // Depending on the role, use the appropriate ID
     driverId = role === "Driver" ? driverRows[0][0].DriverID : driverRows[0][0].AssistantID;
     console.log("Driver ID found:", driverId);
 
-    // Step 2: Fetch orders assigned to the driver
-    const [orderRows] = await db.query(
-     `CALL GetDeliveredDataByDriverID(?)`,
-      [driverId]
-    );
+    // Step 3: Fetch orders assigned to the driver
+    const orderRows = await new Promise((resolve, reject) => {
+      db.query(`CALL GetDeliveredDataByDriverID(?)`, [driverId], (error, results) => {
+        if (error) return reject(error);
+        resolve(results);
+      });
+    });
 
-    if (!orderRows || orderRows.length === 0) {
+    if (!orderRows[0] || orderRows[0].length === 0) {
       return res.status(404).json({ message: "No orders found for this driver" });
     }
 
     res.status(200).json(orderRows[0]);
   } catch (error) {
     console.error("Error fetching orders:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error });
   }
 }

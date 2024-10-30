@@ -1,34 +1,30 @@
-import { resolve } from "path";
 import db from "../../../backend/db.js";
 import runCors from "../../../utils/cors.js";
 
+const mergeOrdersByCustomerID = (orders) => {
+  return orders.reduce((acc, order) => {
+    const { CustomerID, CustomerName, TotalAmount } = order;
 
+    // Find existing order by CustomerID in the accumulator
+    let existingOrder = acc.find((o) => o.CustomerID === CustomerID);
 
-// const mergeOrdersByOrderID = (orders) => {
-//   return orders.reduce((acc, order) => {
-//     const { OrderID, CustomerID, OrderDate, TrainCapacityConsumption,City } = order;
+    if (existingOrder) {
+      // If the CustomerID exists, add the TotalAmount to the existing entry
+      existingOrder.TotalAmount = (
+        parseFloat(existingOrder.TotalAmount) + parseFloat(TotalAmount)
+      ).toFixed(2); // Ensure TotalAmount is a string in fixed decimal format
+    } else {
+      // If the CustomerID does not exist, create a new entry
+      acc.push({
+        CustomerID,
+        CustomerName,
+        TotalAmount: parseFloat(TotalAmount).toFixed(2),
+      });
+    }
 
-//     // Check if the orderID already exists in the accumulator
-//     let existingOrder = acc.find((o) => o.OrderID === OrderID);
-
-//     if (existingOrder) {
-//       // Add the product details to the existing order's products array
-//       existingOrder.TrainCapacityConsumption += TrainCapacityConsumption;
-//     } else {
-//       const oDate = new Date(OrderDate).toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-
-//       // Create a new order entry with products as an array
-//       acc.push({
-//         OrderID,
-//         CustomerID,
-//         oDate,
-//         TrainCapacityConsumption,
-//         City,
-//       });
-//     }
-
-//     return acc;
-//   }, []);
+    return acc;
+  }, []);
+};
 
 export default async function handler(req, res) {
   try {
@@ -40,19 +36,24 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     const report = "call GetCustomerOrders()";
-    const reportDetails = await new Promise((resolve,reject) => {
-      db.query(report, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
+    try {
+      const reportDetails = await new Promise((resolve, reject) => {
+        db.query(report, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
       });
-    })
 
-    console.log(reportDetails[0]);
-    res.status(200).json(reportDetails[0]);
-   } else {
-    res.status(405).json({ message: "Method not allowed" });
-  }
+      const mergedResults = mergeOrdersByCustomerID(reportDetails[0]);
+      res.status(200).json(mergedResults);
+    } catch (error) {
+      console.error("Database error:", error);
+      res.status(500).json({ error: "Database query failed" });
+    }
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
+  }
 }

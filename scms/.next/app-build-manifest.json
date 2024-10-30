@@ -1,0 +1,92 @@
+{
+  "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/layout.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/not-found.css",
+      "static/chunks/app/not-found.js"
+    ],
+    "/Employee/Driver/MyEffort/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/Driver/MyEffort/page.css",
+      "static/chunks/app/Employee/Driver/MyEffort/page.js"
+    ],
+    "/Employee/Driver/DriverHomePage/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/Driver/DriverHomePage/page.css",
+      "static/chunks/app/Employee/Driver/DriverHomePage/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
+    ],
+    "/Employee/Driver/DriverProfile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/Driver/DriverProfile/page.css",
+      "static/chunks/app/Employee/Driver/DriverProfile/page.js"
+    ],
+    "/Employee/Driver/DriverNewOrders/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/Driver/DriverNewOrders/page.css",
+      "static/chunks/app/Employee/Driver/DriverNewOrders/page.js"
+    ],
+    "/Employee/Driver/DriverDeliveredOrders/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/Driver/DriverDeliveredOrders/page.css",
+      "static/chunks/app/Employee/Driver/DriverDeliveredOrders/page.js"
+    ],
+    "/Customer/product/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Customer/product/page.css",
+      "static/chunks/app/Customer/product/page.js"
+    ],
+    "/Employee/EmployeeLogin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/EmployeeLogin/page.css",
+      "static/chunks/app/Employee/EmployeeLogin/page.js"
+    ],
+    "/Employee/storeManager/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/storeManager/page.css",
+      "static/chunks/app/Employee/storeManager/page.js"
+    ],
+    "/Employee/CompanyManager/home/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/CompanyManager/home/page.css",
+      "static/chunks/app/Employee/CompanyManager/home/page.js"
+    ],
+    "/Employee/CompanyManager/Reports/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/CompanyManager/Reports/page.css",
+      "static/chunks/app/Employee/CompanyManager/Reports/page.js"
+    ],
+    "/Employee/CompanyManager/TransportProduct/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/Employee/CompanyManager/TransportProduct/page.css",
+      "static/chunks/app/Employee/CompanyManager/TransportProduct/page.js"
+    ]
+  }
+}

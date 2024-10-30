@@ -1,0 +1,7 @@
+{
+  "/Employee/EmployeeLogin/page": "app/Employee/EmployeeLogin/page.js",
+  "/Employee/storeManager/page": "app/Employee/storeManager/page.js",
+  "/Employee/CompanyManager/home/page": "app/Employee/CompanyManager/home/page.js",
+  "/Employee/CompanyManager/Reports/page": "app/Employee/CompanyManager/Reports/page.js",
+  "/Employee/CompanyManager/TransportProduct/page": "app/Employee/CompanyManager/TransportProduct/page.js"
+}
