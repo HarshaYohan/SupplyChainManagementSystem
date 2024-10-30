@@ -4,7 +4,7 @@ import Navbar from "../components/navbar.jsx";
 import "../../../styles/customer/cart.css";
 import axios from "axios";
 import UserSession from "../../../utils/userSession.js";
-import { useRouter } from "next/navigation"; // Correct import for App Router
+import { useRouter } from 'next/navigation'; // Correct import for App Router
 
 function Cart() {
   const router = useRouter(); // Initialize router
@@ -13,7 +13,7 @@ function Cart() {
   const [selectedStore, setSelectedStore] = useState("");
   const [roots, setRoots] = useState([]);
   const [selectedRoot, setSelectedRoot] = useState("");
-  const [rootID, setRootID] = useState(null);
+  const [rootID, setRootID] = useState(null); // Ensure this stores the correct RouteID
   const [cartID, setCartID] = useState(null);
   const [address, setAddress] = useState("");
 
@@ -83,19 +83,28 @@ function Cart() {
         const response = await axios.post("/api/Customer/fetchRoots", {
           store: selectedStore,
         });
+        //console.log("Fetched roots:", response.data);
         setRoots(response.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching routes:", err);
       }
     };
 
-    if (selectedStore) fetchRoots();
+    if (selectedStore) {
+      fetchRoots();
+      console.log(roots);
+    }
   }, [selectedStore]);
 
   const handleStoreChange = (e) => setSelectedStore(e.target.value);
+  
   const handleRootChange = (e) => {
-    setSelectedRoot(e.target.value);
-    setRootID(e.target.index);
+    const selectedRoute = roots.find((root) => root.RouteDescription === e.target.value);
+    console.log(e.target.key);
+    if (selectedRoute) {
+      setSelectedRoot(selectedRoute.RouteDescription);
+      setRootID(selectedRoute.RouteID); // Store the correct RouteID
+    }
   };
 
   const handlePlaceOrderClick = async () => {
@@ -103,8 +112,8 @@ function Cart() {
       const totalAmount = calculateTotal(); // Calculate total amount
       await axios.post("/api/Customer/placeOrder", {
         CustomerID: userData.userId,
-        OrderDate: new Date().toISOString().split("T")[0],
-        RouteID: 6, // Update this if needed
+        OrderDate: new Date().toISOString().split('T')[0],
+        RouteID: rootID, // Use the correct RouteID here
         DeliveryAddress: address,
         CartID: cartID,
         City: selectedStore,
@@ -164,10 +173,9 @@ function Cart() {
         )}
       </div>
 
-      {cartItems.length > 0 && ( // Only show this section if the cart is not empty
+      {cartItems.length > 0 && (
         <div className="confirmationSection">
           <h1 className="cart-title">Order Confirmation</h1>
-
           <p className="delivery-time-message">
             Please note: It may take up to 7 days to deliver your order.
           </p>
@@ -180,20 +188,13 @@ function Cart() {
               onChange={handleStoreChange}
             >
               <option value="">Select the Store</option>
-              {[
-                "Colombo",
-                "Negombo",
-                "Matara",
-                "Galle",
-                "Badulla",
-                "Anuradhapura",
-                "Trincomalee",
-                "Jaffna",
-              ].map((store) => (
-                <option key={store} value={store}>
-                  {store}
-                </option>
-              ))}
+              {["Colombo", "Negombo", "Matara", "Galle", "Badulla", "Anuradhapura", "Trincomalee", "Jaffna"].map(
+                (store) => (
+                  <option key={store} value={store}>
+                    {store}
+                  </option>
+                )
+              )}
             </select>
 
             <label htmlFor="route-dropdown">Choose The Relevant Route:</label>
@@ -205,10 +206,7 @@ function Cart() {
             >
               <option value="">Select the Route</option>
               {roots.map((root) => (
-                <option
-                  key={root.RouteDescription}
-                  value={root.RouteDescription}
-                >
+                <option key={root.RouteID} value={root.RouteDescription}>
                   {root.RouteDescription}
                 </option>
               ))}
@@ -238,4 +236,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default Cart;

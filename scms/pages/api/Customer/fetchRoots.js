@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       if (results.length === 0) {
         return res.status(401).json({ error: "No Store Available" });
       } else {
-        const getRoots = "select RouteDescription from route where StoreID = ?";
+        const getRoots = "SELECT RouteID, RouteDescription FROM route WHERE StoreID = ?";
         db.query(getRoots, [results[0].StoreID], (err, resultRoutes) => {
           if (err) {
             return res.status(500).json({ error: "Database error" });
@@ -30,6 +30,6 @@ export default async function handler(req, res) {
       }
     });
   } else {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
 }
